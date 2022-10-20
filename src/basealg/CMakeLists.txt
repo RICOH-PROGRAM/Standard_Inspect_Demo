@@ -1,7 +1,7 @@
 
 
-add_library(base_camera INTERFACE)
+add_library(base_alg INTERFACE)
 
-target_sources(base_camera INTERFACE icameradevice.h)
+target_sources(base_alg INTERFACE ibasealgorithm.h)
 
-target_include_directories(base_camera INTERFACE ./)
+target_include_directories(base_alg INTERFACE ./)
