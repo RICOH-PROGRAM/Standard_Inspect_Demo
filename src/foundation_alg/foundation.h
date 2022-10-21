@@ -7,14 +7,17 @@ class Alg_Foundation : public basealgo::IBaseAlg
    public:
        Alg_Foundation();
        ~Alg_Foundation();
-    class Impl;
+
+
+       int doing(smartmore::SingleMat&);
 
    private:
-    std::shared_ptr<Impl> impl_;
+       class Impl;
+       std::shared_ptr<Impl> impl_;
 
 };
-
+    
 }  // namespace smartmore
-extern "C" __declspec(dllexport) basealgo::IBaseAlg * __stdcall CreateExportCameraObj();
-extern "C" __declspec(dllexport) void __stdcall DeleteExportCameraObj(
+extern "C" __declspec(dllexport) basealgo::IBaseAlg * __stdcall CreateExportAlgObj();
+extern "C" __declspec(dllexport) void __stdcall DeleteExportAlgObj(
     basealgo::IBaseAlg*);

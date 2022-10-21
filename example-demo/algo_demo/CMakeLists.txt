@@ -23,6 +23,8 @@ PRIVATE
 	Qt5::Widgets
 	Qt5::Core	
     spdlog::spdlog
+    common
+    base_alg
 )
 
 target_include_directories(AlgoDemo PUBLIC ./)
