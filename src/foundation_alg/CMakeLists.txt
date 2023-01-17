@@ -1,14 +1,14 @@
 
 
-add_library(Alg_foundation SHARED "")
+add_library(demo_Algo SHARED "")
 
-target_sources(Alg_foundation
+target_sources(demo_Algo
 PUBLIC 
     foundation.h
 PRIVATE 
     foundation.cpp
 )
-target_link_libraries(Alg_foundation
+target_link_libraries(demo_Algo
 PRIVATE
     logging
     common

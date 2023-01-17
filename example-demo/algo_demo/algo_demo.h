@@ -47,4 +47,6 @@ private:
     bool isImage(QFileInfo& info);
 public slots:
     void onSelectImageList(QListWidgetItem* item, QListWidgetItem* it);
+    void onInitAlgo();
+    void onUpdateAlgo();
 };

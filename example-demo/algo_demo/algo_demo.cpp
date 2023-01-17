@@ -28,11 +28,7 @@ Qtalgo_demo::Qtalgo_demo(QWidget* parent) : QMainWindow(parent)
 	m_sImageListPath = st;
 	initImageLS(m_sImageListPath);
 
-	QLibrary* LocalFileDLL = new QLibrary(qApp->applicationDirPath() + "/Alg_foundation.dll");
-    CreateLocalCamera =
-        (basealgo::pExportALG)(LocalFileDLL->resolve("CreateExportAlgObj"));
-    DeleteCamera =
-        (basealgo::pDeleteALG)(LocalFileDLL->resolve("DeleteExportAlgObj"));
+	onUpdateAlgo();
 	connectsignal();
 };
 
@@ -109,7 +105,52 @@ bool Qtalgo_demo::isImage(QFileInfo& info)
 		filename.contains(".tif") || filename.contains(".TIF");
 }
 
-bool Qtalgo_demo::containImages(QDir& dir)
+void Qtalgo_demo::onInitAlgo()
+{
+	if (_CheckClass)
+	{
+		DeleteCamera(_CheckClass);
+		_CheckClass = nullptr;
+	}
+	QLibrary* LocalFileDLL = new QLibrary(qApp->applicationDirPath() + "/"+ui.comboBox->currentText());
+	CreateLocalCamera =
+		(basealgo::pExportALG)(LocalFileDLL->resolve("CreateExportAlgObj"));
+	DeleteCamera =
+		(basealgo::pDeleteALG)(LocalFileDLL->resolve("DeleteExportAlgObj"));
+	_CheckClass = CreateLocalCamera();
+}
+
+void Qtalgo_demo::onUpdateAlgo()
+{
+	QDir dir(AppPath);
+	if (!dir.exists())
+	{
+		return;
+	}
+	dir.setFilter(QDir::Files);
+	QFileInfoList list = dir.entryInfoList();
+
+	int file_count = list.count();
+	if (file_count <= 0)
+	{
+		return;
+	}
+
+	QStringList string_list;
+	for (int i = 0; i < file_count; i++)
+	{
+		QFileInfo file_info = list.at(i);
+		QString suffix = file_info.fileName();
+		if (suffix.contains("Algo.dll"))
+		{
+			QString file_name = file_info.fileName();
+			string_list.append(file_name);
+		}
+	}
+	ui.comboBox->addItems(string_list);
+}
+
+bool Qtalgo_demo::containImages(QDir& dir) 
 {
 	foreach(QFileInfo entry, dir.entryInfoList(QDir::Dirs | QDir::Files)) {
 		QString filename = entry.fileName();
@@ -200,7 +241,10 @@ void Qtalgo_demo::connectsignal()
 				configIniRead->setValue("ProgramSet/LastPath", m_sImageListPath);
 			}
 		});
-
+	QObject::connect(ui.pB_initAlgo, &QPushButton::released, [=]()
+		{
+			onInitAlgo();
+		});
 }
 cv::Mat Qtalgo_demo::ReadImage(QString file)
 {
@@ -228,20 +272,19 @@ void Qtalgo_demo::onSelectImageList(QListWidgetItem* item, QListWidgetItem* it)
 	{
 		ui.lineEdit->setText(QString::fromLocal8Bit(pathselect.toLocal8Bit()));
 		ImgRead = ReadImage(pathselect);
-		if (m_w != ImgRead.cols || m_h != ImgRead.cols)
+		if (m_w != ImgRead.cols || m_h != ImgRead.cols|| !_CheckClass)
 		{
 			m_w = ImgRead.cols;
 			m_h = ImgRead.rows;
 			m_c = 3;
-			//_CheckClass->StartCheck("LOCALPATH", m_w, m_h, m_c);
 		}
-		/*ResultStruct strResult;*/
-
 		m_matCheck = ImgRead.clone();
+		smartmore::SingleMat singleMat;
 		LARGE_INTEGER t1, t2;
 		QueryPerformanceCounter(&t1);
 
-		//_CheckClass->Check(m_matCheck, nullptr, strResult);
+		if(_CheckClass)
+			_CheckClass->doing(singleMat);
 		QueryPerformanceCounter(&t2);
 		float s = (t2.QuadPart - t1.QuadPart) / (float)nFreq.QuadPart * 1000;
 		fInterval += s;
