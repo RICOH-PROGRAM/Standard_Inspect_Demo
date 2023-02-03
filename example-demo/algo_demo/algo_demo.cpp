@@ -87,6 +87,8 @@ void Qtalgo_demo::ShowMatToLabel(cv::Mat img)
 
 Qtalgo_demo::~Qtalgo_demo()
 {
+	configIniRead->setValue("ProgramSet/LastPath", m_sImageListPath);
+	configIniRead->sync();
 }
 
 bool Qtalgo_demo::isImage(QFileInfo& info)
@@ -244,6 +246,7 @@ void Qtalgo_demo::connectsignal()
 	QObject::connect(ui.pB_initAlgo, &QPushButton::released, [=]()
 		{
 			onInitAlgo();
+			ui.lw_ImageList->setEnabled(true);
 		});
 }
 cv::Mat Qtalgo_demo::ReadImage(QString file)
@@ -278,8 +281,8 @@ void Qtalgo_demo::onSelectImageList(QListWidgetItem* item, QListWidgetItem* it)
 			m_h = ImgRead.rows;
 			m_c = 3;
 		}
-		m_matCheck = ImgRead.clone();
 		smartmore::SingleMat singleMat;
+		singleMat.imgori = ImgRead.clone();
 		LARGE_INTEGER t1, t2;
 		QueryPerformanceCounter(&t1);
 
@@ -291,7 +294,7 @@ void Qtalgo_demo::onSelectImageList(QListWidgetItem* item, QListWidgetItem* it)
 		m_ichecktimes++;
 		ui.lineEdit->setText(QString::number(s));
 
-		ShowMatToLabel(m_matCheck);
+		ShowMatToLabel(singleMat.imgrst);
 
 		//emit CHECKRESULT(QStringList(QString::fromLocal8Bit(strResult.error_type)));
 		//if ((strResult._bResultNGOK && m_bOKSTOP)

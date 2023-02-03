@@ -7,16 +7,29 @@ namespace smartmore
 {
     class Alg_Foundation::Impl : public basealgo::IBaseAlg
     {
+    private:
+        std::thread::id tid;
+        _Thrd_t t;
+        char* buf = new char[10];
     public:
         Impl()
         {
+            tid = std::this_thread::get_id();
+            t = *(_Thrd_t*)(char*)&tid;
+            unsigned int nId = t._Id;
+            itoa(nId, buf, 10);
         }
 
         ~Impl()
         {
         }
 
-        int Alg_Foundation::Impl::doing(smartmore::SingleMat& data) { return -1; }
+        int Alg_Foundation::Impl::doing(smartmore::SingleMat& data) 
+        { 
+            data.imgrst = data.imgori.clone();
+            cv::putText(data.imgrst, buf, cv::Point(100, 100), 2, 1.0, cv::Scalar(0, 255, 255));
+            return -1;
+        }
 
     };
 
