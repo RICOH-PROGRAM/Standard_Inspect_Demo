@@ -57,6 +57,7 @@ namespace smartmore
 	};
 	struct SingleMat
 	{
+		int camPos = -1;
 		cv::Mat imgori;
 		cv::Mat imgrst;
 		size_t index;
