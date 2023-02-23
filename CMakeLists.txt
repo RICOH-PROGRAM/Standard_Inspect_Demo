@@ -17,7 +17,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 # 打开以下set指令，可以指定本地三方依赖库地址，跳过从网络下载
-#set (THIRDPARTY_DIR ${PROJECT_SOURCE_DIR}/third_party)
+set (THIRDPARTY_DIR D:/MyCode/third_party)
 if(NOT DEFINED THIRDPARTY_DIR)
     include(fetch/third_party)
 endif()
