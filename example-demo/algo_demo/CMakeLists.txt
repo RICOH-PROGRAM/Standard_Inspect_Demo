@@ -22,7 +22,7 @@ PUBLIC
 PRIVATE
 	Qt5::Widgets
 	Qt5::Core	
-    spdlog::spdlog
+    logging
     common
     base_alg
 )

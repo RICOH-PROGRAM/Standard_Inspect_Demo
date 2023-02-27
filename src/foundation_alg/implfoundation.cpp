@@ -1,5 +1,4 @@
 #include "foundation.h"
-#include "algosettingdlg.h"
 #include <iostream>
 #include <QSettings>
 #include <QCoreapplication>
@@ -30,9 +29,14 @@ namespace smartmore
 		return true;
 	}
 
-	bool Alg_Foundation::Impl::popCameraDlg(void* parent, void* layout)
+	bool Alg_Foundation::Impl::popCameraDlg(void* parent)
 	{
-
+		if (nullptr == algosettingdlg)
+		{
+			algosettingdlg = std::make_shared<Qtalgosettingdlg>((QWidget*)parent);
+		}
+		algosettingdlg->SetLastImage(lastimg);
+		algosettingdlg.get()->show();
 		LOGW("popCameraDlg successfully");
 		return false;
 	}

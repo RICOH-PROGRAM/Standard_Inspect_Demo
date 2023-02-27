@@ -12,6 +12,8 @@ PUBLIC
 	algosettingdlg.h
 	algosettingdlg.cpp
 	algosettingdlg.ui
+	MyGraphicsView.h
+	MyGraphicsView.cpp
 )
 
 target_link_libraries(algosettingdlg

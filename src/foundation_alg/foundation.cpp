@@ -15,9 +15,9 @@ namespace smartmore
         return impl_->initAlgoparam(camserial);
     }
 
-    bool Alg_Foundation::popCameraDlg(void* parent, void* layout)
+    bool Alg_Foundation::popCameraDlg(void* parent)
     {
-        return impl_->popCameraDlg(parent, layout);
+        return impl_->popCameraDlg(parent);
     }
 
     int Alg_Foundation::doing(smartmore::SingleMat& data)

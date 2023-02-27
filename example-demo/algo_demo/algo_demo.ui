@@ -19,22 +19,16 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout" stretch="3,1">
     <item>
-     <widget class="QFrame" name="frame">
+     <widget class="QLabel" name="label_Show">
       <property name="frameShape">
        <enum>QFrame::Box</enum>
       </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
+      <property name="lineWidth">
+       <number>2</number>
       </property>
-      <layout class="QGridLayout" name="gridLayout_2">
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_Show">
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
      </widget>
     </item>
     <item>
@@ -80,7 +74,7 @@
       <item>
        <layout class="QGridLayout" name="gridLayout">
         <item row="0" column="0">
-         <widget class="QPushButton" name="Button_Start">
+         <widget class="QPushButton" name="pB_Start">
           <property name="text">
            <string>Start</string>
           </property>
@@ -110,7 +104,7 @@
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QPushButton" name="pushButton_2">
+         <widget class="QPushButton" name="pB_SetDlg">
           <property name="text">
            <string>SetDlg</string>
           </property>
@@ -128,7 +122,7 @@
      <x>0</x>
      <y>0</y>
      <width>908</width>
-     <height>29</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

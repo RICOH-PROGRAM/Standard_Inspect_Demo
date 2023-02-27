@@ -12,6 +12,7 @@
 #include <functional>
 #include <future>
 #include <QLibrary>
+#include "logger.h"
 
 using namespace std;
 using namespace std::placeholders;
@@ -63,24 +64,30 @@ void resizeByNN(uchar* input, uchar* output, int height_in, int width_in, int ch
 
 void Qtalgo_demo::resizeEvent(QResizeEvent* event)
 {
-	QSize sz = ui.label_Show->size();
-	m_tempshow = cv::Mat(sz.height(), sz.width(), CV_8UC3);
+	//QSize sz = ui.label_Show->size();
+	//m_tempshow = cv::Mat(sz.height() - ui.label_Show->frameWidth() * 3, sz.width() - ui.label_Show->frameWidth() * 2, CV_8UC3);
+	//LOGI("resizeEvent   width:{}, height:{}", sz.width(), sz.height());
 }
 void Qtalgo_demo::showEvent(QShowEvent* event)
 {
-	QSize sz = ui.label_Show->size();
-	m_tempshow = cv::Mat(sz.height(), sz.width(), CV_8UC3);
+	//QSize sz = ui.label_Show->size();
+	//m_tempshow = cv::Mat(sz.height() - ui.label_Show->frameWidth() * 3, sz.width() - ui.label_Show->frameWidth() * 2, CV_8UC3);
+
+	//LOGI("showEvent   width:{}, height:{}", sz.width(), sz.height());
 }
 void Qtalgo_demo::ShowMatToLabel(cv::Mat img)
 {
 	char* d;
 
-	resizeByNN(img.data, m_tempshow.data, img.rows, img.cols, img.channels(), m_tempshow.rows, m_tempshow.cols);
-
+	//resizeByNN(img.data, m_tempshow.data, img.rows, img.cols, img.channels(), m_tempshow.rows, m_tempshow.cols);
+	//LOGI("image size   width:{}, height:{}", m_tempshow.cols, m_tempshow.rows);
 	//cv::cvtColor(m_tempshow, m_tempRGB, cv::COLOR_RGB2BGR);
-	m_tempRGB = m_tempshow.clone();
+	m_tempRGB = img.clone();
+	QSize sz = ui.label_Show->size();
+	sz.setHeight(sz.height() - ui.label_Show->frameWidth() * 2);
+	sz.setWidth(sz.width() - ui.label_Show->frameWidth() * 2);
 	disImage = QImage((const unsigned char*)(m_tempRGB.data), m_tempRGB.cols, m_tempRGB.rows, m_tempRGB.step, QImage::Format_RGB888);
-	ui.label_Show->setPixmap(QPixmap::fromImage(disImage));
+	ui.label_Show->setPixmap(QPixmap::fromImage(disImage).scaled(sz,Qt::IgnoreAspectRatio,Qt::SmoothTransformation));
 	ui.label_Show->show();
 	QThread::msleep(1);
 }
@@ -249,6 +256,13 @@ void Qtalgo_demo::connectsignal()
 			onInitAlgo();
 			ui.lw_ImageList->setEnabled(true);
 		});
+	QObject::connect(ui.pB_SetDlg, &QPushButton::released, [=]()
+		{
+			if (_CheckClass)
+				_CheckClass->popCameraDlg(nullptr);
+
+		});
+
 }
 cv::Mat Qtalgo_demo::ReadImage(QString file)
 {

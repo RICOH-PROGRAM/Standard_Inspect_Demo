@@ -10,19 +10,36 @@
 #include <QFileDialog>
 #include <functional>
 #include <future>
+#include <QGraphicsScene>
 
 
 using namespace std;
 using namespace std::placeholders;
 
-Qtalgosettingdlg::Qtalgosettingdlg(QWidget* parent, void* coreservice)
+Qtalgosettingdlg::Qtalgosettingdlg(QWidget* parent)
 	: QDialog(parent), ui(new Ui::algosettingdlg)
 {
-	setWindowFlags(Qt::FramelessWindowHint); 
 	ui->setupUi(this);
-
+	this->installEventFilter(this);
 };
 
 Qtalgosettingdlg::~Qtalgosettingdlg()
 {
+}
+
+void Qtalgosettingdlg::SetLastImage(cv::Mat img)
+{
+	_lastimg = img.clone();
+	_Qmap = QPixmap::fromImage(QImage((const uchar*)(img.data), img.cols, img.rows, img.cols * img.channels(), img.channels() == 3 ? QImage::Format_RGB888 : QImage::Format_Indexed8));
+}
+
+bool Qtalgosettingdlg::eventFilter(QObject* watched, QEvent* e)
+{
+	if (QEvent::Show == e->type())
+	{
+		QGraphicsScene* scene = new QGraphicsScene;
+		scene->addPixmap(_Qmap);
+		ui->gV_ShowImg->setScene(scene);
+	}
+	return QDialog::eventFilter(watched, e);
 }

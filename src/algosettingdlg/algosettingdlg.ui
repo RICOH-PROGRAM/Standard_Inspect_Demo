@@ -1,7 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>algosettingdlg</class>
- <widget class="QDialog" name="algosettingdlg"/>
+ <widget class="QDialog" name="algosettingdlg">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>939</width>
+    <height>658</height>
+   </rect>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,4">
+   <item>
+    <widget class="QFrame" name="frame">
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="MyGraphicsView" name="gV_ShowImg"/>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MyGraphicsView</class>
+   <extends>QGraphicsView</extends>
+   <header>mygraphicsview.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
