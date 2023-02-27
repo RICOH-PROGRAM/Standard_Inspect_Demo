@@ -1,46 +1,19 @@
 #include "foundation.h"
+#include "implfoundation.h"
 
 #include <iostream>
-
 #include "logger.h"
 namespace smartmore
 {
-    class Alg_Foundation::Impl : public basealgo::IBaseAlg
-    {
-    private:
-        std::thread::id tid;
-        _Thrd_t t;
-        char* buf = new char[10];
-    public:
-        Impl()
-        {
-            tid = std::this_thread::get_id();
-            t = *(_Thrd_t*)(char*)&tid;
-            unsigned int nId = t._Id;
-            itoa(nId, buf, 10);
-        }
-
-        ~Impl()
-        {
-        }
-
-        int Alg_Foundation::Impl::doing(smartmore::SingleMat& data) 
-        { 
-            data.imgrst = data.imgori.clone();
-            cv::Mat gray;
-            cv::cvtColor(data.imgori, gray, cv::COLOR_BGR2GRAY);
-            cv::threshold(gray, gray, 50, 255, cv::THRESH_BINARY);
-            cv::Mat RED = cv::Mat(gray.size(), CV_8UC3, cv::Scalar(255, 0, 0));
-            RED.copyTo(data.imgrst, gray);
-            //cv::putText(data.imgrst, buf, cv::Point(100, 100), 2, 1.0, cv::Scalar(0, 255, 255));
-            return -1;
-        }
-
-    };
 
     Alg_Foundation::Alg_Foundation() : impl_(std::make_unique<Impl>()) {}
 
     Alg_Foundation::~Alg_Foundation() {}
+
+    bool Alg_Foundation::initAlgoparam(std::string& camserial)
+    {
+        return impl_->initAlgoparam(camserial);
+    }
 
     int Alg_Foundation::doing(smartmore::SingleMat& data)
     {

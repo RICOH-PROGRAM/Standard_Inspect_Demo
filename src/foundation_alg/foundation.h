@@ -1,5 +1,4 @@
 #include "ibasealgorithm.h"
-
 namespace smartmore
 {
 class Alg_Foundation : public basealgo::IBaseAlg
@@ -9,7 +8,9 @@ class Alg_Foundation : public basealgo::IBaseAlg
        ~Alg_Foundation();
 
 
+       bool initAlgoparam(std::string&);
        int doing(smartmore::SingleMat&);
+
 
    private:
        class Impl;

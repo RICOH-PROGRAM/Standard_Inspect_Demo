@@ -5,11 +5,28 @@
 #include "spdlog/sinks/daily_file_sink.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
+#include <Windows.h>   
+#include <iostream>    
+#include <string> 
+using namespace std;
+
 
 class Logger
 {
-   public:
-    static Logger &getInstance()
+    string GetProgramDir()
+    {
+        char exeFullPath[MAX_PATH]; // Full path 
+        string strPath = "";
+
+        GetModuleFileName(NULL, exeFullPath, MAX_PATH);
+        strPath = (string)exeFullPath;    // Get full path of the file 
+
+        int pos = strPath.find_last_of('\\', strPath.length());
+        return strPath.substr(0, pos);  // Return the directory without the file name 
+    }
+
+public:
+    static Logger& getInstance()
     {
         static Logger log;
         return log;
@@ -33,8 +50,8 @@ class Logger
         asyncLogger = spdlog::get(LOGGER_NAME_FILE);
         if (!asyncLogger)
         {
-            asyncLogger = spdlog::daily_logger_mt<spdlog::async_factory>(LOGGER_NAME_FILE,
-                                                                         "logs/camera/daily.txt");
+            asyncLogger = spdlog::daily_logger_format_mt<spdlog::async_factory>(LOGGER_NAME_FILE,
+                GetProgramDir() + "/logs/%Y_%m_%d/logger_%H_%M_%S_%e.txt");
             asyncLogger->flush_on(spdlog::level::err);
         }
 
@@ -48,11 +65,22 @@ class Logger
     std::shared_ptr<spdlog::logger> asyncLogger;
     std::shared_ptr<spdlog::logger> consoleLogger;
 
-   private:
-    std::string LOGGER_NAME_FILE = "camera_daily_async_logger";
-    std::string LOGGER_NAME_CONSOLE = "camera_console";
+private:
+    std::string LOGGER_NAME_FILE = "daily_async_logger";
+    std::string LOGGER_NAME_CONSOLE = "console";
 };
 
+#define LOGT(...)                                                                                  \
+    {                                                                                              \
+        if (Logger::getInstance().consoleLogger)                                                   \
+            Logger::getInstance().consoleLogger->log(                                              \
+                spdlog::source_loc{__FILE__, __LINE__, __func__}, spdlog::level::level_enum::trace,\
+                __VA_ARGS__);                                                                      \
+        if (Logger::getInstance().asyncLogger)                                                     \
+            Logger::getInstance().asyncLogger->log(                                                \
+                spdlog::source_loc{__FILE__, __LINE__, __func__}, spdlog::level::level_enum::trace,\
+                __VA_ARGS__);                                                                      \
+    }
 #define LOGI(...)                                                                                  \
     {                                                                                              \
         if (Logger::getInstance().consoleLogger)                                                   \

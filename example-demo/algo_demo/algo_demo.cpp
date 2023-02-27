@@ -120,6 +120,7 @@ void Qtalgo_demo::onInitAlgo()
 	DeleteCamera =
 		(basealgo::pDeleteALG)(LocalFileDLL->resolve("DeleteExportAlgObj"));
 	_CheckClass = CreateLocalCamera();
+	_CheckClass->initAlgoparam(QString("local_camera").toStdString());
 }
 
 void Qtalgo_demo::onUpdateAlgo()
