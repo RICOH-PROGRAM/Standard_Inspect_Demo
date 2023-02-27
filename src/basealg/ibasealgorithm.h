@@ -19,6 +19,7 @@ class IBaseAlg
 public:
     virtual ~IBaseAlg() {}
     virtual bool initAlgoparam(std::string&) = 0;
+    virtual bool popCameraDlg(void* parent, void* layout) = 0;
     virtual int doing(smartmore::SingleMat&) = 0;
 };
 

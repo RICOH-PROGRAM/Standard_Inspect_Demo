@@ -16,4 +16,5 @@ PRIVATE
     common
     base_alg
     Qt5::Core
+    algosettingdlg
 )

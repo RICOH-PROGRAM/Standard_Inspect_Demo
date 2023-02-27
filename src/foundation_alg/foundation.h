@@ -9,6 +9,9 @@ class Alg_Foundation : public basealgo::IBaseAlg
 
 
        bool initAlgoparam(std::string&);
+
+       bool popCameraDlg(void* parent, void* layout);
+
        int doing(smartmore::SingleMat&);
 
 
