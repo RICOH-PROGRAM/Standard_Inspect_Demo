@@ -1,8 +1,14 @@
 #include "mygraphicsview.h"
+#include "logger.h"
 #include <QWheelEvent>
 
 MyGraphicsView::MyGraphicsView(QWidget* parent)
 {
+
+    //setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+    //setResizeAnchor(QGraphicsView::AnchorUnderMouse);
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);   //隐藏水平条
+    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);     //隐藏竖条
 }
 
 MyGraphicsView::~MyGraphicsView()
@@ -11,37 +17,82 @@ MyGraphicsView::~MyGraphicsView()
 
 void MyGraphicsView::wheelEvent(QWheelEvent* event)
 {
-    int wheelValue = event->angleDelta().y();
-    double ratio = (double)wheelValue / (double)1200 + 1;
-    scale(ratio, ratio);
+    // 滚轮的滚动量
+    QPoint scrollAmount = event->angleDelta();
+    // 正值表示滚轮远离使用者放大负值表示朝向使用者缩小
+    scrollAmount.y() > 0 ? ZoomIn() : ZoomOut();
+
 }
+
+void MyGraphicsView::ZoomIn()
+{
+    Zoom(1.1);
+}
+
+void MyGraphicsView::ZoomOut()
+{
+    Zoom(0.9);
+}
+
+void MyGraphicsView::Zoom(float scaleFactor)
+{
+    // 防止过小或过大
+    qreal factor = transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
+    if (factor < 0.07 || factor > 100)
+        return;
+
+    scale(scaleFactor, scaleFactor);
+}
+
+
 void MyGraphicsView::mousePressEvent(QMouseEvent* event)
 {
-    QGraphicsView::mousePressEvent(event);
-    if (this->scene() == nullptr)
+    if (event->button() == Qt::LeftButton)
     {
-        return;
+        m_isTranslate = true;
+        m_lastMousePos = event->pos();
     }
-    // 记录鼠标按下时的中心点坐标
-    centerAnchor = mapToScene(event->pos()) - event->pos() + QPointF(width() / 2, height() / 2);
-    // 记录当前鼠标在view中的位置，用来在mouseMove事件中计算偏移
-    // 此处不将view坐标转换成scene坐标的原因是优化性能，在move的过程中会产生抖动
-    posAnchor = event->pos();
-    isMousePressed = true;
+    else if (event->button() == Qt::RightButton)
+    {
+        QPointF point = mapToScene(event->pos());
+        //只有点击图片时才发送
+        if (scene()->itemAt(point, transform()) != NULL)
+        {
+            //emit m_imageBox->ImageClick(point.x(), point.y());
+        }
+    }
+
+    QGraphicsView::mousePressEvent(event);
 }
 
 void MyGraphicsView::mouseMoveEvent(QMouseEvent* event)
 {
-    QGraphicsView::mouseMoveEvent(event);
-    QPointF offsetPos = event->pos() - posAnchor;
-    if (isMousePressed) {
-        setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-        centerOn(centerAnchor - offsetPos);
+    {
+        if (m_isTranslate)
+        {
+            //获取
+            QPointF mouseDelta = event->pos() - m_lastMousePos;
+            Translate(mouseDelta);
+        }
+        m_lastMousePos = event->pos();
     }
+
+    QGraphicsView::mouseMoveEvent(event);
 }
 
 void MyGraphicsView::mouseReleaseEvent(QMouseEvent* event)
 {
+    if (event->button() == Qt::LeftButton)
+        m_isTranslate = false;
+
     QGraphicsView::mouseReleaseEvent(event);
-    isMousePressed = false;
+}
+
+
+void MyGraphicsView::Translate(QPointF delta)
+{
+    int w = viewport()->rect().width();
+    int h = viewport()->rect().height();
+    QPoint newCenter(w / 2. - delta.x() + 0.5, h / 2. - delta.y() + 0.5);
+    centerOn(mapToScene(newCenter));
 }

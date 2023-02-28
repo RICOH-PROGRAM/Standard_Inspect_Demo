@@ -4,9 +4,15 @@ class MyGraphicsView : public QGraphicsView
 {
 	Q_OBJECT
 private:
-	bool isMousePressed = false;
+	bool m_isTranslate = false;
+	double m_qrScaledNum = 1;
 	QPointF centerAnchor;
-	QPoint posAnchor;
+	QPoint m_lastMousePos;
+
+	void Translate(QPointF delta);
+	void ZoomIn();
+	void ZoomOut();
+	void Zoom(float scaleFactor);
 public:
 	MyGraphicsView(QWidget* parent = Q_NULLPTR);
 	~MyGraphicsView();

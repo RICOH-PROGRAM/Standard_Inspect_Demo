@@ -52,7 +52,7 @@ public:
         {
             asyncLogger = spdlog::daily_logger_format_mt<spdlog::async_factory>(LOGGER_NAME_FILE,
                 GetProgramDir() + "/logs/%Y_%m_%d/logger_%H_%M_%S_%e.txt");
-            asyncLogger->flush_on(spdlog::level::err);
+            asyncLogger->flush_on(spdlog::level::trace);
         }
 
         consoleLogger = spdlog::get(LOGGER_NAME_CONSOLE);
