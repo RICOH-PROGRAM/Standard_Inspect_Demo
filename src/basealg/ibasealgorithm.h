@@ -12,7 +12,7 @@
 #include <intsafe.h>
 #include "common.h"
 
-namespace basealgo
+namespace wikky_algo
 {
 class IBaseAlg
 {
@@ -20,7 +20,7 @@ public:
     virtual ~IBaseAlg() {}
     virtual bool initAlgoparam(std::string&) = 0;
     virtual bool popCameraDlg(void* parent) = 0;
-    virtual int doing(smartmore::SingleMat&) = 0;
+    virtual int doing(wikky_algo::SingleMat&, wikky_algo::CheckParam* m_checkparam = nullptr) = 0;
 };
 
 typedef IBaseAlg* (__stdcall* pExportALG)();

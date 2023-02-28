@@ -4,7 +4,9 @@
 #include <QCoreapplication>
 #include "implfoundation.h"
 #include "logger.h"
-namespace smartmore
+#include <functional>
+#include <future>
+namespace wikky_algo
 {
 	Alg_Foundation::Impl::Impl()
 	{
@@ -18,14 +20,10 @@ namespace smartmore
 	{
 		saveAlgoParam();
 	}
-	bool Alg_Foundation::Impl::initAlgoparam(std::string& camserial)
+	bool Alg_Foundation::Impl::initAlgoparam(std::string& _camserial)
 	{
-		QSettings algsetting(qApp->applicationDirPath() + "/defaultModel/" + camserial.c_str() + ".ini", QSettings::IniFormat);
-
-
-
-
-		LOGW("initAlgoparam successfully");
+		m_scamserial = _camserial;
+		readAlgoParam();
 		return true;
 	}
 
@@ -34,19 +32,35 @@ namespace smartmore
 		if (nullptr == algosettingdlg)
 		{
 			algosettingdlg = std::make_shared<Qtalgosettingdlg>((QWidget*)parent);
+			algosettingdlg->SetTestCallback(std::bind(&Alg_Foundation::Impl::doing, this, std::placeholders::_1, std::placeholders::_2));
 		}
+
 		algosettingdlg->SetLastImage(lastimg);
+		algosettingdlg->SetLastParam(m_checkparam);
 		algosettingdlg.get()->show();
 		LOGW("popCameraDlg successfully");
 		return false;
 	}
 
+	bool Alg_Foundation::Impl::readAlgoParam()
+	{
+		QSettings algsetting(qApp->applicationDirPath() + "/defaultModel/" + m_scamserial.c_str() + ".ini", QSettings::IniFormat);
+		m_checkparam._iThread = algsetting.value("Default1/_Thread", 100).toInt();
+
+
+
+		LOGW("initAlgoparam successfully");
+		return true;
+	}
+
 	bool Alg_Foundation::Impl::saveAlgoParam()
 	{
+		QSettings algsetting(qApp->applicationDirPath() + "/defaultModel/" + m_scamserial.c_str() + ".ini", QSettings::IniFormat);
+		algsetting.setValue("Default1/_Thread", m_checkparam._iThread);
 		return false;
 	}
 
-	int Alg_Foundation::Impl::doing(smartmore::SingleMat& data)
+	int Alg_Foundation::Impl::doing(wikky_algo::SingleMat& data, wikky_algo::CheckParam* m_checkparam)
 	{
 		lastimg = data.imgori.clone();
 		cv::Mat gray;

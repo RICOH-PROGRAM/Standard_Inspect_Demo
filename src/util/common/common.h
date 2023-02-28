@@ -1,7 +1,7 @@
 #ifndef CORE_COMMON
 #define CORE_COMMON
 #include <opencv2/opencv.hpp>
-namespace smartmore
+namespace wikky_algo
 {
 	struct SingleMat
 	{
@@ -13,8 +13,12 @@ namespace smartmore
 		std::string cam_serial;
 		std::vector<std::string> error_message;
 	};
+	struct CheckParam
+	{
+		int _iThread = 0;
+	};
 
 
-	using DataCallback = std::function<void(SingleMat&)>;
+	using TestCallback = std::function<int(SingleMat&,CheckParam*)>;
 }
 #endif // !CORE_COMMON

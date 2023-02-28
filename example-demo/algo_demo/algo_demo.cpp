@@ -123,9 +123,9 @@ void Qtalgo_demo::onInitAlgo()
 	}
 	QLibrary* LocalFileDLL = new QLibrary(qApp->applicationDirPath() + "/"+ui.comboBox->currentText());
 	CreateLocalCamera =
-		(basealgo::pExportALG)(LocalFileDLL->resolve("CreateExportAlgObj"));
+		(wikky_algo::pExportALG)(LocalFileDLL->resolve("CreateExportAlgObj"));
 	DeleteCamera =
-		(basealgo::pDeleteALG)(LocalFileDLL->resolve("DeleteExportAlgObj"));
+		(wikky_algo::pDeleteALG)(LocalFileDLL->resolve("DeleteExportAlgObj"));
 	_CheckClass = CreateLocalCamera();
 	_CheckClass->initAlgoparam(QString("local_camera").toStdString());
 }
@@ -296,7 +296,7 @@ void Qtalgo_demo::onSelectImageList(QListWidgetItem* item, QListWidgetItem* it)
 			m_h = ImgRead.rows;
 			m_c = 3;
 		}
-		smartmore::SingleMat singleMat;
+		wikky_algo::SingleMat singleMat;
 		singleMat.imgori = ImgRead.clone();
 		LARGE_INTEGER t1, t2;
 		QueryPerformanceCounter(&t1);

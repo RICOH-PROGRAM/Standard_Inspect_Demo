@@ -1,4 +1,5 @@
 #include <QGraphicsview>
+#include <QGraphicsPixmapItem>
 
 class MyGraphicsView : public QGraphicsView
 {
@@ -8,6 +9,8 @@ private:
 	double m_qrScaledNum = 1;
 	QPointF centerAnchor;
 	QPoint m_lastMousePos;
+	QGraphicsScene* m_scene;
+	QGraphicsPixmapItem* m_imageItem;
 
 	void Translate(QPointF delta);
 	void ZoomIn();
@@ -16,6 +19,7 @@ private:
 public:
 	MyGraphicsView(QWidget* parent = Q_NULLPTR);
 	~MyGraphicsView();
+	void SetImage(const QImage& image);
 protected:
 	void wheelEvent(QWheelEvent* event);
 	void mousePressEvent(QMouseEvent* event);

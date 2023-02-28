@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include "logger.h"
-namespace smartmore
+namespace wikky_algo
 {
 
     Alg_Foundation::Alg_Foundation() : impl_(std::make_unique<Impl>()) {}
@@ -20,19 +20,19 @@ namespace smartmore
         return impl_->popCameraDlg(parent);
     }
 
-    int Alg_Foundation::doing(smartmore::SingleMat& data)
+    int Alg_Foundation::doing(wikky_algo::SingleMat& data, wikky_algo::CheckParam* m_checkparam)
     {
-        return impl_->doing(data);
+        return impl_->doing(data, m_checkparam);
     }
 
 }
 
-extern "C" __declspec(dllexport) basealgo::IBaseAlg * __stdcall CreateExportAlgObj()
+extern "C" __declspec(dllexport) wikky_algo::IBaseAlg * __stdcall CreateExportAlgObj()
 {
-    return new smartmore::Alg_Foundation();
+    return new wikky_algo::Alg_Foundation();
 };
 extern "C" __declspec(dllexport) void __stdcall DeleteExportAlgObj(
-    basealgo::IBaseAlg * p)
+    wikky_algo::IBaseAlg * p)
 {
     delete p;
     p = nullptr;

@@ -1,7 +1,7 @@
 #include "ibasealgorithm.h"
-namespace smartmore
+namespace wikky_algo
 {
-class Alg_Foundation : public basealgo::IBaseAlg
+class Alg_Foundation : public wikky_algo::IBaseAlg
 {
    public:
        Alg_Foundation();
@@ -12,7 +12,7 @@ class Alg_Foundation : public basealgo::IBaseAlg
 
        bool popCameraDlg(void* parent);
 
-       int doing(smartmore::SingleMat&);
+       int doing(wikky_algo::SingleMat&, wikky_algo::CheckParam* m_checkparam = nullptr);
 
 
    private:
@@ -21,7 +21,7 @@ class Alg_Foundation : public basealgo::IBaseAlg
 
 };
     
-}  // namespace smartmore
-extern "C" __declspec(dllexport) basealgo::IBaseAlg * __stdcall CreateExportAlgObj();
+}  // namespace wikky_algo
+extern "C" __declspec(dllexport) wikky_algo::IBaseAlg * __stdcall CreateExportAlgObj();
 extern "C" __declspec(dllexport) void __stdcall DeleteExportAlgObj(
-    basealgo::IBaseAlg*);
+    wikky_algo::IBaseAlg*);

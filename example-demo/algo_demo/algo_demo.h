@@ -17,8 +17,8 @@ class Qtalgo_demo : public QMainWindow
     Q_OBJECT
 
 private:
-    basealgo::pExportALG CreateLocalCamera;
-    basealgo::pDeleteALG DeleteCamera;
+    wikky_algo::pExportALG CreateLocalCamera;
+    wikky_algo::pDeleteALG DeleteCamera;
     QString AppPath;
     QString m_sImageListPath;
     QSettings* configIniRead = nullptr;
@@ -35,7 +35,7 @@ private:
     Qtalgo_demo(QWidget* parent = Q_NULLPTR);
     void connectsignal();
     cv::Mat ReadImage(QString);
-    basealgo::IBaseAlg* _CheckClass = nullptr;
+    wikky_algo::IBaseAlg* _CheckClass = nullptr;
     void ShowMatToLabel(cv::Mat);
     void resizeEvent(QResizeEvent*);
     void showEvent(QShowEvent*);
