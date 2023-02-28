@@ -3,19 +3,6 @@ project(Compass_Project VERSION 0.1.0 LANGUAGES CXX)
 find_package(Qt5 COMPONENTS Core Gui Widgets Network Sql REQUIRED)
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
-include(fetch/spdlog)
-include(fetch/json)
-include(fetch/OpenCV)
-include(fetch/concurrentqueue)
-include(fetch/third_party)
-
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 # 打开以下set指令，可以指定本地三方依赖库地址，跳过从网络下载
 set (THIRDPARTY_DIR D:/MyCode/third_party)
 if(NOT DEFINED THIRDPARTY_DIR)
@@ -23,6 +10,23 @@ if(NOT DEFINED THIRDPARTY_DIR)
 endif()
 
 set(OpenCV_DIR ${THIRDPARTY_DIR}/opencv/x64/vc15/lib)
+set(OpenCV_FOUND TRUE)
+
+
+list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+include(fetch/spdlog)
+include(fetch/json)
+include(fetch/OpenCV)
+include(fetch/concurrentqueue)
+include(fetch/third_party)
+include(fetch/yamlcpp)
+
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
 add_compile_options(

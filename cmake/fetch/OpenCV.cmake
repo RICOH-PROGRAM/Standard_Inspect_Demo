@@ -1,5 +1,5 @@
 include(FetchContent)
-if(NOT Opencv_Found)
+if(NOT OpenCV_DIR)
 
 if(NOT DEFINED OpenCV_URL)
 if(WIN32)

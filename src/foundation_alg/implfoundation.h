@@ -1,5 +1,6 @@
 #include "ibasealgorithm.h"
 #include "algosettingdlg.h"
+#include "yaml-cpp/yaml.h"
 
 namespace wikky_algo
 {
@@ -15,6 +16,7 @@ namespace wikky_algo
 
         // checkparam
         CheckParam m_checkparam;
+        YAML::Node params;
     public:
         Impl();
         ~Impl();

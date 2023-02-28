@@ -17,4 +17,5 @@ PRIVATE
     base_alg
     Qt5::Core
     algosettingdlg
+    yaml-cpp
 )
