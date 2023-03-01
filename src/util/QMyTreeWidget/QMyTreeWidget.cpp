@@ -230,26 +230,6 @@ void QMyTreeWidget::expandbyString()
 }
 bool QMyTreeWidget::SaveYAMLFile(QString filepath)
 {
-	std::ofstream fout(filepath.toStdString().c_str());
-
-	try
-	{
-		fout << _mparam;
-
-		fout.close();
-	}
-	catch (YAML::ParserException e)
-	{
-		QMessageBox::warning(nullptr, "", e.what());
-	}
-	catch (YAML::RepresentationException e)
-	{
-		QMessageBox::warning(nullptr, "", e.what());
-	}
-	catch (YAML::Exception e)
-	{
-		QMessageBox::warning(nullptr, "", e.what());
-	}
 	return false;
 }
 

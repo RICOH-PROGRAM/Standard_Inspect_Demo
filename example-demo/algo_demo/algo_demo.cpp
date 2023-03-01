@@ -96,6 +96,12 @@ Qtalgo_demo::~Qtalgo_demo()
 {
 	configIniRead->setValue("ProgramSet/LastPath", m_sImageListPath);
 	configIniRead->sync();
+
+	if (_CheckClass)
+	{
+		DeleteCamera(_CheckClass);
+		_CheckClass = nullptr;
+	}
 }
 
 bool Qtalgo_demo::isImage(QFileInfo& info)

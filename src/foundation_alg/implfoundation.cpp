@@ -6,6 +6,7 @@
 #include "logger.h"
 #include <functional>
 #include <future>
+#include <fstream>
 namespace wikky_algo
 {
 	Alg_Foundation::Impl::Impl()
@@ -44,12 +45,12 @@ namespace wikky_algo
 
 	bool Alg_Foundation::Impl::readAlgoParam()
 	{
-		QSettings algsetting(qApp->applicationDirPath() + "/defaultModel/" + m_scamserial.c_str() + ".ini", QSettings::IniFormat);
-		m_checkparam._iThread = algsetting.value("Default1/_Thread", 100).toInt();
+		//QSettings algsetting(qApp->applicationDirPath() + "/defaultModel/" + m_scamserial.c_str() + ".ini", QSettings::IniFormat);
+		//m_checkparam._iThread = algsetting.value("Default1/_Thread", 100).toInt();
 		QString str = QString("%1/defaultModel/%2.yaml").arg(qApp->applicationDirPath()).arg(m_scamserial.c_str());
 		m_yamlparams = YAML::LoadFile(str.toStdString());
 
-
+		Node2Param(m_checkparam, m_yamlparams);
 
 		LOGW("initAlgoparam successfully");
 		return true;
@@ -57,8 +58,29 @@ namespace wikky_algo
 
 	bool Alg_Foundation::Impl::saveAlgoParam()
 	{
-		QSettings algsetting(qApp->applicationDirPath() + "/defaultModel/" + m_scamserial.c_str() + ".ini", QSettings::IniFormat);
-		algsetting.setValue("Default1/_Thread", m_checkparam._iThread);
+		//QSettings algsetting(qApp->applicationDirPath() + "/defaultModel/" + m_scamserial.c_str() + ".ini", QSettings::IniFormat);
+		//algsetting.setValue("Default1/_Thread", m_checkparam._iThread);
+
+		QString str = QString("%1/defaultModel/%2.yaml").arg(qApp->applicationDirPath()).arg(m_scamserial.c_str());
+		std::ofstream fout(str.toStdString().c_str());
+
+		Param2Node(m_checkparam, m_yamlparams);
+
+		try
+		{
+			fout << m_yamlparams;
+
+			fout.close();
+		}
+		catch (YAML::ParserException e)
+		{
+		}
+		catch (YAML::RepresentationException e)
+		{
+		}
+		catch (YAML::Exception e)
+		{
+		}
 		return false;
 	}
 

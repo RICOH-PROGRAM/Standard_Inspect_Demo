@@ -18,6 +18,24 @@ namespace Ui
 	class algosettingdlg;
 }
 
+template <typename T>
+T getValue(YAML::Node _param, QString errortype, QString errorparam, QString defaultvalue)
+{
+	T val;
+	try
+	{
+		val = _param[errortype.toStdString()][errorparam.toStdString()]["value"].as<T>();
+	}
+	catch (YAML::Exception e)
+	{
+		return val;
+	}
+	return val;
+}
+
+bool Node2Param(wikky_algo::CheckParam& checkparam, YAML::Node& _param);
+
+bool Param2Node(wikky_algo::CheckParam& checkparam, YAML::Node& _param);
 
 class Qtalgosettingdlg : public QDialog
 {
