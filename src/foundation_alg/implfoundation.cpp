@@ -36,7 +36,7 @@ namespace wikky_algo
 		}
 
 		algosettingdlg->SetLastImage(lastimg);
-		algosettingdlg->SetLastParam(m_checkparam);
+		algosettingdlg->SetLastParam(m_yamlparams);
 		algosettingdlg.get()->show();
 		LOGW("popCameraDlg successfully");
 		return false;
@@ -46,6 +46,8 @@ namespace wikky_algo
 	{
 		QSettings algsetting(qApp->applicationDirPath() + "/defaultModel/" + m_scamserial.c_str() + ".ini", QSettings::IniFormat);
 		m_checkparam._iThread = algsetting.value("Default1/_Thread", 100).toInt();
+		QString str = QString("%1/defaultModel/%2.yaml").arg(qApp->applicationDirPath()).arg(m_scamserial.c_str());
+		m_yamlparams = YAML::LoadFile(str.toStdString());
 
 
 

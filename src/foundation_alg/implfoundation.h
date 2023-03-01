@@ -16,7 +16,7 @@ namespace wikky_algo
 
         // checkparam
         CheckParam m_checkparam;
-        YAML::Node params;
+        YAML::Node m_yamlparams;
     public:
         Impl();
         ~Impl();

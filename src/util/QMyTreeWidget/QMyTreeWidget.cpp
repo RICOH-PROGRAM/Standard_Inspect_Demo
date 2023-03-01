@@ -64,53 +64,38 @@ enum MyEnum
 {
 	SCALAR = 0,
 };
-bool QMyTreeWidget::ReadYAMLFile(QString filepath)
-{
-	QFileInfo file(filepath);
-	_mparam = YAML::LoadFile(filepath.toStdString());
-	ReadYAMLFile(_mparam);
-	if (!file.isFile())
-	{
-		return false;
-	}
-	return false;
-}
 
-bool QMyTreeWidget::ReadYAMLFile(YAML::Node params, char* cameraname)
+bool QMyTreeWidget::LoadYAMLFile(YAML::Node params)
 {
 	this->clear();
 	this->setHeaderHidden(false);
 	this->setColumnCount(4);
-	this->header()->hideSection(3);
+	QStringList strList;
+	strList << QStringLiteral("属性") << QStringLiteral("值") << QStringLiteral("V1") << QStringLiteral("V2");
+
+	setHeaderLabels(strList);
+	//this->header()->hideSection(3);
 	this->header()->setSectionResizeMode(QHeaderView::ResizeToContents);//均分填充表头
 	_mparam = params;
-	if (nullptr == cameraname)
-	{
-		_param = _mparam;
-	}
-	else
-	{
-		_param = _mparam[std::string(cameraname)];
-	}
 	try
 	{
-		if (_param.IsNull())
+		if (_mparam.IsNull())
 		{
 			return false;
 		}
 		int n;
-		for (YAML::iterator it = _param.begin(); it != _param.end(); it++)
+		for (YAML::iterator it = _mparam.begin(); it != _mparam.end(); it++)
 		{
 			std::string name = it->first.as<std::string>();
-			if (_param[name].IsDefined())
+			if (_mparam[name].IsDefined())
 			{
 				if (name.find("Param_") != std::string::npos)
 				{
 					QTreeWidgetItem* pItemError = new QTreeWidgetItem(QStringList() << name.c_str());
 					this->addTopLevelItem(pItemError);
-					//if (_param[name].IsSequence())
+					//if (_mparam[name].IsSequence())
 					{
-						YAML::Node commands = _param[name];
+						YAML::Node commands = _mparam[name];
 	
 						for (YAML::const_iterator it = commands.begin(); it != commands.end(); ++it)
 						{
@@ -274,7 +259,7 @@ void QMyTreeWidget::ComboValueChanged(int i)
 	QString objectname = sind->objectName();
 	QString errtype = objectname.left(objectname.indexOf("+"));
 	QString errname = objectname.mid(objectname.indexOf("+") + 1);
-	_param[errtype.toStdString().c_str()][errname.toStdString().c_str()]["value"] = i;
+	_mparam[errtype.toStdString().c_str()][errname.toStdString().c_str()]["value"] = i;
 	QTreeWidgetItem* cur = this->currentItem();
 	cur->setData(1, Qt::DisplayRole, i);
 	emit TempSave(objectname, QString::number(i));
@@ -290,7 +275,7 @@ void QMyTreeWidget::LineValueChanged(QString str)
 	QString objectname = sind->objectName();
 	QString errtype = objectname.left(objectname.indexOf("+"));
 	QString errname = objectname.mid(objectname.indexOf("+") + 1);
-	_param[errtype.toStdString().c_str()][errname.toStdString().c_str()]["value"] = str.toDouble();
+	_mparam[errtype.toStdString().c_str()][errname.toStdString().c_str()]["value"] = str.toDouble();
 	//if (sind->text()=="")
 	//{
 	//	sind->setText("");
@@ -306,7 +291,7 @@ void QMyTreeWidget::CheckValueChanged(int i)
 	QString objectname = sind->objectName();
 	QString errtype = objectname.left(objectname.indexOf("+"));
 	QString errname = objectname.mid(objectname.indexOf("+") + 1);
-	_param[errtype.toStdString().c_str()][errname.toStdString().c_str()]["value"] = i;
+	_mparam[errtype.toStdString().c_str()][errname.toStdString().c_str()]["value"] = i;
 }
 
 void QMyTreeWidget::ClickPushButton()
@@ -384,7 +369,7 @@ void QMyTreeWidget::SliderValueChanged(int i)
 	QString objectname = sind->objectName();
 	QString errtype = objectname.left(objectname.indexOf("+"));
 	QString errname = objectname.mid(objectname.indexOf("+") + 1);
-	_param[errtype.toStdString().c_str()][errname.toStdString().c_str()]["value"] = i;
+	_mparam[errtype.toStdString().c_str()][errname.toStdString().c_str()]["value"] = i;
 	QTreeWidgetItem* cur = this->currentItem();
 	cur->setData(1, Qt::DisplayRole, i);
 	emit TempSave(objectname, QString::number(i));

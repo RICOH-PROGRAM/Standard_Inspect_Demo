@@ -18,14 +18,7 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,4">
    <item>
-    <widget class="QFrame" name="frame">
-     <property name="frameShape">
-      <enum>QFrame::Box</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Plain</enum>
-     </property>
-    </widget>
+    <widget class="QMyTreeWidget" name="treewidget"/>
    </item>
    <item>
     <widget class="MyGraphicsView" name="gV_ShowImg"/>
@@ -37,6 +30,11 @@
    <class>MyGraphicsView</class>
    <extends>QGraphicsView</extends>
    <header>mygraphicsview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QMyTreeWidget</class>
+   <extends>QTreeView</extends>
+   <header>qmytreewidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

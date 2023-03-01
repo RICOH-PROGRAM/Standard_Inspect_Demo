@@ -12,11 +12,39 @@
 #include <future>
 #include <QGraphicsScene>
 #include <QMouseEvent>
+#include <fstream>
 
 
 using namespace std;
 using namespace std::placeholders;
 
+template <typename T>
+T getValue(YAML::Node _param, QString errortype, QString errorparam, QString defaultvalue)
+{
+	T val;
+	try
+	{
+		val = _param[errortype.toStdString()][errorparam.toStdString()]["value"].as<T>();
+	}
+	catch (YAML::Exception e)
+	{
+		return val;
+	}
+	return val;
+}
+
+bool Node2Param(wikky_algo::CheckParam& checkparam, YAML::Node& _param)
+{
+	checkparam._iThread = getValue<int>(_param, QString("Param_AxisMask"), QString("X"), "5");
+	return true;
+}
+
+bool Param2Node(wikky_algo::CheckParam& checkparam, YAML::Node& _param)
+{
+	_param[QString("Param_AxisMask").toStdString().c_str()][QString("X").toStdString().c_str()]["value"] = checkparam._iThread;
+	_param[QString("Param_AxisMask").toStdString().c_str()][QString("Y").toStdString().c_str()]["value"] = checkparam._iThread;
+	return true;
+}
 Qtalgosettingdlg::Qtalgosettingdlg(QWidget* parent)
 	: QDialog(parent), ui(new Ui::algosettingdlg)
 {
@@ -29,9 +57,10 @@ Qtalgosettingdlg::~Qtalgosettingdlg()
 {
 }
 
-void Qtalgosettingdlg::SetLastParam(wikky_algo::CheckParam _param)
+void Qtalgosettingdlg::SetLastParam(YAML::Node _param)
 {
-	m_checkparam = _param;
+	//m_checkparam = _param;
+	ui->treewidget->LoadYAMLFile(_param);
 }
 
 void Qtalgosettingdlg::SetTestCallback(wikky_algo::TestCallback func)

@@ -26,4 +26,3 @@ public:
 typedef IBaseAlg* (__stdcall* pExportALG)();
 typedef void (__stdcall* pDeleteALG)(IBaseAlg*);
 }  // namespace cameramanager
-

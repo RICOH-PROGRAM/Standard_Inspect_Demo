@@ -11,6 +11,7 @@
 #include <QMetaType>
 #include "opencv2/core.hpp"
 #include "common.h"
+#include "yaml-cpp/yaml.h"
 
 namespace Ui
 {
@@ -27,7 +28,7 @@ public:
 	~Qtalgosettingdlg();
 
 	void SetLastImage(cv::Mat img);
-	void SetLastParam(wikky_algo::CheckParam);
+	void SetLastParam(YAML::Node);
 	void SetTestCallback(wikky_algo::TestCallback func);
 protected:
 	bool eventFilter(QObject* watched, QEvent* e);
@@ -35,6 +36,7 @@ private:
 	Ui::algosettingdlg* ui;
 	cv::Mat _lastimg;
 	QPixmap _Qmap;
+	YAML::Node m_node;
 	wikky_algo::CheckParam m_checkparam;
 	wikky_algo::TestCallback _testcallback = nullptr;
 };

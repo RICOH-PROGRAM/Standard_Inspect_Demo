@@ -10,9 +10,10 @@ add_library(algosettingdlg STATIC)
 target_sources(algosettingdlg
 PUBLIC
 	algosettingdlg.h
+	MyGraphicsView.h
+PRIVATE
 	algosettingdlg.cpp
 	algosettingdlg.ui
-	MyGraphicsView.h
 	MyGraphicsView.cpp
 )
 
@@ -22,6 +23,7 @@ PUBLIC
 	Qt5::Core
     logging
 	common
+	qmytreewidget
 )
 
 target_include_directories(algosettingdlg 

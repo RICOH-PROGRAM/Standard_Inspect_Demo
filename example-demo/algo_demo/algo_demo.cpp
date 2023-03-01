@@ -1,4 +1,4 @@
-#include "algo_demo.h"
+ï»¿#include "algo_demo.h"
 #include "windows.h"
 #pragma comment(lib, "version")
 
@@ -22,7 +22,7 @@ Qtalgo_demo::Qtalgo_demo(QWidget* parent) : QMainWindow(parent)
 { 
 	ui.setupUi(this);
 	QueryPerformanceFrequency(&nFreq);
-	AppPath = qApp->applicationDirPath();//exeËùÔÚÄ¿Â¼
+	AppPath = qApp->applicationDirPath();//exeæ‰€åœ¨ç›®å½•
 	configIniRead = new QSettings(AppPath + "/OffLineLog.ini", QSettings::IniFormat);
 	configIniRead->setIniCodec("utf-8");
 	QString st = configIniRead->value("ProgramSet/LastPath").toString();
@@ -202,7 +202,7 @@ void Qtalgo_demo::connectsignal()
 					// only allow user to access the data in dataPath
 					m_sImageListPath = ".";
 				}
-				else//exeËùÔÚµÄ¸ùÄ¿Â¼
+				else//exeæ‰€åœ¨çš„æ ¹ç›®å½•
 					if (newPath.length() >= 2)
 					{
 						// only allow user to access the data in dataPath
@@ -333,19 +333,19 @@ void Qtalgo_demo::initImageLS(QString str)
 	if (str == ".")
 	{
 		BOOL fResult;
-		// ±éÀú´ÅÅÌ
+		// éå†ç£ç›˜
 		for (wchar_t d = 'A'; d <= 'Z'; d++)
 		{
 			TCHAR szTemp[3] = { d, ':', '\0' };
-			// »ñÈ¡´ÅÅÌÀàĞÍ
+			// è·å–ç£ç›˜ç±»å‹
 			UINT uType = GetDriveType(szTemp);
-			// DRIVE_UNKNOWN  ÎŞ·¨È·¶¨Çı¶¯Æ÷ÀàĞÍ¡£
-			// DRIVE_NO_ROOT_DIR ¸ùÂ·¾¶ÎŞĞ§; ÀıÈç£¬Ö¸¶¨Â·¾¶ÉÏÃ»ÓĞ°²×°¾í¡£
-			// DRIVE_REMOVABLE Çı¶¯Æ÷ÓĞ¿ÉÒÆ¶¯½éÖÊ; ÀıÈç£¬ÈíÅÌÇı¶¯Æ÷£¬Ä´Ö¸Çı¶¯Æ÷»òÉÁ´æ¿¨¶Á¿¨Æ÷¡£
-			// DRIVE_FIXED Çı¶¯Æ÷ÓĞ¹Ì¶¨µÄÃ½Ìå; ÀıÈç£¬Ó²ÅÌÇı¶¯Æ÷»òÉÁ´æÇı¶¯Æ÷¡£
-			// DRIVE_REMOTE ¸ÃÇı¶¯Æ÷ÊÇÔ¶³Ì£¨ÍøÂç£©Çı¶¯Æ÷¡£
-			// DRIVE_CDROM ¸ÃÇı¶¯Æ÷ÊÇÒ»¸öCD-ROMÇı¶¯Æ÷¡£
-			// DRIVE_RAMDISK Çı¶¯Æ÷ÊÇRAM´ÅÅÌ¡£
+			// DRIVE_UNKNOWN  æ— æ³•ç¡®å®šé©±åŠ¨å™¨ç±»å‹ã€‚
+			// DRIVE_NO_ROOT_DIR æ ¹è·¯å¾„æ— æ•ˆ; ä¾‹å¦‚ï¼ŒæŒ‡å®šè·¯å¾„ä¸Šæ²¡æœ‰å®‰è£…å·ã€‚
+			// DRIVE_REMOVABLE é©±åŠ¨å™¨æœ‰å¯ç§»åŠ¨ä»‹è´¨; ä¾‹å¦‚ï¼Œè½¯ç›˜é©±åŠ¨å™¨ï¼Œæ‹‡æŒ‡é©±åŠ¨å™¨æˆ–é—ªå­˜å¡è¯»å¡å™¨ã€‚
+			// DRIVE_FIXED é©±åŠ¨å™¨æœ‰å›ºå®šçš„åª’ä½“; ä¾‹å¦‚ï¼Œç¡¬ç›˜é©±åŠ¨å™¨æˆ–é—ªå­˜é©±åŠ¨å™¨ã€‚
+			// DRIVE_REMOTE è¯¥é©±åŠ¨å™¨æ˜¯è¿œç¨‹ï¼ˆç½‘ç»œï¼‰é©±åŠ¨å™¨ã€‚
+			// DRIVE_CDROM è¯¥é©±åŠ¨å™¨æ˜¯ä¸€ä¸ªCD-ROMé©±åŠ¨å™¨ã€‚
+			// DRIVE_RAMDISK é©±åŠ¨å™¨æ˜¯RAMç£ç›˜ã€‚
 			switch (uType)
 			{
 			case DRIVE_FIXED:

@@ -15,6 +15,7 @@ namespace wikky_algo
 	};
 	struct CheckParam
 	{
+		std::string cam_serial;
 		int _iThread = 0;
 	};
 

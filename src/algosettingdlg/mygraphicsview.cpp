@@ -1,4 +1,4 @@
-#include "mygraphicsview.h"
+ï»¿#include "mygraphicsview.h"
 #include "logger.h"
 #include <QWheelEvent>
 
@@ -10,8 +10,8 @@ MyGraphicsView::MyGraphicsView(QWidget* parent) :
 	setScene(m_scene);
 	//setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 	//setResizeAnchor(QGraphicsView::AnchorUnderMouse);
-	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);   //Òş²ØË®Æ½Ìõ
-	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);     //Òş²ØÊúÌõ
+	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);   //éšè—æ°´å¹³æ¡
+	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);     //éšè—ç«–æ¡
 }
 
 MyGraphicsView::~MyGraphicsView()
@@ -22,9 +22,9 @@ MyGraphicsView::~MyGraphicsView()
 
 void MyGraphicsView::wheelEvent(QWheelEvent* event)
 {
-	// ¹öÂÖµÄ¹ö¶¯Á¿
+	// æ»šè½®çš„æ»šåŠ¨é‡
 	QPoint scrollAmount = event->angleDelta();
-	// ÕıÖµ±íÊ¾¹öÂÖÔ¶ÀëÊ¹ÓÃÕß·Å´ó¸ºÖµ±íÊ¾³¯ÏòÊ¹ÓÃÕßËõĞ¡
+	// æ­£å€¼è¡¨ç¤ºæ»šè½®è¿œç¦»ä½¿ç”¨è€…æ”¾å¤§è´Ÿå€¼è¡¨ç¤ºæœå‘ä½¿ç”¨è€…ç¼©å°
 	scrollAmount.y() > 0 ? ZoomIn() : ZoomOut();
 
 }
@@ -41,7 +41,7 @@ void MyGraphicsView::ZoomOut()
 
 void MyGraphicsView::Zoom(float scaleFactor)
 {
-	// ·ÀÖ¹¹ıĞ¡»ò¹ı´ó
+	// é˜²æ­¢è¿‡å°æˆ–è¿‡å¤§
 	qreal factor = transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
 	if (factor < 0.07 || factor > 100)
 		return;
@@ -60,7 +60,7 @@ void MyGraphicsView::mousePressEvent(QMouseEvent* event)
 	else if (event->button() == Qt::RightButton)
 	{
 		QPointF point = mapToScene(event->pos());
-		//Ö»ÓĞµã»÷Í¼Æ¬Ê±²Å·¢ËÍ
+		//åªæœ‰ç‚¹å‡»å›¾ç‰‡æ—¶æ‰å‘é€
 		if (scene()->itemAt(point, transform()) != NULL)
 		{
 			//emit m_imageBox->ImageClick(point.x(), point.y());
@@ -75,7 +75,7 @@ void MyGraphicsView::mouseMoveEvent(QMouseEvent* event)
 	{
 		if (m_isTranslate)
 		{
-			//»ñÈ¡
+			//è·å–
 			QPointF mouseDelta = event->pos() - m_lastMousePos;
 			Translate(mouseDelta);
 		}
@@ -109,7 +109,7 @@ void MyGraphicsView::SetImage(const QImage& image)
 
 	//QPoint newCenter(image.width() / 2, image.height() / 2);
 
-	////ÉèÖÃsceneÖĞĞÄµ½Í¼ÏñÖĞµã
+	////è®¾ç½®sceneä¸­å¿ƒåˆ°å›¾åƒä¸­ç‚¹
 	//centerOn(newCenter);
 
 	show();

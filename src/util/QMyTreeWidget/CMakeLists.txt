@@ -1,17 +1,21 @@
 
 find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
-add_library(qmytreewidget SHARED "")
+add_library(qmytreewidget INTERFACE)
 
 target_sources(qmytreewidget
-PUBLIC 
-qmytreewidget.h
-PRIVATE 
+INTERFACE
+    qmytreewidget.h
     qmytreewidget.cpp
 )
 target_link_libraries(qmytreewidget
-PRIVATE
+INTERFACE
     logging
     common
     Qt5::Widgets
     yaml-cpp
+)
+
+target_include_directories(qmytreewidget 
+INTERFACE
+	./
 )

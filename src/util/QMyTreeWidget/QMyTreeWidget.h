@@ -120,17 +120,15 @@ signals:
 	void TempSave(QString, QString);
 	void Signal_DrawRegion(QString);
 private:
-	YAML::Node _param;
+	YAML::Node _mparam;
 	QTextDocument* document = nullptr;
 	QTextEdit* editor = nullptr;
 	QMyTextEdit* detailtext = nullptr;
 	QString m_ErrorNode;
 public:
-	YAML::Node _mparam;
 	QMyTreeWidget(QWidget* parent);
 	~QMyTreeWidget();
-	bool ReadYAMLFile(QString filepath);
-	bool ReadYAMLFile(YAML::Node, char* cameraname = nullptr);
+	bool LoadYAMLFile(YAML::Node);
 	bool SaveYAMLFile(QString filepath);
 	void expandbyString();
 public slots:
