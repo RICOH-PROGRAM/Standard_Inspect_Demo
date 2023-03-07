@@ -10,6 +10,7 @@
 #include <QHeaderView>
 #include <QFontDialog>
 #include <QScrollBar>
+#include <logger.h>
 #define SLIDERSTYLE "  \
      QSlider::add-page:Horizontal\
      {     \
@@ -34,31 +35,84 @@
         margin: -15 0px; \
     }\
     "
+namespace YAML {
+	struct CharacterType {
+		std::string type;
+		int value;
+		int Smallest;
+		int Biggest;
+		QString CN_Name;
+		QString CN_Discrib;
+	};
+	struct ERRORSetting {
+		int ability;
+		int value;
+		QString CN_Name;
+	};
+	template<>
+	struct convert<CharacterType> {
+		static bool decode(const Node& node, CharacterType& cType) {
+			try
+			{
+				cType.type = node["type"].as<std::string>();
+				cType.value = node["value"].as<double>();
+				cType.Smallest = node["Smallest"].as<int>();
+				cType.Biggest = node["Biggest"].as<int>();
+				cType.CN_Name = node["CN_Name"].as<std::string>().c_str();
+				cType.CN_Discrib = node["CN_Discrib"].as<std::string>().c_str();
+			}
+			catch (YAML::Exception e)
+			{
+				LOGE(e.what());
+			}
+			return true;
+		}
+	};
+	template<>
+	struct convert<ERRORSetting> {
+		static bool decode(const Node& node, ERRORSetting& cType) {
+			try
+			{
+				cType.ability = node["ability"].as<int>();
+				cType.value = node["value"].as<int>();
+				cType.CN_Name = node["CN_Name"].as<std::string>().c_str();
+			}
+			catch (YAML::Exception e)
+			{
+			}
+			return true;
+		}
+	};
+}
+
 QMyTreeWidget::QMyTreeWidget(QWidget* parent)
 	: QTreeWidget(parent)
 {
+	//QStringList strList;
+	//strList << QStringLiteral("属性") << QStringLiteral("值") << QStringLiteral("V1") << QStringLiteral("V2");
+	//setHeaderLabels(strList);
 	QObject::connect(this, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(showCnDetail(QTreeWidgetItem*, int)));
 
-	this->setStyleSheet("QTreeWidget::item{height:60px;}\
-	QTreeView::branch:has-children:!has-siblings:closed,\
-		QTreeView::branch:closed:has-children:has-siblings\
-		{\
-			padding: -3px;\
-			image:url(./340.png);\
-		}\
-		QTreeView::branch:open:has-children:!has-siblings,\
-			QTreeView::branch:open:has-children:has-siblings\
-		{\
-			padding: -3px;\
-			image:url(./440.png);\
-		}");
+	//this->setStyleSheet("QTreeWidget::item{height:60px;}\
+	//QTreeView::branch:has-children:!has-siblings:closed,\
+	//	QTreeView::branch:closed:has-children:has-siblings\
+	//	{\
+	//		padding: -3px;\
+	//		image:url(./340.png);\
+	//	}\
+	//	QTreeView::branch:open:has-children:!has-siblings,\
+	//		QTreeView::branch:open:has-children:has-siblings\
+	//	{\
+	//		padding: -3px;\
+	//		image:url(./440.png);\
+	//	}");
 
-	this->verticalScrollBar()->setStyleSheet("QScrollBar{background:White; width: 40px;}"
-		"QScrollBar::handle{background:lightgray; border:2px solid transparent; border-radius:5px;}"
-		"QScrollBar::handle:hover{background:gray;}"
-		"QScrollBar::sub-line{background:transparent;}"
-		"QScrollBar::add-line{background:transparent;}");
-	this->setFont(QFont(QString::fromLocal8Bit("宋体"), 20));
+	//this->verticalScrollBar()->setStyleSheet("QScrollBar{background:White; width: 40px;}"
+	//	"QScrollBar::handle{background:lightgray; border:2px solid transparent; border-radius:5px;}"
+	//	"QScrollBar::handle:hover{background:gray;}"
+	//	"QScrollBar::sub-line{background:transparent;}"
+	//	"QScrollBar::add-line{background:transparent;}");
+	//this->setFont(QFont(QString::fromLocal8Bit("宋体"), 20));
 }
 enum MyEnum
 {
@@ -68,14 +122,10 @@ enum MyEnum
 bool QMyTreeWidget::LoadYAMLFile(YAML::Node params)
 {
 	this->clear();
-	this->setHeaderHidden(false);
+	this->setHeaderHidden(true);
 	this->setColumnCount(4);
-	QStringList strList;
-	strList << QStringLiteral("属性") << QStringLiteral("值") << QStringLiteral("V1") << QStringLiteral("V2");
-
-	setHeaderLabels(strList);
-	//this->header()->hideSection(3);
-	this->header()->setSectionResizeMode(QHeaderView::ResizeToContents);//均分填充表头
+	this->header()->hideSection(3);
+	this->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
 	_mparam = params;
 	try
 	{
@@ -107,7 +157,7 @@ bool QMyTreeWidget::LoadYAMLFile(YAML::Node params)
 									QCheckBox* checkbox = new QCheckBox;
 									checkbox->setObjectName(QString(name.c_str()) + "+" + key.c_str());
 	
-									checkbox->setStyleSheet("QCheckBox{ background:transparent}\
+									//checkbox->setStyleSheet("QCheckBox{ background:transparent}\
                             QCheckBox::indicator {width: 40px; height: 40px; }\
                             QCheckBox::indicator:unchecked{background:url(./240.png)}\
                             QCheckBox::indicator:checked{background:url(./540.png)}");
@@ -123,13 +173,13 @@ bool QMyTreeWidget::LoadYAMLFile(YAML::Node params)
 									if (it->second["ability"].as<int>() == 0)
 									{
 										checkbox->setEnabled(false);
-										checkbox->setStyleSheet("QCheckBox{ background:transparent}\
+										//checkbox->setStyleSheet("QCheckBox{ background:transparent}\
                             QCheckBox::indicator {width: 40px; height: 40px; }\
                             QCheckBox::indicator:unchecked{background:url(./240.png)}\
                             QCheckBox::indicator:checked{background:url(./540.png)}");
 									}
 									else {
-										checkbox->setStyleSheet("QCheckBox{ background:transparent}\
+										//checkbox->setStyleSheet("QCheckBox{ background:transparent}\
                             QCheckBox::indicator {width: 40px; height: 40px; }\
                             QCheckBox::indicator:unchecked{background:url(./240.png)}\
                             QCheckBox::indicator:checked{background:url(./140.png)}");
@@ -152,7 +202,7 @@ bool QMyTreeWidget::LoadYAMLFile(YAML::Node params)
 									control->setMaximum(ty.Biggest);
 									control->setValue(ty.value);
 	
-									control->setStyleSheet(SLIDERSTYLE);
+									//control->setStyleSheet(SLIDERSTYLE);
 									// 									QLineEdit* le = new QLineEdit();
 									// 									le->setObjectName("le" + QString(name.c_str()) + "+" + key.c_str());
 									// 									le->setText(QString::number(ty.value));

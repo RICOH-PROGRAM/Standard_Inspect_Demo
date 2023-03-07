@@ -20,14 +20,17 @@ using namespace std::placeholders;
 
 bool Node2Param(wikky_algo::CheckParam& checkparam, YAML::Node& _param)
 {
-	checkparam._iThread = getValue<int>(_param, QString("Param_AxisMask"), QString("X"), "5");
+	checkparam._iThreadX = getValue<int>(_param, QString("Param_AxisMask"), QString("X"), "5");
+	checkparam._iThreadY = getValue<int>(_param, QString("Param_AxisMask"), QString("Y"), "10");
+	checkparam._iThreadZ = getValue<int>(_param, QString("Param_AxisMask"), QString("Z"), "101");
 	return true;
 }
 
 bool Param2Node(wikky_algo::CheckParam& checkparam, YAML::Node& _param)
 {
-	_param[QString("Param_AxisMask").toStdString().c_str()][QString("X").toStdString().c_str()]["value"] = checkparam._iThread;
-	_param[QString("Param_AxisMask").toStdString().c_str()][QString("Y").toStdString().c_str()]["value"] = checkparam._iThread;
+	_param[QString("Param_AxisMask").toStdString().c_str()][QString("X").toStdString().c_str()]["value"] = checkparam._iThreadX;
+	_param[QString("Param_AxisMask").toStdString().c_str()][QString("Y").toStdString().c_str()]["value"] = checkparam._iThreadY;
+	_param[QString("Param_AxisMask").toStdString().c_str()][QString("Y").toStdString().c_str()]["value"] = checkparam._iThreadZ;
 	return true;
 }
 
@@ -37,6 +40,13 @@ Qtalgosettingdlg::Qtalgosettingdlg(QWidget* parent)
 	ui->setupUi(this);
 	this->installEventFilter(this);
 	ui->gV_ShowImg->installEventFilter(this);
+	connect(ui->treewidget, &QMyTreeWidget::TempSave, [=](QString objname, QString ves)
+		{
+			Node2Param(_tempparam, ui->treewidget->_mparam);
+
+			//m_bChanged = true;
+			//ui.pB_Save->setEnabled(true);
+		});
 };
 
 Qtalgosettingdlg::~Qtalgosettingdlg()

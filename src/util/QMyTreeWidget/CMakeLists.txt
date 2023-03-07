@@ -6,6 +6,12 @@ target_sources(qmytreewidget
 INTERFACE
     qmytreewidget.h
     qmytreewidget.cpp
+    140.png
+    240.png
+    340.png
+    440.png
+    540.png
+    btn.png
 )
 target_link_libraries(qmytreewidget
 INTERFACE

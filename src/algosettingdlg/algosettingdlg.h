@@ -56,5 +56,6 @@ private:
 	QPixmap _Qmap;
 	YAML::Node m_node;
 	wikky_algo::CheckParam m_checkparam;
+	wikky_algo::CheckParam _tempparam;
 	wikky_algo::TestCallback _testcallback = nullptr;
 };

@@ -13,68 +13,6 @@
 #include <QLineEdit>
 
 
-namespace YAML {
-	struct CharacterType {
-		std::string type;
-		int value;
-		int Smallest;
-		int Biggest;
-		QString CN_Name;
-		QString CN_Discrib;
-	};
-	struct ERRORSetting {
-		int ability;
-		int value;
-		QString CN_Name;
-	};
-	//template<>
-	//struct convert<std::string> {
-	//	static bool decode(const Node& node, std::string& st) {
-	//		try
-	//		{
-	//			st = node["type"].as<std::string>();
-	//		}
-	//		catch (YAML::Exception e)
-	//		{
-	//		}
-	//		return true;
-	//	}
-	//};
-	template<>
-	struct convert<CharacterType> {
-		static bool decode(const Node& node, CharacterType& cType) {
-			try
-			{
-				cType.type = node["type"].as<std::string>();
-				cType.value = node["value"].as<double>();
-				cType.Smallest = node["Smallest"].as<int>();
-				cType.Biggest = node["Biggest"].as<int>();
-				cType.CN_Name = node["CN_Name"].as<std::string>().c_str();
-				cType.CN_Discrib = node["CN_Discrib"].as<std::string>().c_str();
-			}
-			catch (YAML::Exception e)
-			{
-			}
-			return true;
-		}
-	};
-	template<>
-	struct convert<ERRORSetting> {
-		static bool decode(const Node& node, ERRORSetting& cType) {
-			try
-			{
-				cType.ability = node["ability"].as<int>();
-				cType.value = node["value"].as<int>();
-				cType.CN_Name = node["CN_Name"].as<std::string>().c_str();
-			}
-			catch (YAML::Exception e)
-			{
-			}
-			return true;
-		}
-	};
-}
-
 class QMyTextEdit : public QTextEdit
 {
 	Q_OBJECT
@@ -120,12 +58,12 @@ signals:
 	void TempSave(QString, QString);
 	void Signal_DrawRegion(QString);
 private:
-	YAML::Node _mparam;
 	QTextDocument* document = nullptr;
 	QTextEdit* editor = nullptr;
 	QMyTextEdit* detailtext = nullptr;
 	QString m_ErrorNode;
 public:
+	YAML::Node _mparam;
 	QMyTreeWidget(QWidget* parent);
 	~QMyTreeWidget();
 	bool LoadYAMLFile(YAML::Node);

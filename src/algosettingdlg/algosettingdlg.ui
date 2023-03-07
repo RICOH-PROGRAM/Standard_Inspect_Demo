@@ -12,11 +12,11 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>939</width>
-    <height>658</height>
+    <width>1586</width>
+    <height>903</height>
    </rect>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,4">
+  <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,2">
    <item>
     <widget class="QMyTreeWidget" name="treewidget"/>
    </item>
