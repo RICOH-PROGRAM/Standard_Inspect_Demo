@@ -9,6 +9,10 @@
 #include <fstream>
 namespace wikky_algo
 {
+	void Alg_Foundation::Impl::updateparamfromdlg(CheckParam _param)
+	{
+		m_checkparam = _param;
+	}
 	Alg_Foundation::Impl::Impl()
 	{
 		tid = std::this_thread::get_id();
@@ -34,6 +38,7 @@ namespace wikky_algo
 		{
 			algosettingdlg = std::make_shared<Qtalgosettingdlg>((QWidget*)parent);
 			algosettingdlg->SetTestCallback(std::bind(&Alg_Foundation::Impl::doing, this, std::placeholders::_1, std::placeholders::_2));
+			algosettingdlg->UpdatetoalgoImpl(std::bind(&Alg_Foundation::Impl::updateparamfromdlg, this, std::placeholders::_1));
 		}
 
 		algosettingdlg->SetLastImage(lastimg);
@@ -84,12 +89,12 @@ namespace wikky_algo
 		return false;
 	}
 
-	int Alg_Foundation::Impl::doing(wikky_algo::SingleMat& data, wikky_algo::CheckParam* m_checkparam)
+	int Alg_Foundation::Impl::doing(wikky_algo::SingleMat& data, wikky_algo::CheckParam* _checkparam)
 	{
 		lastimg = data.imgori.clone();
 		cv::Mat gray;
 		cv::cvtColor(lastimg, gray, cv::COLOR_BGR2GRAY);
-		cv::threshold(gray, gray, 50, 255, cv::THRESH_BINARY);
+		cv::threshold(gray, gray, _checkparam ? _checkparam->_iThreadY: m_checkparam._iThreadY, 255, cv::THRESH_BINARY);
 		cv::Mat RED = cv::Mat(gray.size(), CV_8UC3, cv::Scalar(255, 0, 0));
 		RED.copyTo(data.imgrst, gray);
 		//cv::putText(data.imgrst, buf, cv::Point(100, 100), 2, 1.0, cv::Scalar(0, 255, 255));

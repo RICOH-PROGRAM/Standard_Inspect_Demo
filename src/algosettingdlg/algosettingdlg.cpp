@@ -30,7 +30,7 @@ bool Param2Node(wikky_algo::CheckParam& checkparam, YAML::Node& _param)
 {
 	_param[QString("Param_AxisMask").toStdString().c_str()][QString("X").toStdString().c_str()]["value"] = checkparam._iThreadX;
 	_param[QString("Param_AxisMask").toStdString().c_str()][QString("Y").toStdString().c_str()]["value"] = checkparam._iThreadY;
-	_param[QString("Param_AxisMask").toStdString().c_str()][QString("Y").toStdString().c_str()]["value"] = checkparam._iThreadZ;
+	_param[QString("Param_AxisMask").toStdString().c_str()][QString("Z").toStdString().c_str()]["value"] = checkparam._iThreadZ;
 	return true;
 }
 
@@ -43,8 +43,11 @@ Qtalgosettingdlg::Qtalgosettingdlg(QWidget* parent)
 	connect(ui->treewidget, &QMyTreeWidget::TempSave, [=](QString objname, QString ves)
 		{
 			Node2Param(_tempparam, ui->treewidget->_mparam);
-
-			//m_bChanged = true;
+			wikky_algo::SingleMat singlemat;
+			singlemat.imgori = _lastimg.clone();
+			_testcallback(singlemat, &_tempparam);
+			ui->gV_ShowImg->SetImage(QImage((const uchar*)(singlemat.imgrst.data), singlemat.imgrst.cols, singlemat.imgrst.rows, singlemat.imgrst.cols * singlemat.imgrst.channels(), singlemat.imgrst.channels() == 3 ? QImage::Format_RGB888 : QImage::Format_Indexed8));
+			m_bChanged = true;
 			//ui.pB_Save->setEnabled(true);
 		});
 };
@@ -62,6 +65,11 @@ void Qtalgosettingdlg::SetLastParam(YAML::Node _param)
 void Qtalgosettingdlg::SetTestCallback(wikky_algo::TestCallback func)
 {
 	_testcallback = func;
+}
+
+void Qtalgosettingdlg::UpdatetoalgoImpl(wikky_algo::UpdateParam func)
+{
+	_testupdateparam = func;
 }
 
 void Qtalgosettingdlg::SetLastImage(cv::Mat img)
@@ -86,6 +94,12 @@ bool Qtalgosettingdlg::eventFilter(QObject* watched, QEvent* e)
 			_testcallback(singlemat, &m_checkparam);
 			ui->gV_ShowImg->SetImage(QImage((const uchar*)(singlemat.imgrst.data), singlemat.imgrst.cols, singlemat.imgrst.rows, singlemat.imgrst.cols * singlemat.imgrst.channels(), singlemat.imgrst.channels() == 3 ? QImage::Format_RGB888 : QImage::Format_Indexed8));
 		}
+	}
+	if (QEvent::Hide == e->type())
+	{
+		if(m_bChanged&&_testupdateparam)
+			_testupdateparam(_tempparam);
+
 	}
 	return QDialog::eventFilter(watched, e);
 }

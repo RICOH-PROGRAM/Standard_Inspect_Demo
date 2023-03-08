@@ -22,7 +22,8 @@ namespace wikky_algo
 	};
 
 
-	using TestCallback = std::function<int(SingleMat&,CheckParam*)>;
+	using TestCallback = std::function<int(SingleMat&, CheckParam*)>;
+	using UpdateParam = std::function<void(CheckParam&)>;
 }
 
 #endif // !CORE_COMMON

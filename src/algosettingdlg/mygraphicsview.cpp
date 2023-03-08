@@ -107,10 +107,10 @@ void MyGraphicsView::SetImage(const QImage& image)
 {
 	m_imageItem->setPixmap(QPixmap::fromImage(image));
 
-	//QPoint newCenter(image.width() / 2, image.height() / 2);
+	QPoint newCenter(image.width() / 2, image.height() / 2);
 
 	////设置scene中心到图像中点
-	//centerOn(newCenter);
+	centerOn(newCenter);
 
 	show();
 }
