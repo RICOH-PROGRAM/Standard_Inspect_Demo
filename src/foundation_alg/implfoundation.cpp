@@ -7,6 +7,7 @@
 #include <functional>
 #include <future>
 #include <fstream>
+#include <CppAlgFunc.h>
 namespace wikky_algo
 {
 	void Alg_Foundation::Impl::updateparamfromdlg(CheckParam _param)
@@ -76,7 +77,7 @@ namespace wikky_algo
 			fout << m_yamlparams;
 
 			fout.close();
-		}
+		}	
 		catch (YAML::ParserException e)
 		{
 		}
@@ -93,9 +94,15 @@ namespace wikky_algo
 	{
 		lastimg = data.imgori.clone();
 		cv::Mat gray;
+		cv::Mat RED = cv::Mat(lastimg.size(), CV_8UC3, cv::Scalar(255, 0, 0));
+		cv::Mat GREEN = cv::Mat(lastimg.size(), CV_8UC3, cv::Scalar(0, 255, 0));
+		cv::Mat BLUE = cv::Mat(lastimg.size(), CV_8UC3, cv::Scalar(0, 0, 255));
 		cv::cvtColor(lastimg, gray, cv::COLOR_BGR2GRAY);
 		cv::threshold(gray, gray, _checkparam ? _checkparam->_iThreadY: m_checkparam._iThreadY, 255, cv::THRESH_BINARY);
-		cv::Mat RED = cv::Mat(gray.size(), CV_8UC3, cv::Scalar(255, 0, 0));
+
+		cv::findContours(gray.clone(), condidat1, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_NONE);
+
+		wikky_Dll::SelectContour(condidat1, contours_Selected, "height", "and", 75, 90);
 		RED.copyTo(data.imgrst, gray);
 		//cv::putText(data.imgrst, buf, cv::Point(100, 100), 2, 1.0, cv::Scalar(0, 255, 255));
 		return -1;

@@ -10,6 +10,10 @@ PRIVATE
     foundation.cpp
     implfoundation.cpp
 )
+target_include_directories(demo_Algo
+PUBLIC
+    ${WIKKYDLL_DIR}/src/AlgDll
+)
 target_link_libraries(demo_Algo
 PUBLIC 
     algosettingdlg
@@ -20,4 +24,5 @@ PUBLIC
     yaml-cpp
 PRIVATE
     algosettingdlg
+    ${WIKKYDLL_DIR}/bin/Debug/wikky_dll.lib
 )

@@ -18,6 +18,9 @@ namespace wikky_algo
         CheckParam m_checkparam;
         YAML::Node m_yamlparams;
         void updateparamfromdlg(CheckParam _param);
+    /// <summary>
+        std::vector<std::vector<cv::Point>>contours, con_temp, contours_Selected, condidat1, condidat2;
+    /// </summary>
     public:
         Impl();
         ~Impl();
