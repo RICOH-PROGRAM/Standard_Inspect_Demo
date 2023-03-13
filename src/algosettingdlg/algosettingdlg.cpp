@@ -58,7 +58,6 @@ Qtalgosettingdlg::~Qtalgosettingdlg()
 
 void Qtalgosettingdlg::SetLastParam(YAML::Node _param)
 {
-	//m_checkparam = _param;
 	ui->treewidget->LoadYAMLFile(_param);
 }
 
