@@ -93,6 +93,7 @@ namespace wikky_algo
 	int Alg_Foundation::Impl::doing(wikky_algo::SingleMat& data, wikky_algo::CheckParam* _checkparam)
 	{
 		lastimg = data.imgori.clone();
+		data.imgrst = data.imgori.clone();
 		cv::Mat gray;
 		cv::Mat RED = cv::Mat(lastimg.size(), CV_8UC3, cv::Scalar(255, 0, 0));
 		cv::Mat GREEN = cv::Mat(lastimg.size(), CV_8UC3, cv::Scalar(0, 255, 0));
@@ -102,8 +103,12 @@ namespace wikky_algo
 
 		cv::findContours(gray.clone(), condidat1, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_NONE);
 
-		wikky_Dll::SelectContour(condidat1, contours_Selected, "height", "and", 75, 90);
-		RED.copyTo(data.imgrst, gray);
+		wikky_Dll::SelectContour(condidat1, contours_Selected, "area", "and", 1, _checkparam ? _checkparam->_iThreadZ : m_checkparam._iThreadZ);
+		if (_checkparam)
+		{
+			cv::drawContours(data.imgrst, condidat1, -1, cv::Scalar(0, 0, 255), 5, 8);
+			cv::drawContours(data.imgrst, contours_Selected, -1, cv::Scalar(255, 0, 0), 5, 8);
+		}
 		//cv::putText(data.imgrst, buf, cv::Point(100, 100), 2, 1.0, cv::Scalar(0, 255, 255));
 		return -1;
 	}

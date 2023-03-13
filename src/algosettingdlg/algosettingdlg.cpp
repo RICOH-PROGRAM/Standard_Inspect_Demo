@@ -46,7 +46,7 @@ Qtalgosettingdlg::Qtalgosettingdlg(QWidget* parent)
 			wikky_algo::SingleMat singlemat;
 			singlemat.imgori = _lastimg.clone();
 			_testcallback(singlemat, &_tempparam);
-			ui->gV_ShowImg->SetImage(QImage((const uchar*)(singlemat.imgrst.data), singlemat.imgrst.cols, singlemat.imgrst.rows, singlemat.imgrst.cols * singlemat.imgrst.channels(), singlemat.imgrst.channels() == 3 ? QImage::Format_RGB888 : QImage::Format_Indexed8));
+			ui->gV_ShowImg->SetImage(QImage((const uchar*)(singlemat.imgrst.data), singlemat.imgrst.cols, singlemat.imgrst.rows, singlemat.imgrst.cols * singlemat.imgrst.channels(), singlemat.imgrst.channels() == 3 ? QImage::Format_RGB888 : QImage::Format_Indexed8),false);
 			m_bChanged = true;
 			//ui.pB_Save->setEnabled(true);
 		});
@@ -76,14 +76,20 @@ void Qtalgosettingdlg::SetLastImage(cv::Mat img)
 {
 	_lastimg = img.clone();
 	_Qmap = QPixmap::fromImage(QImage((const uchar*)(_lastimg.data), _lastimg.cols, _lastimg.rows, _lastimg.cols * _lastimg.channels(), _lastimg.channels() == 3 ? QImage::Format_RGB888 : QImage::Format_Indexed8));
-	ui->gV_ShowImg->SetImage(_Qmap.toImage());
+	//ui->gV_ShowImg->SetImage(_Qmap.toImage());
 }
 
 bool Qtalgosettingdlg::eventFilter(QObject* watched, QEvent* e)
 {
-	if (QEvent::Show == e->type()||(QEvent::MouseButtonDblClick == e->type()))
+	if (QEvent::Show == e->type()&& watched==this)
+	{
+		ui->gV_ShowImg->SetImage(_Qmap.toImage(),true);
+		return false;
+	}
+	if(QEvent::MouseButtonDblClick == e->type())
 	{
 		ui->gV_ShowImg->SetImage(_Qmap.toImage());
+		return false;
 	}
 	if (QEvent::MouseButtonPress == e->type()&&Qt::RightButton == ((QMouseEvent*)e)->button())
 	{
@@ -91,14 +97,17 @@ bool Qtalgosettingdlg::eventFilter(QObject* watched, QEvent* e)
 		{
 			wikky_algo::SingleMat singlemat;
 			singlemat.imgori = _lastimg.clone();
-			_testcallback(singlemat, &m_checkparam);
-			ui->gV_ShowImg->SetImage(QImage((const uchar*)(singlemat.imgrst.data), singlemat.imgrst.cols, singlemat.imgrst.rows, singlemat.imgrst.cols * singlemat.imgrst.channels(), singlemat.imgrst.channels() == 3 ? QImage::Format_RGB888 : QImage::Format_Indexed8));
+			Node2Param(_tempparam, ui->treewidget->_mparam);
+			_testcallback(singlemat, &_tempparam);
+			ui->gV_ShowImg->SetImage(QImage((const uchar*)(singlemat.imgrst.data), singlemat.imgrst.cols, singlemat.imgrst.rows, singlemat.imgrst.cols * singlemat.imgrst.channels(), singlemat.imgrst.channels() == 3 ? QImage::Format_RGB888 : QImage::Format_Indexed8), false);
 		}
+		return false;
 	}
 	if (QEvent::Hide == e->type())
 	{
 		if(m_bChanged&&_testupdateparam)
 			_testupdateparam(_tempparam);
+		return false;
 
 	}
 	return QDialog::eventFilter(watched, e);

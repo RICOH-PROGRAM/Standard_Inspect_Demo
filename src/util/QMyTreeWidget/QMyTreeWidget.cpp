@@ -125,7 +125,6 @@ bool QMyTreeWidget::LoadYAMLFile(YAML::Node params)
 	this->setHeaderHidden(true);
 	this->setColumnCount(4);
 	this->header()->hideSection(3);
-	this->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
 	_mparam = params;
 	try
 	{
@@ -277,6 +276,19 @@ void QMyTreeWidget::expandbyString()
 {
 	QList<QTreeWidgetItem*> alternateItems = this->findItems(m_ErrorNode, Qt::MatchContains | Qt::MatchRecursive);
 	if (alternateItems.size() != 0) alternateItems[0]->setExpanded(true);
+}
+bool QMyTreeWidget::eventFilter(QObject* obj, QEvent* e)
+{
+	if (e->type() == QEvent::Resize)
+	{
+		int i = width();
+		this->setColumnWidth(0, width() / 10 * 2);
+		this->setColumnWidth(1, width() / 10 * 2);
+		this->setColumnWidth(2, width() / 10 * 4);
+		this->setColumnWidth(3, 0);
+		return false;
+	}
+	return QWidget::eventFilter(obj, e);
 }
 bool QMyTreeWidget::SaveYAMLFile(QString filepath)
 {

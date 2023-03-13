@@ -69,6 +69,8 @@ public:
 	bool LoadYAMLFile(YAML::Node);
 	bool SaveYAMLFile(QString filepath);
 	void expandbyString();
+protected:
+	bool eventFilter(QObject*, QEvent*);
 public slots:
 	void SliderValueChanged(int);
 	void ComboValueChanged(int);

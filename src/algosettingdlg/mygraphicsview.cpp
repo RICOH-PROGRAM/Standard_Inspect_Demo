@@ -1,6 +1,7 @@
 ﻿#include "mygraphicsview.h"
 #include "logger.h"
 #include <QWheelEvent>
+#include <QScrollBar>
 
 MyGraphicsView::MyGraphicsView(QWidget* parent) :
 	m_scene(new QGraphicsScene()),
@@ -27,6 +28,17 @@ void MyGraphicsView::wheelEvent(QWheelEvent* event)
 	// 正值表示滚轮远离使用者放大负值表示朝向使用者缩小
 	scrollAmount.y() > 0 ? ZoomIn() : ZoomOut();
 
+	//QPointF cursorPoint = event->pos();
+	//QPointF scenePos = this->mapToScene(QPoint(cursorPoint.x(), cursorPoint.y()));
+	//QPointF viewPoint = this->matrix().map(scenePos);
+	//// 通过滚动条控制view放大缩小后的展示scene的位置;
+	//qreal viewWidth = this->viewport()->width();
+	//qreal viewHeight = this->viewport()->height();
+	//qreal hScale = cursorPoint.x() / viewWidth;
+	//qreal vScale = cursorPoint.y() / viewHeight;
+
+	//this->horizontalScrollBar()->setValue(int(viewPoint.x() - viewWidth * hScale));
+	//this->verticalScrollBar()->setValue(int(viewPoint.y() - viewHeight * vScale));
 }
 
 void MyGraphicsView::ZoomIn()
@@ -103,14 +115,28 @@ void MyGraphicsView::Translate(QPointF delta)
 	QPoint newCenter(w / 2. - delta.x() + 0.5, h / 2. - delta.y() + 0.5);
 	centerOn(mapToScene(newCenter));
 }
-void MyGraphicsView::SetImage(const QImage& image)
+void MyGraphicsView::SetImage(const QImage& image, bool _first)
 {
 	m_imageItem->setPixmap(QPixmap::fromImage(image));
 
 	QPoint newCenter(image.width() / 2, image.height() / 2);
 
-	////设置scene中心到图像中点
-	centerOn(newCenter);
+	if (_first)
+	{
+		int x = width();
+		int y = height();
+		float w = width() * 1.0 / image.width();
+		float h = height() * 1.0 / image.height();
+		float scaleFactor = w > h ? h : w;
+
+		//qreal factor = transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
+		scale(1.0, 1.0);
+		scale(scaleFactor, scaleFactor);
+
+		////设置scene中心到图像中点
+		centerOn(newCenter);
+	};
+
 
 	show();
 }

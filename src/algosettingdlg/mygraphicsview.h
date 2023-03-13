@@ -19,7 +19,7 @@ private:
 public:
 	MyGraphicsView(QWidget* parent = Q_NULLPTR);
 	~MyGraphicsView();
-	void SetImage(const QImage& image);
+	void SetImage(const QImage& image, bool _first = false);
 protected:
 	void wheelEvent(QWheelEvent* event);
 	void mousePressEvent(QMouseEvent* event);
