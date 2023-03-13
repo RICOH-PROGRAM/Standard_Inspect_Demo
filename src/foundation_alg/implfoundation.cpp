@@ -53,6 +53,9 @@ namespace wikky_algo
 	{
 		//QSettings algsetting(qApp->applicationDirPath() + "/defaultModel/" + m_scamserial.c_str() + ".ini", QSettings::IniFormat);
 		//m_checkparam._iThread = algsetting.value("Default1/_Thread", 100).toInt();
+		std::replace(m_scamserial.begin(), m_scamserial.end(), '/', '_');
+		std::replace(m_scamserial.begin(), m_scamserial.end(), ':', '_');
+
 		QString str = QString("%1/defaultModel/%2.yaml").arg(qApp->applicationDirPath()).arg(m_scamserial.c_str());
 		m_yamlparams = YAML::LoadFile(str.toStdString());
 
