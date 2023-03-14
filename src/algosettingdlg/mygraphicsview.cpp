@@ -123,16 +123,9 @@ void MyGraphicsView::SetImage(const QImage& image, bool _first)
 
 	if (_first)
 	{
-		int x = width();
-		int y = height();
-		float w = width() * 1.0 / image.width();
-		float h = height() * 1.0 / image.height();
-		float scaleFactor = w > h ? h : w;
+		QRectF rectItem = scene()->itemsBoundingRect();
 
-		//qreal factor = transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
-		scale(1.0, 1.0);
-		scale(scaleFactor, scaleFactor);
-
+		fitInView(rectItem, Qt::KeepAspectRatio);
 		////设置scene中心到图像中点
 		centerOn(newCenter);
 	};

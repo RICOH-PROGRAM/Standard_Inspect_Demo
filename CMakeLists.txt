@@ -9,7 +9,7 @@ if(NOT DEFINED THIRDPARTY_DIR)
     include(fetch/third_party)
 endif()
 
-set (WIKKYDLL_DIR "D:/MyCode/AlgDll_Wikky")
+set (WIKKYDLL_DIR "D:/MyCode/new_compose/AlgDll_Wikky")
 message(STATUS "WIKKYDLL_DIR src dir : ${WIKKYDLL_DIR}")
 if(NOT DEFINED WIKKYDLL_DIR)
     include(fetch/wikky_dll)
