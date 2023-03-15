@@ -201,11 +201,11 @@ bool QMyTreeWidget::LoadYAMLFile(YAML::Node params)
 									control->setMaximum(ty.Biggest);
 									control->setValue(ty.value);
 	
-									//control->setStyleSheet(SLIDERSTYLE);
-									// 									QLineEdit* le = new QLineEdit();
-									// 									le->setObjectName("le" + QString(name.c_str()) + "+" + key.c_str());
-									// 									le->setText(QString::number(ty.value));
-									// 									le->setEnabled(false);
+									control->setStyleSheet(SLIDERSTYLE);
+									 									QLineEdit* le = new QLineEdit();
+									 									le->setObjectName("le" + QString(name.c_str()) + "+" + key.c_str());
+									 									le->setText(QString::number(ty.value));
+									 									le->setEnabled(false);
 	
 									pItem->setData(1, Qt::DisplayRole, ty.value);
 									pItem->setData(3, Qt::DisplayRole, ty.CN_Discrib);

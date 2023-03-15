@@ -1,5 +1,6 @@
 #include <QGraphicsview>
 #include <QGraphicsPixmapItem>
+#include <opencv2/opencv.hpp>
 
 class MyGraphicsView : public QGraphicsView
 {
@@ -7,6 +8,7 @@ class MyGraphicsView : public QGraphicsView
 private:
 	bool m_isTranslate = false;
 	double m_qrScaledNum = 1;
+	cv::Mat _mat;
 	QPointF centerAnchor;
 	QPoint m_lastMousePos;
 	QGraphicsScene* m_scene;
@@ -19,7 +21,7 @@ private:
 public:
 	MyGraphicsView(QWidget* parent = Q_NULLPTR);
 	~MyGraphicsView();
-	void SetImage(const QImage& image, bool _first = false);
+	void SetImage(cv::Mat& image, bool _first = false);
 protected:
 	void wheelEvent(QWheelEvent* event);
 	void mousePressEvent(QMouseEvent* event);

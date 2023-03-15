@@ -9,8 +9,9 @@ MyGraphicsView::MyGraphicsView(QWidget* parent) :
 {
 	m_scene->addItem(m_imageItem);
 	setScene(m_scene);
-	//setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-	//setResizeAnchor(QGraphicsView::AnchorUnderMouse);
+	setStyleSheet("padding: 0px; border: 0px;");//无边框
+	setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+	setResizeAnchor(QGraphicsView::AnchorUnderMouse);
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);   //隐藏水平条
 	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);     //隐藏竖条
 }
@@ -28,22 +29,11 @@ void MyGraphicsView::wheelEvent(QWheelEvent* event)
 	// 正值表示滚轮远离使用者放大负值表示朝向使用者缩小
 	scrollAmount.y() > 0 ? ZoomIn() : ZoomOut();
 
-	//QPointF cursorPoint = event->pos();
-	//QPointF scenePos = this->mapToScene(QPoint(cursorPoint.x(), cursorPoint.y()));
-	//QPointF viewPoint = this->matrix().map(scenePos);
-	//// 通过滚动条控制view放大缩小后的展示scene的位置;
-	//qreal viewWidth = this->viewport()->width();
-	//qreal viewHeight = this->viewport()->height();
-	//qreal hScale = cursorPoint.x() / viewWidth;
-	//qreal vScale = cursorPoint.y() / viewHeight;
-
-	//this->horizontalScrollBar()->setValue(int(viewPoint.x() - viewWidth * hScale));
-	//this->verticalScrollBar()->setValue(int(viewPoint.y() - viewHeight * vScale));
 }
 
 void MyGraphicsView::ZoomIn()
 {
-	Zoom(1.1);
+	Zoom(1.05);
 }
 
 void MyGraphicsView::ZoomOut()
@@ -101,6 +91,22 @@ void MyGraphicsView::mouseReleaseEvent(QMouseEvent* event)
 {
 	if (event->button() == Qt::LeftButton)
 		m_isTranslate = false;
+	if (event->button() == Qt::MiddleButton)
+	{
+		//QRectF rectItem = scene()->itemsBoundingRect();
+		//fitInView(rectItem, Qt::KeepAspectRatio);
+
+		int tx = static_cast<int>(mapToScene(event->pos()).x());
+		int ty = static_cast<int>(mapToScene(event->pos()).y());
+		//qDebug() << " tx:" << tx << " ty:" << ty;
+		if (tx >= 0 && tx < _mat.cols && ty >= 0 && ty < _mat.rows) {
+
+			//ui->le_mousePosition->setText(QVariant(tx).toString() + "," + QVariant(ty).toString());
+			uchar* data = _mat.ptr<uchar>(ty);
+			//qDebug() << " b:" << data[tx * 3] << " g:" << data[tx * 3 + 1] << " r:" << data[tx * 3 + 2];
+			LOGI("value    b:{},g:{},r:{}", data[tx * 3], data[tx * 3 + 1], data[tx * 3 + 2]);
+		}
+	}
 
 
 
@@ -115,11 +121,12 @@ void MyGraphicsView::Translate(QPointF delta)
 	QPoint newCenter(w / 2. - delta.x() + 0.5, h / 2. - delta.y() + 0.5);
 	centerOn(mapToScene(newCenter));
 }
-void MyGraphicsView::SetImage(const QImage& image, bool _first)
+void MyGraphicsView::SetImage(cv::Mat& image, bool _first)
 {
-	m_imageItem->setPixmap(QPixmap::fromImage(image));
+	_mat = image.clone();
+	m_imageItem->setPixmap(QPixmap::fromImage(QImage((const uchar*)(_mat.data), _mat.cols, _mat.rows, _mat.cols * _mat.channels(), _mat.channels() == 3 ? QImage::Format_RGB888 : QImage::Format_Indexed8)));
 
-	QPoint newCenter(image.width() / 2, image.height() / 2);
+	QPoint newCenter(_mat.cols / 2, _mat.rows / 2);
 
 	if (_first)
 	{
