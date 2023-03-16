@@ -156,7 +156,7 @@ bool QMyTreeWidget::LoadYAMLFile(YAML::Node params)
 									QCheckBox* checkbox = new QCheckBox;
 									checkbox->setObjectName(QString(name.c_str()) + "+" + key.c_str());
 	
-									//checkbox->setStyleSheet("QCheckBox{ background:transparent}\
+									checkbox->setStyleSheet("QCheckBox{ background:transparent}\
                             QCheckBox::indicator {width: 40px; height: 40px; }\
                             QCheckBox::indicator:unchecked{background:url(./240.png)}\
                             QCheckBox::indicator:checked{background:url(./540.png)}");
@@ -172,13 +172,13 @@ bool QMyTreeWidget::LoadYAMLFile(YAML::Node params)
 									if (it->second["ability"].as<int>() == 0)
 									{
 										checkbox->setEnabled(false);
-										//checkbox->setStyleSheet("QCheckBox{ background:transparent}\
+										checkbox->setStyleSheet("QCheckBox{ background:transparent}\
                             QCheckBox::indicator {width: 40px; height: 40px; }\
                             QCheckBox::indicator:unchecked{background:url(./240.png)}\
                             QCheckBox::indicator:checked{background:url(./540.png)}");
 									}
 									else {
-										//checkbox->setStyleSheet("QCheckBox{ background:transparent}\
+										checkbox->setStyleSheet("QCheckBox{ background:transparent}\
                             QCheckBox::indicator {width: 40px; height: 40px; }\
                             QCheckBox::indicator:unchecked{background:url(./240.png)}\
                             QCheckBox::indicator:checked{background:url(./140.png)}");
