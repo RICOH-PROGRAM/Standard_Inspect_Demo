@@ -57,8 +57,15 @@ namespace wikky_algo
 		std::replace(m_scamserial.begin(), m_scamserial.end(), ':', '_');
 
 		QString str = QString("%1/defaultModel/%2.yaml").arg(qApp->applicationDirPath()).arg(m_scamserial.c_str());
-		m_yamlparams = YAML::LoadFile(str.toStdString());
-
+		try
+		{
+			m_yamlparams = YAML::LoadFile(str.toStdString());
+		}
+		catch(const std::exception& e)
+		{
+			std::cerr << e.what() << '\n';
+		}
+		
 		Node2Param(m_checkparam, m_yamlparams);
 
 		LOGW("initAlgoparam successfully");
@@ -104,14 +111,14 @@ namespace wikky_algo
 		cv::cvtColor(lastimg, gray, cv::COLOR_BGR2GRAY);
 		cv::threshold(gray, gray, _checkparam ? _checkparam->_iThreadY: m_checkparam._iThreadY, 255, cv::THRESH_BINARY);
 
-		cv::findContours(gray.clone(), condidat1, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_NONE);
+		//cv::findContours(gray.clone(), condidat1, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_NONE);
 
-		wikky_Dll::SelectContour(condidat1, contours_Selected, "area", "and", 1, _checkparam ? _checkparam->_iThreadZ : m_checkparam._iThreadZ);
-		if (_checkparam)
-		{
-			cv::drawContours(data.imgrst, condidat1, -1, cv::Scalar(0, 0, 255), 5, 8);
-			cv::drawContours(data.imgrst, contours_Selected, -1, cv::Scalar(255, 0, 0), 5, 8);
-		}
+		//wikky_Dll::SelectContour(condidat1, contours_Selected, "area", "and", 1, _checkparam ? _checkparam->_iThreadZ : m_checkparam._iThreadZ);
+		//if (_checkparam)
+		//{
+		//	cv::drawContours(data.imgrst, condidat1, -1, cv::Scalar(0, 0, 255), 5, 8);
+		//	cv::drawContours(data.imgrst, contours_Selected, -1, cv::Scalar(255, 0, 0), 5, 8);
+		//}
 		//cv::putText(data.imgrst, buf, cv::Point(100, 100), 2, 1.0, cv::Scalar(0, 255, 255));
 		return -1;
 	}

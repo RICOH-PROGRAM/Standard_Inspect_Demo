@@ -19,7 +19,7 @@ namespace Ui
 }
 
 template <typename T>
-T getValue(YAML::Node _param, QString errortype, QString errorparam, QString defaultvalue)
+T getValue(YAML::Node _param, QString errortype, QString errorparam, T defaultvalue)
 {
 	T val;
 	try
@@ -28,7 +28,7 @@ T getValue(YAML::Node _param, QString errortype, QString errorparam, QString def
 	}
 	catch (YAML::Exception e)
 	{
-		return val;
+		return defaultvalue;
 	}
 	return val;
 }

@@ -15,15 +15,12 @@ if(NOT DEFINED WIKKYDLL_DIR)
     include(fetch/wikky_dll)
 endif()
 set(OpenCV_DIR ${THIRDPARTY_DIR}/opencv/x64/vc15/lib)
-set(OpenCV_FOUND TRUE)
 
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 include(fetch/spdlog)
 include(fetch/json)
-# include(fetch/OpenCV)
 include(fetch/concurrentqueue)
-# include(fetch/third_party)
 include(fetch/yamlcpp)
 
 set(CMAKE_AUTOMOC ON)
