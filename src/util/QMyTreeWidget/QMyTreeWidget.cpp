@@ -282,7 +282,7 @@ bool QMyTreeWidget::eventFilter(QObject* obj, QEvent* e)
 	if (e->type() == QEvent::Resize)
 	{
 		int i = width();
-		this->setColumnWidth(0, width() / 10 * 2);
+		this->setColumnWidth(0, width() / 10 * 4);
 		this->setColumnWidth(1, width() / 10 * 2);
 		this->setColumnWidth(2, width() / 10 * 4);
 		this->setColumnWidth(3, 0);
