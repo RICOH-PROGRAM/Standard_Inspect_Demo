@@ -213,6 +213,16 @@ bool QMyTreeWidget::LoadYAMLFile(YAML::Node params)
 	
 									QObject::connect(control, SIGNAL(valueChanged(int)), this, SLOT(SliderValueChanged(int)));
 								}
+								if (ty.type == "CheckBox")
+								{
+									QCheckBox* qcb = new QCheckBox();
+									qcb->setObjectName(QString(name.c_str()) + "+" + key.c_str());
+									qcb->setText((ty.CN_Name));
+									pItem->setData(1, Qt::DisplayRole, ty.value);
+									pItem->setData(3, Qt::DisplayRole, ty.CN_Discrib);
+									this->setItemWidget(pItem, 2, qcb);
+									QObject::connect(qcb, SIGNAL(stateChanged(int)), this, SLOT(CheckChanged(int)));
+								}
 								if (ty.type == "Combo")
 								{
 									QComboBox* qcb = new QComboBox();
@@ -328,6 +338,15 @@ void QMyTreeWidget::LineValueChanged(QString str)
 }
 
 void QMyTreeWidget::CheckValueChanged(int i)
+{
+	QCheckBox* sind = qobject_cast<QCheckBox*>(QObject::sender());
+	QString objectname = sind->objectName();
+	QString errtype = objectname.left(objectname.indexOf("+"));
+	QString errname = objectname.mid(objectname.indexOf("+") + 1);
+	_mparam[errtype.toStdString().c_str()][errname.toStdString().c_str()]["value"] = i;
+}
+
+void QMyTreeWidget::CheckChanged(int i)
 {
 	QCheckBox* sind = qobject_cast<QCheckBox*>(QObject::sender());
 	QString objectname = sind->objectName();

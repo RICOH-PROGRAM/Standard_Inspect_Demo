@@ -75,6 +75,7 @@ public slots:
 	void SliderValueChanged(int);
 	void ComboValueChanged(int);
 	void CheckValueChanged(int);
+	void CheckChanged(int);
 	void ClickPushButton();
 	void LineValueChanged(QString);
 	void showCnDetail(QTreeWidgetItem*, int);
