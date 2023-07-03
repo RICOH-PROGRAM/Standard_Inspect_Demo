@@ -4,22 +4,20 @@ find_package(Qt5 COMPONENTS Core Gui Widgets Network Sql REQUIRED)
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 # 打开以下set指令，可以指定本地三方依赖库地址，跳过从网络下载
-set (THIRDPARTY_DIR D:/MyCode/third_party)
+#set (THIRDPARTY_DIR D:/MyCode/third_party)
 if(NOT DEFINED THIRDPARTY_DIR)
     include(fetch/third_party)
 endif()
 
 set (WIKKYDLL_DIR "D:/MyCode/new_compose/AlgDll_Wikky")
 message(STATUS "WIKKYDLL_DIR src dir : ${WIKKYDLL_DIR}")
-if(NOT DEFINED WIKKYDLL_DIR)
-    include(fetch/wikky_dll)
-endif()
-set(OpenCV_DIR ${THIRDPARTY_DIR}/opencv/x64/vc15/lib)
+#if(NOT DEFINED WIKKYDLL_DIR)
+#    include(fetch/wikky_dll)
+#endif()
+set(OpenCV_DIR ${THIRDPARTY_DIR}/opencv/lib)
 
 
-list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 include(fetch/spdlog)
-include(fetch/json)
 include(fetch/concurrentqueue)
 include(fetch/yamlcpp)
 
