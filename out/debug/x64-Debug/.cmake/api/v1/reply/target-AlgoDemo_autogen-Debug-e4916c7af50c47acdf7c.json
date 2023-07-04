@@ -1,0 +1,65 @@
+{
+	"backtrace" : 0,
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : 
+		[
+			"example-demo/algo_demo/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			}
+		]
+	},
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 0,
+			"id" : "demo_Algo::@c625e60db77ff9ea5cfc"
+		}
+	],
+	"id" : "AlgoDemo_autogen::@e88f9228975bc94af956",
+	"isGeneratorProvided" : true,
+	"name" : "AlgoDemo_autogen",
+	"paths" : 
+	{
+		"build" : "example-demo/algo_demo",
+		"source" : "example-demo/algo_demo"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		},
+		{
+			"name" : "CMake Rules",
+			"sourceIndexes" : 
+			[
+				1
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "out/debug/x64-Debug/example-demo/algo_demo/CMakeFiles/AlgoDemo_autogen",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "out/debug/x64-Debug/example-demo/algo_demo/CMakeFiles/AlgoDemo_autogen.rule",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "UTILITY"
+}

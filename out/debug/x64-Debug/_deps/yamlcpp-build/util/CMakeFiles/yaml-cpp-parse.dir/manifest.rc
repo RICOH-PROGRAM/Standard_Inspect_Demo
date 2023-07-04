@@ -1,0 +1,2 @@
+#pragma code_page(65001)
+1 /* CREATEPROCESS_MANIFEST_RESOURCE_ID */ 24 /* RT_MANIFEST */ "D:/MyCode/new_compose/Compass_Project/out/debug/x64-Debug/_deps/yamlcpp-build/util/CMakeFiles/yaml-cpp-parse.dir/embed.manifest"

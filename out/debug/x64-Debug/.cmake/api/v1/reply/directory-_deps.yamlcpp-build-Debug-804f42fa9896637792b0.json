@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "_deps/yamlcpp-build",
+		"source" : "out/debug/x64-Debug/_deps/yamlcpp-src"
+	}
+}

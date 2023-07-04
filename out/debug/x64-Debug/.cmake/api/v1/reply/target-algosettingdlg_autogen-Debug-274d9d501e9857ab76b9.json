@@ -1,0 +1,58 @@
+{
+	"backtrace" : 0,
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : 
+		[
+			"src/algosettingdlg/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			}
+		]
+	},
+	"id" : "algosettingdlg_autogen::@c4cc1eb25902c682ec39",
+	"isGeneratorProvided" : true,
+	"name" : "algosettingdlg_autogen",
+	"paths" : 
+	{
+		"build" : "src/algosettingdlg",
+		"source" : "src/algosettingdlg"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		},
+		{
+			"name" : "CMake Rules",
+			"sourceIndexes" : 
+			[
+				1
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "out/debug/x64-Debug/src/algosettingdlg/CMakeFiles/algosettingdlg_autogen",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "out/debug/x64-Debug/src/algosettingdlg/CMakeFiles/algosettingdlg_autogen.rule",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "UTILITY"
+}

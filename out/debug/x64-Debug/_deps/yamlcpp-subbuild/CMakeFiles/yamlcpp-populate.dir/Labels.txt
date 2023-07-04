@@ -1,0 +1,14 @@
+# Target labels
+ yamlcpp-populate
+# Source files and their labels
+D:/MyCode/new_compose/Compass_Project/out/debug/x64-Debug/_deps/yamlcpp-subbuild/CMakeFiles/yamlcpp-populate
+D:/MyCode/new_compose/Compass_Project/out/debug/x64-Debug/_deps/yamlcpp-subbuild/CMakeFiles/yamlcpp-populate.rule
+D:/MyCode/new_compose/Compass_Project/out/debug/x64-Debug/_deps/yamlcpp-subbuild/CMakeFiles/yamlcpp-populate-complete.rule
+D:/MyCode/new_compose/Compass_Project/out/debug/x64-Debug/_deps/yamlcpp-subbuild/yamlcpp-populate-prefix/src/yamlcpp-populate-stamp/yamlcpp-populate-build.rule
+D:/MyCode/new_compose/Compass_Project/out/debug/x64-Debug/_deps/yamlcpp-subbuild/yamlcpp-populate-prefix/src/yamlcpp-populate-stamp/yamlcpp-populate-configure.rule
+D:/MyCode/new_compose/Compass_Project/out/debug/x64-Debug/_deps/yamlcpp-subbuild/yamlcpp-populate-prefix/src/yamlcpp-populate-stamp/yamlcpp-populate-download.rule
+D:/MyCode/new_compose/Compass_Project/out/debug/x64-Debug/_deps/yamlcpp-subbuild/yamlcpp-populate-prefix/src/yamlcpp-populate-stamp/yamlcpp-populate-install.rule
+D:/MyCode/new_compose/Compass_Project/out/debug/x64-Debug/_deps/yamlcpp-subbuild/yamlcpp-populate-prefix/src/yamlcpp-populate-stamp/yamlcpp-populate-mkdir.rule
+D:/MyCode/new_compose/Compass_Project/out/debug/x64-Debug/_deps/yamlcpp-subbuild/yamlcpp-populate-prefix/src/yamlcpp-populate-stamp/yamlcpp-populate-patch.rule
+D:/MyCode/new_compose/Compass_Project/out/debug/x64-Debug/_deps/yamlcpp-subbuild/yamlcpp-populate-prefix/src/yamlcpp-populate-stamp/yamlcpp-populate-test.rule
+D:/MyCode/new_compose/Compass_Project/out/debug/x64-Debug/_deps/yamlcpp-subbuild/yamlcpp-populate-prefix/src/yamlcpp-populate-stamp/yamlcpp-populate-update.rule

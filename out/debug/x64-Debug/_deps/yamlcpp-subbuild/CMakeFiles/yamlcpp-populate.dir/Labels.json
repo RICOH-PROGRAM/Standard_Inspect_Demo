@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "D:/MyCode/new_compose/Compass_Project/out/debug/x64-Debug/_deps/yamlcpp-subbuild/CMakeFiles/yamlcpp-populate"
+		},
+		{
+			"file" : "D:/MyCode/new_compose/Compass_Project/out/debug/x64-Debug/_deps/yamlcpp-subbuild/CMakeFiles/yamlcpp-populate.rule"
+		},
+		{
+			"file" : "D:/MyCode/new_compose/Compass_Project/out/debug/x64-Debug/_deps/yamlcpp-subbuild/CMakeFiles/yamlcpp-populate-complete.rule"
+		},
+		{
+			"file" : "D:/MyCode/new_compose/Compass_Project/out/debug/x64-Debug/_deps/yamlcpp-subbuild/yamlcpp-populate-prefix/src/yamlcpp-populate-stamp/yamlcpp-populate-build.rule"
+		},
+		{
+			"file" : "D:/MyCode/new_compose/Compass_Project/out/debug/x64-Debug/_deps/yamlcpp-subbuild/yamlcpp-populate-prefix/src/yamlcpp-populate-stamp/yamlcpp-populate-configure.rule"
+		},
+		{
+			"file" : "D:/MyCode/new_compose/Compass_Project/out/debug/x64-Debug/_deps/yamlcpp-subbuild/yamlcpp-populate-prefix/src/yamlcpp-populate-stamp/yamlcpp-populate-download.rule"
+		},
+		{
+			"file" : "D:/MyCode/new_compose/Compass_Project/out/debug/x64-Debug/_deps/yamlcpp-subbuild/yamlcpp-populate-prefix/src/yamlcpp-populate-stamp/yamlcpp-populate-install.rule"
+		},
+		{
+			"file" : "D:/MyCode/new_compose/Compass_Project/out/debug/x64-Debug/_deps/yamlcpp-subbuild/yamlcpp-populate-prefix/src/yamlcpp-populate-stamp/yamlcpp-populate-mkdir.rule"
+		},
+		{
+			"file" : "D:/MyCode/new_compose/Compass_Project/out/debug/x64-Debug/_deps/yamlcpp-subbuild/yamlcpp-populate-prefix/src/yamlcpp-populate-stamp/yamlcpp-populate-patch.rule"
+		},
+		{
+			"file" : "D:/MyCode/new_compose/Compass_Project/out/debug/x64-Debug/_deps/yamlcpp-subbuild/yamlcpp-populate-prefix/src/yamlcpp-populate-stamp/yamlcpp-populate-test.rule"
+		},
+		{
+			"file" : "D:/MyCode/new_compose/Compass_Project/out/debug/x64-Debug/_deps/yamlcpp-subbuild/yamlcpp-populate-prefix/src/yamlcpp-populate-stamp/yamlcpp-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"yamlcpp-populate"
+		],
+		"name" : "yamlcpp-populate"
+	}
+}
