@@ -1,5 +1,5 @@
 
 add_library(logging INTERFACE)
 target_sources(logging INTERFACE logger.h)
-target_link_libraries(logging INTERFACE spdlog::spdlog)
+target_link_libraries(logging INTERFACE spdlog)
 target_include_directories(logging INTERFACE ./)
