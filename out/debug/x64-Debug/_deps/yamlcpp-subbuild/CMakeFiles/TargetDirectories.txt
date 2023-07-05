@@ -1,3 +1,0 @@
-D:/MyCode/new_compose/Compass_Project/out/debug/x64-Debug/_deps/yamlcpp-subbuild/CMakeFiles/yamlcpp-populate.dir
-D:/MyCode/new_compose/Compass_Project/out/debug/x64-Debug/_deps/yamlcpp-subbuild/CMakeFiles/edit_cache.dir
-D:/MyCode/new_compose/Compass_Project/out/debug/x64-Debug/_deps/yamlcpp-subbuild/CMakeFiles/rebuild_cache.dir
