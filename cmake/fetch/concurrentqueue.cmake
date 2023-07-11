@@ -1,7 +1,7 @@
 include(FetchContent)
 
 if(THIRDPARTY_DIR)
-message(STATUS "concurrentqueue src dir : ${THIRDPARTY_DIR}/concurrentqueue}")
+message(STATUS "concurrentqueue src dir : ${THIRDPARTY_DIR}/concurrentqueue")
 FetchContent_Declare(concurrentqueue
     GIT_REPOSITORY ${THIRDPARTY_DIR}/concurrentqueue
 )
