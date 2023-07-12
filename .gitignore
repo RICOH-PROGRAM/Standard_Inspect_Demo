@@ -10,3 +10,4 @@
 /out
 /CMakeSettings.json
 /.vscode
+/src/out
