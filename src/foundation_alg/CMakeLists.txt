@@ -44,6 +44,6 @@ PUBLIC
     yaml-cpp
 PRIVATE
     algosettingdlg
-    ${THIRDPARTY_DIR}/wikkydll/lib/wikky_dll.lib
+    WIKKYDLL
 )
 endif()
