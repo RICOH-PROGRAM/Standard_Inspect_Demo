@@ -1,4 +1,4 @@
-#include "foundation.h"
+ï»¿#include "foundation.h"
 #include <iostream>
 #include <QSettings>
 #include <QCoreapplication>
@@ -109,51 +109,52 @@ namespace wikky_algo
 		cv::Mat GREEN = cv::Mat(lastimg.size(), CV_8UC3, cv::Scalar(0, 255, 0));
 		cv::Mat BLUE = cv::Mat(lastimg.size(), CV_8UC3, cv::Scalar(0, 0, 255));
 		cv::cvtColor(lastimg, gray, cv::COLOR_BGR2GRAY);
-		//¶şÖµ»¯
+		//äºŒå€¼åŒ–
 		cv::threshold(gray, gray, 90, 255, cv::THRESH_BINARY);//_checkparam ? _checkparam->_iThreadY: m_checkparam._iThreadY
 		
-		//ÕÒÂÖÀª
+		//æ‰¾è½®å»“
 		cv::findContours(gray.clone(), condidat1, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
 		
-		//ÕÒ×î´óÂÖÀª£¨ÍâÔ²»·£©
+		//æ‰¾æœ€å¤§è½®å»“ï¼ˆå¤–åœ†ç¯ï¼‰
 		std::sort(condidat1.begin(), condidat1.end(), [](const std::vector<cv::Point>& c1, const std::vector<cv::Point>& c2) {
 			return cv::contourArea(c1) > cv::contourArea(c2);
 			});
 
-		// ¼ÆËãÍâÔ²»·µÄÖ±¾¶ºÍÃæ»ı
+		// è®¡ç®—å¤–åœ†ç¯çš„ç›´å¾„å’Œé¢ç§¯
 		double outerDiameter = 0.0;
 		double outerArea = 0.0;
 
 		if (!condidat1.empty()) {
 			cv::RotatedRect outerRect = cv::minAreaRect(condidat1[0]);
 
-			outerDiameter = std::max(outerRect.size.width, outerRect.size.height);
+			outerDiameter = (std::max)(outerRect.size.width, outerRect.size.height);
 			outerArea = cv::contourArea(condidat1[0]);
 		}
 
-		// ¶¨ÒåÃæ»ıãĞÖµ
+		// å®šä¹‰é¢ç§¯é˜ˆå€¼
 		const double SMALL_AREA_THRESHOLD = 2.3e+06;
 		const double LARGE_AREA_THRESHOLD = 2.7e+06;
 
-		// ¸ù¾İÃæ»ı´óĞ¡½øĞĞ·ÖÀà
-		std::string category;
+		// æ ¹æ®é¢ç§¯å¤§å°è¿›è¡Œåˆ†ç±»
+		QString category;
 		if (outerArea < SMALL_AREA_THRESHOLD) {
-			category = "Ğ¡È¦Àà";
+			category = QString::fromLocal8Bit("Small");
 		}
 		else if (outerArea >= SMALL_AREA_THRESHOLD && outerArea < LARGE_AREA_THRESHOLD) {
-			category = "²ĞÈ±Àà";
+			category = QString::fromLocal8Bit("Broke");
 		}
 		else {
-			category = "´óÈ¦Àà";
+			category = QString::fromLocal8Bit("Big");
 		}
 
 		//wikky_Dll::SelectContour(condidat1, contours_Selected, "area", "and", 1, _checkparam ? _checkparam->_iThreadZ : m_checkparam._iThreadZ);
 		//if (_checkparam)
 		//{
-		cv::drawContours(data.imgrst, condidat1, -1, cv::Scalar(0, 0, 255), 5, 8);
+		cv::drawContours(data.imgrst, condidat1, 0, cv::Scalar(0, 0, 255), 25, 8);
 		//	cv::drawContours(data.imgrst, contours_Selected, -1, cv::Scalar(255, 0, 0), 5, 8);
 		//}
-		//cv::putText(data.imgrst, buf, cv::Point(100, 100), 2, 1.0, cv::Scalar(0, 255, 255));
+		strcpy(buf, category.toLocal8Bit());
+		cv::putText(data.imgrst, buf, cv::Point(100, 200), 1, 5.0, cv::Scalar(0, 255, 255),3);
 		return -1;
 	}
 
