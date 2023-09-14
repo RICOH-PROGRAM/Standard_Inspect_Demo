@@ -1,4 +1,4 @@
-#include "foundation.h"
+﻿#include "foundation.h"
 #include <iostream>
 #include <QSettings>
 #include <QCoreapplication>
@@ -109,17 +109,57 @@ namespace wikky_algo
 		cv::Mat GREEN = cv::Mat(lastimg.size(), CV_8UC3, cv::Scalar(0, 255, 0));
 		cv::Mat BLUE = cv::Mat(lastimg.size(), CV_8UC3, cv::Scalar(0, 0, 255));
 		cv::cvtColor(lastimg, gray, cv::COLOR_BGR2GRAY);
-		cv::threshold(gray, gray, _checkparam ? _checkparam->_iThreadY: m_checkparam._iThreadY, 255, cv::THRESH_BINARY);
+		//二值化
+		cv::threshold(gray, gray, 90, 255, cv::THRESH_BINARY);//_checkparam ? _checkparam->_iThreadY: m_checkparam._iThreadY
+		
+		//找轮廓
+		cv::findContours(gray.clone(), condidat1, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
+		
+		//找最大轮廓（外圆环）
+		std::sort(condidat1.begin(), condidat1.end(), [](const std::vector<cv::Point>& c1, const std::vector<cv::Point>& c2) {
+			return cv::contourArea(c1) > cv::contourArea(c2);
+			});
 
-		//cv::findContours(gray.clone(), condidat1, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_NONE);
+		// 计算外圆环的直径和面积
+		double outerDiameter = 0.0;
+		double outerArea = 0.0;
+
+		if (!condidat1.empty()) {
+			cv::RotatedRect outerRect = cv::minAreaRect(condidat1[0]);
+
+			outerDiameter = (std::max)(outerRect.size.width, outerRect.size.height);
+			outerArea = cv::contourArea(condidat1[0]);
+		}
+
+		// 定义面积阈值
+		//const double SMALL_AREA_THRESHOLD = 2.3e+06;
+		//const double LARGE_AREA_THRESHOLD = 2.7e+06;
+
+		// 根据面积大小进行分类
+		std::string category;
+		if (outerArea < SMALL_AREA_THRESHOLD) {
+			category = "Small";
+		}
+		else if (outerArea >= SMALL_AREA_THRESHOLD && outerArea < LARGE_AREA_THRESHOLD) {
+			category = "Broke";
+		}
+		else {
+			category = "Big";
+		}
 
 		//wikky_Dll::SelectContour(condidat1, contours_Selected, "area", "and", 1, _checkparam ? _checkparam->_iThreadZ : m_checkparam._iThreadZ);
 		//if (_checkparam)
 		//{
-		//	cv::drawContours(data.imgrst, condidat1, -1, cv::Scalar(0, 0, 255), 5, 8);
+		cv::drawContours(data.imgrst, condidat1, 0, cv::Scalar(0, 0, 255), 25, 8);
 		//	cv::drawContours(data.imgrst, contours_Selected, -1, cv::Scalar(255, 0, 0), 5, 8);
 		//}
-		//cv::putText(data.imgrst, buf, cv::Point(100, 100), 2, 1.0, cv::Scalar(0, 255, 255));
+		strcpy(buf, category.c_str());
+		cv::putText(data.imgrst, buf, cv::Point(100, 200), 1, 5.0, cv::Scalar(0, 255, 255),3);
+		data.error_message.push_back(category);
+
+		
+
+			
 		return -1;
 	}
 
