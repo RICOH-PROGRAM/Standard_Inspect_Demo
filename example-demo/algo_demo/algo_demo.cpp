@@ -307,8 +307,13 @@ void Qtalgo_demo::onSelectImageList(QListWidgetItem* item, QListWidgetItem* it)
 		LARGE_INTEGER t1, t2;
 		QueryPerformanceCounter(&t1);
 
-		if(_CheckClass)
+		if (_CheckClass)
+		{
 			_CheckClass->doing(singleMat);
+			ui.lineEdit_2->setText(singleMat.error_message[0].c_str());
+		}
+		
+
 		QueryPerformanceCounter(&t2);
 		float s = (t2.QuadPart - t1.QuadPart) / (float)nFreq.QuadPart * 1000;
 		fInterval += s;

@@ -14,6 +14,9 @@ namespace wikky_algo
         std::shared_ptr<Qtalgosettingdlg> algosettingdlg = nullptr;
         std::string m_scamserial;
 
+        double SMALL_AREA_THRESHOLD = 2.3e+06;
+        double LARGE_AREA_THRESHOLD = 2.7e+06;
+
         // checkparam
         CheckParam m_checkparam;
         YAML::Node m_yamlparams;

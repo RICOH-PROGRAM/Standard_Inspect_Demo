@@ -132,19 +132,19 @@ namespace wikky_algo
 		}
 
 		// 定义面积阈值
-		const double SMALL_AREA_THRESHOLD = 2.3e+06;
-		const double LARGE_AREA_THRESHOLD = 2.7e+06;
+		//const double SMALL_AREA_THRESHOLD = 2.3e+06;
+		//const double LARGE_AREA_THRESHOLD = 2.7e+06;
 
 		// 根据面积大小进行分类
-		QString category;
+		std::string category;
 		if (outerArea < SMALL_AREA_THRESHOLD) {
-			category = QString::fromLocal8Bit("Small");
+			category = "Small";
 		}
 		else if (outerArea >= SMALL_AREA_THRESHOLD && outerArea < LARGE_AREA_THRESHOLD) {
-			category = QString::fromLocal8Bit("Broke");
+			category = "Broke";
 		}
 		else {
-			category = QString::fromLocal8Bit("Big");
+			category = "Big";
 		}
 
 		//wikky_Dll::SelectContour(condidat1, contours_Selected, "area", "and", 1, _checkparam ? _checkparam->_iThreadZ : m_checkparam._iThreadZ);
@@ -153,8 +153,13 @@ namespace wikky_algo
 		cv::drawContours(data.imgrst, condidat1, 0, cv::Scalar(0, 0, 255), 25, 8);
 		//	cv::drawContours(data.imgrst, contours_Selected, -1, cv::Scalar(255, 0, 0), 5, 8);
 		//}
-		strcpy(buf, category.toLocal8Bit());
+		strcpy(buf, category.c_str());
 		cv::putText(data.imgrst, buf, cv::Point(100, 200), 1, 5.0, cv::Scalar(0, 255, 255),3);
+		data.error_message.push_back(category);
+
+		
+
+			
 		return -1;
 	}
 
