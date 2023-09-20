@@ -103,6 +103,18 @@ namespace wikky_algo
 	int Alg_Foundation::Impl::doing(wikky_algo::SingleMat& data, wikky_algo::CheckParam* _checkparam)
 	{
 		lastimg = data.imgori.clone();
+		double minn, maxx;
+		cv::minMaxIdx(data.imgori,&minn,&maxx);
+		cv::Mat imgmid = data.imgori - (-1);
+		imgmid = imgmid / (maxx + 1)*255;
+		imgmid.convertTo(data.imgrst, CV_8U);
+		cv::cvtColor(data.imgrst, data.imgrst, cv::COLOR_GRAY2BGR);
+
+		cv::putText(data.imgrst, buf, cv::Point(100, 200), 1, 5.0, cv::Scalar(0, 255, 255), 3);
+		data.error_message.push_back("");
+
+		return -1;
+
 		data.imgrst = data.imgori.clone();
 		cv::Mat gray;
 		cv::Mat RED = cv::Mat(lastimg.size(), CV_8UC3, cv::Scalar(255, 0, 0));

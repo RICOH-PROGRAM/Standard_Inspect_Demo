@@ -273,6 +273,9 @@ void Qtalgo_demo::connectsignal()
 cv::Mat Qtalgo_demo::ReadImage(QString file)
 {
 	cv::Mat img;
+	if(file.contains("tiff"))
+		img = cv::imread(file.toLocal8Bit().toStdString().c_str(), cv::IMREAD_ANYDEPTH);
+	else
 	cvtColor(cv::imread(file.toLocal8Bit().toStdString().c_str()), img, cv::COLOR_BGR2RGB);
 	return img;
 }
