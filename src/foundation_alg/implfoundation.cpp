@@ -108,7 +108,16 @@ namespace wikky_algo
 		cv::Mat RED = cv::Mat(lastimg.size(), CV_8UC3, cv::Scalar(255, 0, 0));
 		cv::Mat GREEN = cv::Mat(lastimg.size(), CV_8UC3, cv::Scalar(0, 255, 0));
 		cv::Mat BLUE = cv::Mat(lastimg.size(), CV_8UC3, cv::Scalar(0, 0, 255));
-		cv::cvtColor(lastimg, gray, cv::COLOR_BGR2GRAY);
+
+		// 判断输入图像是否已经是单通道黑白图像
+			if (lastimg.channels() == 1) {
+				gray = lastimg;
+			}
+			else {
+				cv::cvtColor(lastimg, gray, cv::COLOR_BGR2GRAY);
+			}
+		//cv::cvtColor(lastimg, gray, cv::COLOR_BGR2GRAY);
+
 		//二值化
 		cv::threshold(gray, gray, 90, 255, cv::THRESH_BINARY);//_checkparam ? _checkparam->_iThreadY: m_checkparam._iThreadY
 		
