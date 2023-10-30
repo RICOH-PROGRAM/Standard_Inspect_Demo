@@ -7,7 +7,6 @@
 #include <functional>
 #include <future>
 #include <fstream>
-#include <CppAlgFunc.h>
 namespace wikky_algo
 {
 	void Alg_Foundation::Impl::updateparamfromdlg(CheckParam _param)
@@ -103,80 +102,10 @@ namespace wikky_algo
 	int Alg_Foundation::Impl::doing(wikky_algo::SingleMat& data, wikky_algo::CheckParam* _checkparam)
 	{
 		lastimg = data.imgori.clone();
-		double minn, maxx;
-		cv::minMaxIdx(data.imgori,&minn,&maxx);
-		cv::Mat imgmid = data.imgori - (-1);
-		imgmid = imgmid / (maxx + 1)*255;
-		imgmid.convertTo(data.imgrst, CV_8U);
-		cv::cvtColor(data.imgrst, data.imgrst, cv::COLOR_GRAY2BGR);
-
-		cv::putText(data.imgrst, buf, cv::Point(100, 200), 1, 5.0, cv::Scalar(0, 255, 255), 3);
-		data.error_message.push_back("");
-
-		return -1;
-
 		data.imgrst = data.imgori.clone();
-		cv::Mat gray;
-		cv::Mat RED = cv::Mat(lastimg.size(), CV_8UC3, cv::Scalar(255, 0, 0));
-		cv::Mat GREEN = cv::Mat(lastimg.size(), CV_8UC3, cv::Scalar(0, 255, 0));
-		cv::Mat BLUE = cv::Mat(lastimg.size(), CV_8UC3, cv::Scalar(0, 0, 255));
 
-		// 判断输入图像是否已经是单通道黑白图像
-			if (lastimg.channels() == 1) {
-				gray = lastimg;
-			}
-			else {
-				cv::cvtColor(lastimg, gray, cv::COLOR_BGR2GRAY);
-			}
-		//cv::cvtColor(lastimg, gray, cv::COLOR_BGR2GRAY);
-
-		//二值化
-		cv::threshold(gray, gray, 90, 255, cv::THRESH_BINARY);//_checkparam ? _checkparam->_iThreadY: m_checkparam._iThreadY
-		
-		//找轮廓
-		cv::findContours(gray.clone(), condidat1, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
-		
-		//找最大轮廓（外圆环）
-		std::sort(condidat1.begin(), condidat1.end(), [](const std::vector<cv::Point>& c1, const std::vector<cv::Point>& c2) {
-			return cv::contourArea(c1) > cv::contourArea(c2);
-			});
-
-		// 计算外圆环的直径和面积
-		double outerDiameter = 0.0;
-		double outerArea = 0.0;
-
-		if (!condidat1.empty()) {
-			cv::RotatedRect outerRect = cv::minAreaRect(condidat1[0]);
-
-			outerDiameter = (std::max)(outerRect.size.width, outerRect.size.height);
-			outerArea = cv::contourArea(condidat1[0]);
-		}
-
-		// 定义面积阈值
-		//const double SMALL_AREA_THRESHOLD = 2.3e+06;
-		//const double LARGE_AREA_THRESHOLD = 2.7e+06;
-
-		// 根据面积大小进行分类
-		std::string category;
-		if (outerArea < SMALL_AREA_THRESHOLD) {
-			category = "Small";
-		}
-		else if (outerArea >= SMALL_AREA_THRESHOLD && outerArea < LARGE_AREA_THRESHOLD) {
-			category = "Broke";
-		}
-		else {
-			category = "Big";
-		}
-
-		//wikky_Dll::SelectContour(condidat1, contours_Selected, "area", "and", 1, _checkparam ? _checkparam->_iThreadZ : m_checkparam._iThreadZ);
-		//if (_checkparam)
-		//{
-		cv::drawContours(data.imgrst, condidat1, 0, cv::Scalar(0, 0, 255), 25, 8);
-		//	cv::drawContours(data.imgrst, contours_Selected, -1, cv::Scalar(255, 0, 0), 5, 8);
-		//}
-		strcpy(buf, category.c_str());
 		cv::putText(data.imgrst, buf, cv::Point(100, 200), 1, 5.0, cv::Scalar(0, 255, 255),3);
-		data.error_message.push_back(category);
+		data.error_message.push_back("OK");
 
 		
 
