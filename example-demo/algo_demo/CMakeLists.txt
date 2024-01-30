@@ -14,6 +14,8 @@ target_sources(AlgoDemo
 	algo_demo.h
 	algo_demo.cpp
 	algo_demo.ui
+    imagewatch.h
+    imagewatch.cpp
 )
 
 target_link_libraries(AlgoDemo
@@ -25,7 +27,6 @@ PRIVATE
     logging
     common
     base_alg
-    demo_Algo
 )
 
 target_include_directories(AlgoDemo PUBLIC ./)
@@ -37,7 +38,3 @@ add_custom_command(
     WORKING_DIRECTORY $<TARGET_FILE_DIR:AlgoDemo>
 )
 
-add_custom_command(TARGET AlgoDemo POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_RUNTIME_DLLS:AlgoDemo> $<TARGET_FILE_DIR:AlgoDemo>
-    COMMAND_EXPAND_LISTS
-)

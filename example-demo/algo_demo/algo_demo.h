@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <intsafe.h>
 
@@ -9,8 +9,10 @@
 #include <intsafe.h>
 #include "opencv2/opencv.hpp"
 #include <QMetaType>
+#include <QLibrary>
 #include "windows.h"
 #include "ibasealgorithm.h"
+#include "imagewatch.h"
 
 class Qtalgo_demo : public QMainWindow
 {
@@ -25,6 +27,7 @@ private:
     LARGE_INTEGER nFreq;
     cv::Mat ImgRead, m_matCheck, m_tempshow, m_tempRGB;
     QImage disImage;
+    QImage disImage_ori;
     int m_w, m_h, m_c;
     float fInterval;
     int m_ichecktimes;
@@ -36,7 +39,7 @@ private:
     void connectsignal();
     cv::Mat ReadImage(QString);
     wikky_algo::IBaseAlg* _CheckClass = nullptr;
-    void ShowMatToLabel(cv::Mat);
+    void ShowMatToLabel(const cv::Mat img, const cv::Mat img_ori);
     void resizeEvent(QResizeEvent*);
     void showEvent(QShowEvent*);
     ~Qtalgo_demo();
@@ -45,8 +48,10 @@ private:
     void initImageLS(QString str);
     bool containImages(QDir&);
     bool isImage(QFileInfo& info);
+    ImageWidget* m_Image;
 public slots:
     void onSelectImageList(QListWidgetItem* item, QListWidgetItem* it);
     void onInitAlgo();
     void onUpdateAlgo();
+    void recvShowPicSignal(QImage image, const cv::Mat & img_ori);//接收并显示图片的函数
 };

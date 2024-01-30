@@ -75,20 +75,19 @@ void Qtalgo_demo::showEvent(QShowEvent* event)
 
 	//LOGI("showEvent   width:{}, height:{}", sz.width(), sz.height());
 }
-void Qtalgo_demo::ShowMatToLabel(cv::Mat img)
+void Qtalgo_demo::ShowMatToLabel(const cv::Mat img, const cv::Mat img_ori)
 {
 	char* d;
 
 	//resizeByNN(img.data, m_tempshow.data, img.rows, img.cols, img.channels(), m_tempshow.rows, m_tempshow.cols);
 	//LOGI("image size   width:{}, height:{}", m_tempshow.cols, m_tempshow.rows);
 	//cv::cvtColor(m_tempshow, m_tempRGB, cv::COLOR_RGB2BGR);
-	m_tempRGB = img.clone();
-	QSize sz = ui.label_Show->size();
-	sz.setHeight(sz.height() - ui.label_Show->frameWidth() * 2);
-	sz.setWidth(sz.width() - ui.label_Show->frameWidth() * 2);
+	//m_tempRGB = img.clone();
+	cv::cvtColor(img, m_tempRGB, cv::COLOR_RGB2BGR);
 	disImage = QImage((const unsigned char*)(m_tempRGB.data), m_tempRGB.cols, m_tempRGB.rows, m_tempRGB.step, QImage::Format_RGB888);
-	ui.label_Show->setPixmap(QPixmap::fromImage(disImage).scaled(sz,Qt::IgnoreAspectRatio,Qt::SmoothTransformation));
-	ui.label_Show->show();
+	//disImage_ori = QImage((const unsigned char*)(img_ori.data), img_ori.cols, img_ori.rows, img_ori.step, QImage::Format_RGB888);
+
+	recvShowPicSignal(disImage, img_ori);
 	QThread::msleep(1);
 }
 
@@ -132,8 +131,11 @@ void Qtalgo_demo::onInitAlgo()
 		(wikky_algo::pExportALG)(LocalFileDLL->resolve("CreateExportAlgObj"));
 	DeleteCamera =
 		(wikky_algo::pDeleteALG)(LocalFileDLL->resolve("DeleteExportAlgObj"));
-	_CheckClass = CreateLocalCamera();
-	_CheckClass->initAlgoparam(QString("local_camera").toStdString());
+
+	_CheckClass = CreateLocalCamera();   // problem
+	std::cout << "2" << std::endl;
+	std::string st = QString("local_camera").toStdString();
+	_CheckClass->initAlgoparam(st);
 }
 
 void Qtalgo_demo::onUpdateAlgo()
@@ -172,8 +174,8 @@ bool Qtalgo_demo::containImages(QDir& dir)
 		QString filename = entry.fileName();
 		if (filename == "." || filename == "..")
 			continue;
-
-		if (entry.isDir() && containImages(QDir(entry.absoluteFilePath())))
+		QDir di = QDir(entry.absoluteFilePath());
+		if (entry.isDir() && containImages(di))
 			return true;
 
 		if (entry.isFile() && isImage(entry))
@@ -259,6 +261,7 @@ void Qtalgo_demo::connectsignal()
 		});
 	QObject::connect(ui.pB_initAlgo, &QPushButton::released, [=]()
 		{
+
 			onInitAlgo();
 			ui.lw_ImageList->setEnabled(true);
 		});
@@ -323,7 +326,16 @@ void Qtalgo_demo::onSelectImageList(QListWidgetItem* item, QListWidgetItem* it)
 		m_ichecktimes++;
 		ui.lineEdit->setText(QString::number(s));
 
-		ShowMatToLabel(singleMat.imgrst);
+		int width = singleMat.imgori.cols;
+		int height = singleMat.imgori.rows;
+
+		cv::Mat upperHalf = singleMat.imgori(cv::Rect(0, 0, width, height / 2));
+		cv::Mat lowerHalf = singleMat.imgori(cv::Rect(0, height / 2, width, height / 2));
+
+		cv::Mat imgori_hconcat;
+		cv::hconcat(upperHalf, lowerHalf, imgori_hconcat);
+
+		ShowMatToLabel(singleMat.imgrst, imgori_hconcat);
 
 		//emit CHECKRESULT(QStringList(QString::fromLocal8Bit(strResult.error_type)));
 		//if ((strResult._bResultNGOK && m_bOKSTOP)
@@ -385,7 +397,8 @@ void Qtalgo_demo::initImageLS(QString str)
 			continue;
 
 		if (mfi.isDir()) {
-			if (containImages(QDir(mfi.absoluteFilePath())))
+			QDir di = QDir(mfi.absoluteFilePath());
+			if (containImages(di))
 				ui.lw_ImageList->addItem(mfi.fileName());
 			continue;
 		}
@@ -394,4 +407,17 @@ void Qtalgo_demo::initImageLS(QString str)
 			ui.lw_ImageList->addItem(mfi.fileName());
 	}
 	ui.lw_ImageList->blockSignals(false);
+}
+void Qtalgo_demo::recvShowPicSignal(QImage image, const cv::Mat& img_ori)
+{
+	QPixmap ConvertPixmap = QPixmap::fromImage(image);//The QPixmap class is an off-screen image representation that can be used as a paint device
+	QGraphicsScene* qgraphicsScene = new QGraphicsScene;//要用QGraphicsView就必须要有QGraphicsScene搭配着用
+	m_Image = new ImageWidget(&ConvertPixmap, img_ori);//实例化类ImageWidget的对象m_Image，该类继承自QGraphicsItem，是自己写的类
+	int nwith = ui.ImageGraphic->width();//获取界面控件Graphics View的宽度
+	int nheight = ui.ImageGraphic->height();//获取界面控件Graphics View的高度
+	m_Image->setQGraphicsViewWH(nwith, nheight);//将界面控件Graphics View的width和height传进类m_Image中
+	qgraphicsScene->addItem(m_Image);//将QGraphicsItem类对象放进QGraphicsScene中
+	ui.ImageGraphic->setSceneRect(QRectF(-(nwith / 2), -(nheight / 2), nwith, nheight));//使视窗的大小固定在原始大小，不会随图片的放大而放大（默认状态下图片放大的时候视窗两边会自动出现滚动条，并且视窗内的视野会变大），防止图片放大后重新缩小的时候视窗太大而不方便观察图片
+	ui.ImageGraphic->setScene(qgraphicsScene);//Sets the current scene to scene. If scene is already being viewed, this function does nothing.
+	ui.ImageGraphic->setFocus();//将界面的焦点设置到当前Graphics View控件
 }

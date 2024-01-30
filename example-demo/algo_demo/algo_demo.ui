@@ -19,17 +19,7 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout" stretch="3,1">
     <item>
-     <widget class="QLabel" name="label_Show">
-      <property name="frameShape">
-       <enum>QFrame::Box</enum>
-      </property>
-      <property name="lineWidth">
-       <number>2</number>
-      </property>
-      <property name="text">
-       <string>TextLabel</string>
-      </property>
-     </widget>
+     <widget class="QGraphicsView" name="ImageGraphic"/>
     </item>
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
@@ -125,7 +115,7 @@
      <x>0</x>
      <y>0</y>
      <width>908</width>
-     <height>23</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
