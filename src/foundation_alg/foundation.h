@@ -12,6 +12,8 @@ class Alg_Foundation : public wikky_algo::IBaseAlg
 
        bool popCameraDlg(void* parent);
 
+       bool setLogLevel(int);
+
        int doing(wikky_algo::SingleMat&, wikky_algo::CheckParam* m_checkparam = nullptr);
 
 

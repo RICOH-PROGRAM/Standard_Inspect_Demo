@@ -98,6 +98,11 @@ namespace wikky_algo
 		}
 		return false;
 	}
+	bool Alg_Foundation::Impl::setLogLevel(int _i)
+	{
+		LOGSET(_i);
+		return true;
+	}
 
 	int Alg_Foundation::Impl::doing(wikky_algo::SingleMat& data, wikky_algo::CheckParam* _checkparam)
 	{

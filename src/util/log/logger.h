@@ -62,6 +62,11 @@ public:
             consoleLogger = spdlog::stdout_color_mt(LOGGER_NAME_CONSOLE);
         }
     }
+    void SetLogger(int _level)
+    {
+        spdlog::set_level((spdlog::level::level_enum)_level);  // Set global log level to debug
+    }
+
     std::shared_ptr<spdlog::logger> asyncLogger;
     std::shared_ptr<spdlog::logger> consoleLogger;
 
@@ -70,6 +75,11 @@ private:
     std::string LOGGER_NAME_CONSOLE = "console";
 };
 
+#define LOGSET(_logger)                                                                            \
+    {                                                                                              \
+        if (Logger::getInstance().consoleLogger)                                                   \
+            Logger::getInstance().SetLogger(_logger);                                              \
+    }
 #define LOGT(...)                                                                                  \
     {                                                                                              \
         if (Logger::getInstance().consoleLogger)                                                   \

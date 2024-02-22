@@ -31,7 +31,7 @@ namespace wikky_algo
         bool popCameraDlg(void* parent);
         bool readAlgoParam();
         bool saveAlgoParam();
-
+        bool setLogLevel(int);
         int doing(wikky_algo::SingleMat& data, wikky_algo::CheckParam* m_checkparam = nullptr);
 
     };

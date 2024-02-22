@@ -20,6 +20,10 @@ namespace wikky_algo
         return impl_->popCameraDlg(parent);
     }
 
+    bool Alg_Foundation::setLogLevel(int _i)
+    {
+        return impl_->setLogLevel(_i);
+    }
     int Alg_Foundation::doing(wikky_algo::SingleMat& data, wikky_algo::CheckParam* m_checkparam)
     {
         return impl_->doing(data, m_checkparam);

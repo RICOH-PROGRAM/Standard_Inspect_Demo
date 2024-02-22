@@ -20,6 +20,7 @@ public:
     virtual ~IBaseAlg() {}
     virtual bool initAlgoparam(std::string&) = 0;
     virtual bool popCameraDlg(void* parent) = 0;
+    virtual bool setLogLevel(int) = 0;
     virtual int doing(wikky_algo::SingleMat&, wikky_algo::CheckParam* m_checkparam = nullptr) = 0;
 };
 
