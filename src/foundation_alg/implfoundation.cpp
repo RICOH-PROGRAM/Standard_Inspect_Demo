@@ -52,10 +52,12 @@ namespace wikky_algo
 	{
 		//QSettings algsetting(qApp->applicationDirPath() + "/defaultModel/" + m_scamserial.c_str() + ".ini", QSettings::IniFormat);
 		//m_checkparam._iThread = algsetting.value("Default1/_Thread", 100).toInt();
-		std::replace(m_scamserial.begin(), m_scamserial.end(), '/', '_');
-		std::replace(m_scamserial.begin(), m_scamserial.end(), ':', '_');
 
-		QString str = QString("%1/defaultModel/%2.yaml").arg(qApp->applicationDirPath()).arg(m_scamserial.c_str());
+		std::string _scamserial = m_scamserial;
+		std::replace(_scamserial.begin(), _scamserial.end(), '/', '_');
+		std::replace(_scamserial.begin(), _scamserial.end(), ':', '_');
+
+		QString str = QString("%1/defaultModel/%2.yaml").arg(qApp->applicationDirPath()).arg(_scamserial.c_str());
 		try
 		{
 			m_yamlparams = YAML::LoadFile(str.toStdString());
@@ -76,7 +78,11 @@ namespace wikky_algo
 		//QSettings algsetting(qApp->applicationDirPath() + "/defaultModel/" + m_scamserial.c_str() + ".ini", QSettings::IniFormat);
 		//algsetting.setValue("Default1/_Thread", m_checkparam._iThread);
 
-		QString str = QString("%1/defaultModel/%2.yaml").arg(qApp->applicationDirPath()).arg(m_scamserial.c_str());
+		std::string _scamserial = m_scamserial;
+		std::replace(_scamserial.begin(), _scamserial.end(), '/', '_');
+		std::replace(_scamserial.begin(), _scamserial.end(), ':', '_');
+
+		QString str = QString("%1/defaultModel/%2.yaml").arg(qApp->applicationDirPath()).arg(_scamserial.c_str());
 		std::ofstream fout(str.toStdString().c_str());
 
 		Param2Node(m_checkparam, m_yamlparams);
@@ -111,6 +117,33 @@ namespace wikky_algo
 
 		cv::putText(data.imgrst, buf, cv::Point(100, 200), 1, 5.0, cv::Scalar(0, 255, 255),3);
 		data.error_message.push_back("OK");
+
+		data.error_message.push_back(QString::number(rand() % 2 + 1).toStdString());
+		//data.error_message.push_back(QString::number(rand() % 2 + 1).toStdString());
+		//data.error_message.push_back(QString::number(rand() % 2 + 1).toStdString());
+		//data.error_message.push_back(QString::number(rand() % 2 + 1).toStdString());
+		//data.error_message.push_back(QString::number(rand() % 2 + 1).toStdString());
+		//data.error_message.push_back(QString::number(rand() % 2 + 1).toStdString());
+		//data.error_message.push_back(QString::number(rand() % 2 + 1).toStdString());
+		//data.error_message.push_back(QString::number(rand() % 2 + 1).toStdString());
+		//data.error_message.push_back(QString::number(rand() % 2 + 1).toStdString());
+		//if (m_scamserial == "D:/image1")
+		//{
+		//	data.error_message.push_back(QString::number(rand() % 2 + 1).toStdString());
+		//}
+		//if (m_scamserial == "D:/image2")
+		//{
+		//	data.error_message.push_back(QString::number(rand() % 2 + 1).toStdString());
+		//	data.error_message.push_back(QString::number(rand() % 2 + 1).toStdString());
+		//	data.error_message.push_back(QString::number(rand() % 2 + 1).toStdString());
+		//	data.error_message.push_back(QString::number(rand() % 2 + 1).toStdString());
+		//	data.error_message.push_back(QString::number(rand() % 2 + 1).toStdString());
+		//	data.error_message.push_back(QString::number(rand() % 2 + 1).toStdString());
+		//	data.error_message.push_back(QString::number(rand() % 2 + 1).toStdString());
+		//	data.error_message.push_back(QString::number(rand() % 2 + 1).toStdString());
+		//	data.error_message.push_back(QString::number(rand() % 2 + 1).toStdString());
+		//	data.error_message.push_back(QString::number(rand() % 2 + 1).toStdString());
+		//}
 
 		
 
