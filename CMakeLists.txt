@@ -12,7 +12,8 @@ message(STATUS "THIRDPARTY_DIR src dir : ${THIRDPARTY_DIR}")
 message(STATUS "WIKKYDLL_DIR src dir : ${WIKKYDLL_DIR}")
 
 if(DEFINED THIRDPARTY_DIR)
-    set(OpenCV_DIR ${THIRDPARTY_DIR}/opencv/lib)
+        set(OpenCV_DIR ${THIRDPARTY_DIR}/opencv/lib)
+
 endif()
 
 

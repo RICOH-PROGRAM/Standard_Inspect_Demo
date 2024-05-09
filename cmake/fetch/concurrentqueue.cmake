@@ -8,7 +8,7 @@ FetchContent_Declare(concurrentqueue
 else()
 FetchContent_Declare(
   concurrentqueue
-  GIT_REPOSITORY    https://github.com/cameron314/concurrentqueue.git
+  GIT_REPOSITORY    git@github.com:cameron314/concurrentqueue.git
   GIT_TAG           master
 )
 endif()
