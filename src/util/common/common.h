@@ -3,12 +3,15 @@
 #include <opencv2/opencv.hpp>
 namespace wikky_algo
 {
+#define DLLINTERFACE "1.0"
 	struct SingleMat
 	{
 		int camPos = -1;
+		std::chrono::steady_clock::time_point starttime;
 		cv::Mat imgori;
 		cv::Mat imgrst;
 		size_t index;
+		int groupsize;
 		bool bresult;
 		std::string cam_serial;
 		std::vector<std::string> error_message;
