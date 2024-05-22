@@ -15,6 +15,8 @@ namespace wikky_algo
 	}
 	Alg_Foundation::Impl::Impl()
 	{
+		LOGSET(SPDLOG_LEVEL_TRACE);
+		LOGT("DLLInterface:{}", DLLINTERFACE);
 		tid = std::this_thread::get_id();
 		t = *(_Thrd_t*)(char*)&tid;
 		unsigned int nId = t._Id;
