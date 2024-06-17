@@ -44,7 +44,7 @@ namespace wikky_algo
 		}
 
 		algosettingdlg->SetLastImage(lastimg);
-		algosettingdlg->SetLastParam(m_yamlparams);
+		algosettingdlg->SetLastParam(YAML::Clone(m_yamlparams));
 		algosettingdlg.get()->show();
 		LOGW("popCameraDlg successfully");
 		return false;
@@ -68,7 +68,6 @@ namespace wikky_algo
 		{
 			std::cerr << e.what() << '\n';
 		}
-		
 		Node2Param(m_checkparam, m_yamlparams);
 
 		LOGW("initAlgoparam successfully");
