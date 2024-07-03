@@ -24,6 +24,45 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Format:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="cb_Fromat">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="currentText">
+           <string>Mono</string>
+          </property>
+          <item>
+           <property name="text">
+            <string>Mono</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Color</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>3Ddata</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <widget class="QLabel" name="label">
@@ -43,6 +82,13 @@
          </widget>
         </item>
        </layout>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="cB_Save">
+        <property name="text">
+         <string>SaveResult</string>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QPushButton" name="pB_initAlgo">
@@ -70,6 +116,9 @@
          <widget class="QPushButton" name="pB_Start">
           <property name="text">
            <string>Start</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -115,7 +164,7 @@
      <x>0</x>
      <y>0</y>
      <width>908</width>
-     <height>21</height>
+     <height>23</height>
     </rect>
    </property>
   </widget>

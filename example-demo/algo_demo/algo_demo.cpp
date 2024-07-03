@@ -27,8 +27,10 @@ Qtalgo_demo::Qtalgo_demo(QWidget* parent) : QMainWindow(parent)
 	configIniRead->setIniCodec("utf-8");
 	QString st = configIniRead->value("ProgramSet/LastPath").toString();
 	m_sImageListPath = st;
+	m_iFormat = configIniRead->value("ProgramSet/Format","-1").toInt();
 	initImageLS(m_sImageListPath);
 
+	ui.cb_Fromat->setCurrentIndex(m_iFormat);
 	onUpdateAlgo();
 	connectsignal();
 };
@@ -86,7 +88,6 @@ void Qtalgo_demo::ShowMatToLabel(const cv::Mat img, const cv::Mat img_ori)
 	cv::cvtColor(img, m_tempRGB, cv::COLOR_RGB2BGR);
 	disImage = QImage((const unsigned char*)(m_tempRGB.data), m_tempRGB.cols, m_tempRGB.rows, m_tempRGB.step, QImage::Format_RGB888);
 	//disImage_ori = QImage((const unsigned char*)(img_ori.data), img_ori.cols, img_ori.rows, img_ori.step, QImage::Format_RGB888);
-
 	recvShowPicSignal(disImage, img_ori);
 	QThread::msleep(1);
 }
@@ -94,6 +95,7 @@ void Qtalgo_demo::ShowMatToLabel(const cv::Mat img, const cv::Mat img_ori)
 Qtalgo_demo::~Qtalgo_demo()
 {
 	configIniRead->setValue("ProgramSet/LastPath", m_sImageListPath);
+	configIniRead->setValue("ProgramSet/Format", ui.cb_Fromat->currentIndex());
 	configIniRead->sync();
 
 	if (_CheckClass)
@@ -271,15 +273,47 @@ void Qtalgo_demo::connectsignal()
 				_CheckClass->popCameraDlg(nullptr);
 
 		});
+	QObject::connect(ui.pB_Start, &QPushButton::toggled, [=](bool b)
+		{
+			if (b)
+			{
+				if (!m_Tautorun)
+				{
+					m_Tautorun = new QTimer();
+					QObject::connect(m_Tautorun, &QTimer::timeout, [=]()
+						{
+							ui.lw_ImageList->setCurrentRow(ui.lw_ImageList->currentRow() + 1);
+							if (ui.lw_ImageList->currentRow() == ui.lw_ImageList->count() - 1)
+								ui.pB_Start->setChecked(false);
+
+						});
+				}
+				m_Tautorun->start(10);
+				ui.pB_Start->setText("Stop");
+			}
+			else
+			{
+				m_Tautorun->stop();
+				ui.pB_Start->setText("Start");
+			}
+		});
 
 }
 cv::Mat Qtalgo_demo::ReadImage(QString file)
 {
 	cv::Mat img;
-	if(file.contains("tiff"))
+	switch (ui.cb_Fromat->currentIndex())
+	{
+	case 0:
+		img = cv::imread(file.toLocal8Bit().toStdString().c_str(), cv::IMREAD_GRAYSCALE);
+		break;
+	case 1:
+		img = cv::imread(file.toLocal8Bit().toStdString().c_str(), cv::IMREAD_COLOR);
+		break;
+	case 2:
 		img = cv::imread(file.toLocal8Bit().toStdString().c_str(), cv::IMREAD_ANYDEPTH);
-	else
-	cvtColor(cv::imread(file.toLocal8Bit().toStdString().c_str()), img, cv::COLOR_BGR2RGB);
+		break;
+	}
 	return img;
 }
 
@@ -310,6 +344,7 @@ void Qtalgo_demo::onSelectImageList(QListWidgetItem* item, QListWidgetItem* it)
 		}
 		wikky_algo::SingleMat singleMat;
 		singleMat.imgori = ImgRead.clone();
+		singleMat.index = m_iReadInded++;
 		LARGE_INTEGER t1, t2;
 		QueryPerformanceCounter(&t1);
 
@@ -317,6 +352,10 @@ void Qtalgo_demo::onSelectImageList(QListWidgetItem* item, QListWidgetItem* it)
 		{
 			_CheckClass->doing(singleMat);
 			ui.lineEdit_2->setText(singleMat.error_message[0].c_str());
+			QString st = m_sImageListPath + "/result_" + sSelectItem;
+			bool b;
+			if(ui.cB_Save->isChecked())
+				b = cv::imwrite(st.toStdString(), singleMat.imgrst);
 		}
 		
 
@@ -412,6 +451,8 @@ void Qtalgo_demo::recvShowPicSignal(QImage image, const cv::Mat& img_ori)
 {
 	QPixmap ConvertPixmap = QPixmap::fromImage(image);//The QPixmap class is an off-screen image representation that can be used as a paint device
 	QGraphicsScene* qgraphicsScene = new QGraphicsScene;//要用QGraphicsView就必须要有QGraphicsScene搭配着用
+	if (m_Image != nullptr)
+		delete m_Image;
 	m_Image = new ImageWidget(&ConvertPixmap, img_ori);//实例化类ImageWidget的对象m_Image，该类继承自QGraphicsItem，是自己写的类
 	int nwith = ui.ImageGraphic->width();//获取界面控件Graphics View的宽度
 	int nheight = ui.ImageGraphic->height();//获取界面控件Graphics View的高度
@@ -419,5 +460,5 @@ void Qtalgo_demo::recvShowPicSignal(QImage image, const cv::Mat& img_ori)
 	qgraphicsScene->addItem(m_Image);//将QGraphicsItem类对象放进QGraphicsScene中
 	ui.ImageGraphic->setSceneRect(QRectF(-(nwith / 2), -(nheight / 2), nwith, nheight));//使视窗的大小固定在原始大小，不会随图片的放大而放大（默认状态下图片放大的时候视窗两边会自动出现滚动条，并且视窗内的视野会变大），防止图片放大后重新缩小的时候视窗太大而不方便观察图片
 	ui.ImageGraphic->setScene(qgraphicsScene);//Sets the current scene to scene. If scene is already being viewed, this function does nothing.
-	ui.ImageGraphic->setFocus();//将界面的焦点设置到当前Graphics View控件
+	//ui.ImageGraphic->setFocus();//将界面的焦点设置到当前Graphics View控件
 }
