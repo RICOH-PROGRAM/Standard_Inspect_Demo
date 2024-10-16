@@ -27,6 +27,7 @@ PRIVATE
     logging
     common
     base_alg
+    demo_Algo
 )
 
 target_include_directories(AlgoDemo PUBLIC ./)
