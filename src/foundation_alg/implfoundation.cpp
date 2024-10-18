@@ -120,7 +120,26 @@ namespace wikky_algo
 			data.imgrst = data.imgori.clone();
 
 		cv::putText(data.imgrst, data.sn_fromscanner, cv::Point(100, 200), 1, 5.0, cv::Scalar(0, 255, 255),3);
-		data.error_message.push_back("OK");
+		std::string st;
+		switch (rand()%5)
+		{
+		case 0:
+			st = "OK";
+			break;
+		case 1:
+			st = "NG1";
+			break;
+		case 2:
+			st = "NG2";
+			break;
+		case 3:
+			st = "NG3";
+			break;
+		case 4:
+			st = "NG4";
+			break;
+		}
+		data.error_message.push_back(st);
 
 		data.error_message.push_back(QString::number(rand() % 2 + 1).toStdString());
 		//data.error_message.push_back(QString::number(rand() % 2 + 1).toStdString());
