@@ -121,22 +121,21 @@ namespace wikky_algo
 
 		cv::putText(data.imgrst, data.sn_fromscanner, cv::Point(100, 200), 1, 5.0, cv::Scalar(0, 255, 255),3);
 		std::string st;
-		switch (rand()%5)
+		switch (rand()%10)
 		{
 		case 0:
+		case 1:
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+		case 6:
+		case 7:
+		case 8:
 			st = "OK";
 			break;
-		case 1:
-			st = "NG1";
-			break;
-		case 2:
-			st = "NG2";
-			break;
-		case 3:
-			st = "NG3";
-			break;
-		case 4:
-			st = "NG4";
+		case 9:
+			st = "NG";
 			break;
 		}
 		data.error_message.push_back(st);

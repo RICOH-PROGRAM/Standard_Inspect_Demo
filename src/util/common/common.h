@@ -3,7 +3,7 @@
 #include <opencv2/opencv.hpp>
 namespace wikky_algo
 {
-#define DLLINTERFACE "1.2"		//add sn_fromscanner
+#define DLLINTERFACE "1.3"		//change _iresult from bool to index
 	struct SingleMat
 	{
 		int camPos = -1;
@@ -12,7 +12,7 @@ namespace wikky_algo
 		cv::Mat imgrst;
 		size_t index;
 		int groupsize;
-		bool bresult;
+		int _iresult;
 		bool _bshow = true;
 		std::string sn_fromscanner;
 		std::string cam_serial;
