@@ -343,7 +343,13 @@ void Qtalgo_demo::onSelectImageList(QListWidgetItem* item, QListWidgetItem* it)
 			m_c = 3;
 		}
 		wikky_algo::SingleMat singleMat;
-		singleMat.imgori = ImgRead.clone();
+		singleMat.w = ImgRead.cols;
+        singleMat.h = ImgRead.rows;
+		singleMat._depth = ImgRead.depth() == 0 ? sizeof(uchar) : sizeof(double);
+		singleMat._channel = ImgRead.channels();
+
+		singleMat.imgori = new char[singleMat.w * singleMat.h * singleMat._depth * singleMat._channel];
+		memcpy(singleMat.imgori, (void*)ImgRead.data, singleMat.w * singleMat.h * singleMat._depth * singleMat._channel);
 		singleMat.index = m_iReadInded++;
 		LARGE_INTEGER t1, t2;
 		QueryPerformanceCounter(&t1);
@@ -365,11 +371,11 @@ void Qtalgo_demo::onSelectImageList(QListWidgetItem* item, QListWidgetItem* it)
 		m_ichecktimes++;
 		ui.lineEdit->setText(QString::number(s));
 
-		int width = singleMat.imgori.cols;
-		int height = singleMat.imgori.rows;
+		int width = ImgRead.cols;
+		int height = ImgRead.rows;
 
-		cv::Mat upperHalf = singleMat.imgori(cv::Rect(0, 0, width, height / 2));
-		cv::Mat lowerHalf = singleMat.imgori(cv::Rect(0, height / 2, width, height / 2));
+		cv::Mat upperHalf = ImgRead(cv::Rect(0, 0, width, height / 2));
+		cv::Mat lowerHalf = ImgRead(cv::Rect(0, height / 2, width, height / 2));
 
 		cv::Mat imgori_hconcat;
 		cv::hconcat(upperHalf, lowerHalf, imgori_hconcat);

@@ -44,7 +44,7 @@ Qtalgosettingdlg::Qtalgosettingdlg(QWidget* parent)
 		{
 			Node2Param(_tempparam, ui->treewidget->_mparam);
 			wikky_algo::SingleMat singlemat;
-			singlemat.imgori = _lastimg.clone();
+			memcpy(singlemat.imgori, (void*)_lastimg.data, singlemat.w * singlemat.h * singlemat._depth * singlemat._channel);
 			_testcallback(singlemat, &_tempparam);
 			ui->gV_ShowImg->SetImage(singlemat.imgrst,false);
 			m_bChanged = true;
@@ -95,7 +95,7 @@ bool Qtalgosettingdlg::eventFilter(QObject* watched, QEvent* e)
 		if (_testcallback)
 		{
 			wikky_algo::SingleMat singlemat;
-			singlemat.imgori = _lastimg.clone();
+			memcpy(singlemat.imgori, (void*)_lastimg.data, singlemat.w * singlemat.h * singlemat._depth * singlemat._channel);
 			Node2Param(_tempparam, ui->treewidget->_mparam);
 			_testcallback(singlemat, &_tempparam);
 			ui->gV_ShowImg->SetImage(singlemat.imgrst, false);

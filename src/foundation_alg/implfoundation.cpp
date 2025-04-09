@@ -113,31 +113,14 @@ namespace wikky_algo
 
 	int Alg_Foundation::Impl::doing(wikky_algo::SingleMat& data, wikky_algo::CheckParam* _checkparam)
 	{
-		lastimg = data.imgori.clone();
-		if (data.imgori.channels() == 1)
-			cv::cvtColor(data.imgori, data.imgrst, cv::COLOR_GRAY2BGR);
+		cv::Mat lastimg = cv::Mat(data.h, data.w, CV_MAKETYPE(data._depth == 8 ? CV_64F : CV_8U, data._channel), data.imgori);
+		if (lastimg.channels() == 1)
+			cv::cvtColor(lastimg, data.imgrst, cv::COLOR_GRAY2BGR);
 		else
-			data.imgrst = data.imgori.clone();
+			data.imgrst = lastimg.clone();
 
-		cv::putText(data.imgrst, data.sn_fromscanner, cv::Point(100, 200), 1, 5.0, cv::Scalar(0, 255, 255),3);
-		std::string st;
-		switch (rand()%10)
-		{
-		case 0:
-		case 1:
-		case 2:
-		case 3:
-		case 4:
-		case 5:
-		case 6:
-		case 7:
-		case 8:
-			st = "OK";
-			break;
-		case 9:
-			st = "NG";
-			break;
-		}
+		std::string st = "OK";
+		cv::putText(data.imgrst, st.c_str(), cv::Point(100, 200), 1, 5.0, cv::Scalar(0, 255, 255), 3);
 		data.error_message.push_back(st);
 
 		data.error_message.push_back(QString::number(rand() % 2 + 1).toStdString());

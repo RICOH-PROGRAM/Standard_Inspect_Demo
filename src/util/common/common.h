@@ -3,12 +3,13 @@
 #include <opencv2/opencv.hpp>
 namespace wikky_algo
 {
-#define DLLINTERFACE "1.3"		//change _iresult from bool to index
+#define DLLINTERFACE "2.0"		//change imgori to charptr and add w,h,c,ch;
 	struct SingleMat
 	{
 		int camPos = -1;
 		std::chrono::steady_clock::time_point starttime;
-		cv::Mat imgori;
+		int w, h, _channel, _depth;
+		char* imgori;
 		cv::Mat imgrst;
 		size_t index;
 		int groupsize;
@@ -17,6 +18,14 @@ namespace wikky_algo
 		std::string sn_fromscanner;
 		std::string cam_serial;
 		std::vector<std::string> error_message;
+		~SingleMat()
+		{
+			if (imgori)
+			{
+				delete[] imgori;
+				imgori = nullptr;
+			}
+		}
 	};
 	struct CheckParam
 	{
