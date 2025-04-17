@@ -3,13 +3,18 @@
 #include <opencv2/opencv.hpp>
 namespace wikky_algo
 {
-#define DLLINTERFACE "2.0"		//change imgori to charptr and add w,h,c,ch;
+#define DLLINTERFACE "2.0"		//add sn_fromscanner
+#define FORMATMONO	0
+#define FORMATBGR 1
+#define FORMATDEPTH	2
+#define FORMATBAYER 3
+
 	struct SingleMat
 	{
 		int camPos = -1;
 		std::chrono::steady_clock::time_point starttime;
-		int w, h, _channel, _depth;
-		char* imgori;
+		int w, h, format;
+		char* imgori = nullptr;
 		cv::Mat imgrst;
 		size_t index;
 		int groupsize;

@@ -44,7 +44,19 @@ Qtalgosettingdlg::Qtalgosettingdlg(QWidget* parent)
 		{
 			Node2Param(_tempparam, ui->treewidget->_mparam);
 			wikky_algo::SingleMat singlemat;
-			memcpy(singlemat.imgori, (void*)_lastimg.data, singlemat.w * singlemat.h * singlemat._depth * singlemat._channel);
+			int _depth;
+			switch (_lastimg.depth())
+			{
+                case CV_8U:
+					_depth = sizeof(uchar);
+					break;
+				case CV_64F:
+					_depth = sizeof(double);
+					break;
+				default:
+					break;
+			}
+			memcpy(singlemat.imgori, (void*)_lastimg.data, _lastimg.cols * _lastimg.rows * _depth * _lastimg.channels());
 			_testcallback(singlemat, &_tempparam);
 			ui->gV_ShowImg->SetImage(singlemat.imgrst,false);
 			m_bChanged = true;
@@ -95,7 +107,19 @@ bool Qtalgosettingdlg::eventFilter(QObject* watched, QEvent* e)
 		if (_testcallback)
 		{
 			wikky_algo::SingleMat singlemat;
-			memcpy(singlemat.imgori, (void*)_lastimg.data, singlemat.w * singlemat.h * singlemat._depth * singlemat._channel);
+			int _depth;
+			switch (_lastimg.depth())
+			{
+			case CV_8U:
+				_depth = sizeof(uchar);
+				break;
+			case CV_64F:
+				_depth = sizeof(double);
+				break;
+			default:
+				break;
+			}
+			memcpy(singlemat.imgori, (void*)_lastimg.data, _lastimg.cols * _lastimg.rows * _depth * _lastimg.channels());
 			Node2Param(_tempparam, ui->treewidget->_mparam);
 			_testcallback(singlemat, &_tempparam);
 			ui->gV_ShowImg->SetImage(singlemat.imgrst, false);

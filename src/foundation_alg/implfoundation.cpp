@@ -113,11 +113,46 @@ namespace wikky_algo
 
 	int Alg_Foundation::Impl::doing(wikky_algo::SingleMat& data, wikky_algo::CheckParam* _checkparam)
 	{
-		cv::Mat lastimg = cv::Mat(data.h, data.w, CV_MAKETYPE(data._depth == 8 ? CV_64F : CV_8U, data._channel), data.imgori);
-		if (lastimg.channels() == 1)
-			cv::cvtColor(lastimg, data.imgrst, cv::COLOR_GRAY2BGR);
+		if (nullptr == _lastimgdata)
+		{
+			switch (data.format)
+			{
+			case FORMATDEPTH:
+				_channel = 1;
+				_depth = sizeof(double);
+				break;
+			case FORMATBAYER:
+			case FORMATMONO:
+				_channel = 1;
+				_depth = sizeof(uchar);
+				break;
+			case FORMATBGR:
+				_channel = 3;
+				_depth = sizeof(uchar);
+				break;
+			default:
+				LOGE("ERROR FORMAT");
+			}
+			_width = data.w;
+			_height = data.h;
+			_lastimgdata = new char[_width * _height * _depth * _channel];
+			lastimg = cv::Mat(cv::Size(_width, _height), CV_MAKETYPE(_depth == 8 ? CV_64F : CV_8U, _channel), _channel);
+		}
+		memcpy(_lastimgdata, (void*)data.imgori, _width * _height * _depth * _channel);
+		memcpy(lastimg.data, _lastimgdata, _width * _height * _depth * _channel);
+		cv::Mat bgr;
+		if (data.format == FORMATBAYER)
+		{
+			cv::cvtColor(lastimg, bgr, cv::COLOR_BayerRG2RGB);
+			cv::cvtColor(lastimg, data.imgrst, cv::COLOR_BayerRG2RGB);
+		}
 		else
-			data.imgrst = lastimg.clone();
+		{
+			if (lastimg.channels() == 1)
+				cv::cvtColor(lastimg, data.imgrst, cv::COLOR_GRAY2BGR);
+			else
+				data.imgrst = lastimg.clone();
+		}
 
 		std::string st = "OK";
 		cv::putText(data.imgrst, st.c_str(), cv::Point(100, 200), 1, 5.0, cv::Scalar(0, 255, 255), 3);

@@ -10,7 +10,10 @@ namespace wikky_algo
         std::thread::id tid;
         _Thrd_t t;
         char* buf = new char[10];
+        char* _lastimgdata =nullptr;
         cv::Mat lastimg;
+        int _width, _height;
+        int _depth, _channel;
         std::shared_ptr<Qtalgosettingdlg> algosettingdlg = nullptr;
         std::string m_scamserial;
 

@@ -311,6 +311,7 @@ cv::Mat Qtalgo_demo::ReadImage(QString file)
 		img = cv::imread(file.toLocal8Bit().toStdString().c_str(), cv::IMREAD_COLOR);
 		break;
 	case 2:
+	case 3:
 		img = cv::imread(file.toLocal8Bit().toStdString().c_str(), cv::IMREAD_ANYDEPTH);
 		break;
 	}
@@ -345,11 +346,29 @@ void Qtalgo_demo::onSelectImageList(QListWidgetItem* item, QListWidgetItem* it)
 		wikky_algo::SingleMat singleMat;
 		singleMat.w = ImgRead.cols;
         singleMat.h = ImgRead.rows;
-		singleMat._depth = ImgRead.depth() == 0 ? sizeof(uchar) : sizeof(double);
-		singleMat._channel = ImgRead.channels();
+		singleMat.format = ui.cb_Fromat->currentIndex();
+		int _depth, _channel;
+		switch (singleMat.format)
+		{
+		case FORMATDEPTH:
+			_channel = 1;
+			_depth = sizeof(double);
+			break;
+		case FORMATBAYER:
+		case FORMATMONO:
+			_channel = 1;
+			_depth = sizeof(uchar);
+			break;
+		case FORMATBGR:
+			_channel = 3;
+			_depth = sizeof(uchar);
+			break;
+		default:
+			LOGE("ERROR FORMAT");
+		}
+		singleMat.imgori = new char[singleMat.w * singleMat.h * _depth * _channel];
+		memcpy(singleMat.imgori, (void*)ImgRead.data, singleMat.w * singleMat.h * _depth * _channel);
 
-		singleMat.imgori = new char[singleMat.w * singleMat.h * singleMat._depth * singleMat._channel];
-		memcpy(singleMat.imgori, (void*)ImgRead.data, singleMat.w * singleMat.h * singleMat._depth * singleMat._channel);
 		singleMat.index = m_iReadInded++;
 		LARGE_INTEGER t1, t2;
 		QueryPerformanceCounter(&t1);
