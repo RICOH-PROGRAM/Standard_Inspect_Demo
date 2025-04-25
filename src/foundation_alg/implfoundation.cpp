@@ -153,12 +153,23 @@ namespace wikky_algo
 			else
 				data.imgrst = lastimg.clone();
 		}
-
+		int _rand = rand() % 5;
 		std::string st = "OK";
+		switch ( _rand)
+		{
+		case 0:
+			st = "NG0";
+			break;
+		case 1:
+			st = "NG1";
+			break;
+		default:
+			break;
+		}
 		cv::putText(data.imgrst, st.c_str(), cv::Point(100, 200), 1, 5.0, cv::Scalar(0, 255, 255), 3);
 		data.error_message.push_back(st);
 
-		data.error_message.push_back(QString::number(rand() % 2 + 1).toStdString());
+		data.error_message.push_back(QString::number(_rand).toStdString());
 		//data.error_message.push_back(QString::number(rand() % 2 + 1).toStdString());
 		//data.error_message.push_back(QString::number(rand() % 2 + 1).toStdString());
 		//data.error_message.push_back(QString::number(rand() % 2 + 1).toStdString());

@@ -4,10 +4,10 @@
 namespace wikky_algo
 {
 #define DLLINTERFACE "2.0"		//add sn_fromscanner
-#define FORMATMONO	0
-#define FORMATBGR 1
-#define FORMATDEPTH	2
-#define FORMATBAYER 3
+#define FORMATMONO	1000
+#define FORMATBGR	1001
+#define FORMATDEPTH	1002
+#define FORMATBAYER 1003
 
 	struct SingleMat
 	{
