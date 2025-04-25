@@ -1,7 +1,5 @@
 ﻿#include "foundation.h"
 #include <iostream>
-#include <QSettings>
-#include <QCoreapplication>
 #include "implfoundation.h"
 #include "logger.h"
 #include <functional>
@@ -36,16 +34,6 @@ namespace wikky_algo
 
 	bool Alg_Foundation::Impl::popCameraDlg(void* parent)
 	{
-		if (nullptr == algosettingdlg)
-		{
-			algosettingdlg = std::make_shared<Qtalgosettingdlg>((QWidget*)parent);
-			algosettingdlg->SetTestCallback(std::bind(&Alg_Foundation::Impl::doing, this, std::placeholders::_1, std::placeholders::_2));
-			algosettingdlg->UpdatetoalgoImpl(std::bind(&Alg_Foundation::Impl::updateparamfromdlg, this, std::placeholders::_1));
-		}
-
-		algosettingdlg->SetLastImage(lastimg);
-		algosettingdlg->SetLastParam(YAML::Clone(m_yamlparams));
-		algosettingdlg.get()->show();
 		LOGW("popCameraDlg successfully");
 		return false;
 	}
@@ -59,16 +47,16 @@ namespace wikky_algo
 		std::replace(_scamserial.begin(), _scamserial.end(), '/', '_');
 		std::replace(_scamserial.begin(), _scamserial.end(), ':', '_');
 
-		QString str = QString("%1/defaultModel/%2.yaml").arg(qApp->applicationDirPath()).arg(_scamserial.c_str());
-		try
-		{
-			m_yamlparams = YAML::LoadFile(str.toStdString());
-		}
-		catch(const std::exception& e)
-		{
-			std::cerr << e.what() << '\n';
-		}
-		Node2Param(m_checkparam, m_yamlparams);
+		//QString str = QString("%1/defaultModel/%2.yaml").arg(qApp->applicationDirPath()).arg(_scamserial.c_str());
+		//try
+		//{
+		//	m_yamlparams = YAML::LoadFile(str.toStdString());
+		//}
+		//catch(const std::exception& e)
+		//{
+		//	std::cerr << e.what() << '\n';
+		//}
+		//Node2Param(m_checkparam, m_yamlparams);
 
 		LOGW("initAlgoparam successfully");
 		return true;
@@ -83,16 +71,16 @@ namespace wikky_algo
 		std::replace(_scamserial.begin(), _scamserial.end(), '/', '_');
 		std::replace(_scamserial.begin(), _scamserial.end(), ':', '_');
 
-		QString str = QString("%1/defaultModel/%2.yaml").arg(qApp->applicationDirPath()).arg(_scamserial.c_str());
-		std::ofstream fout(str.toStdString().c_str());
+		//QString str = QString("%1/defaultModel/%2.yaml").arg(qApp->applicationDirPath()).arg(_scamserial.c_str());
+		//std::ofstream fout(str.toStdString().c_str());
 
-		Param2Node(m_checkparam, m_yamlparams);
+		//Param2Node(m_checkparam, m_yamlparams);
 
 		try
 		{
-			fout << m_yamlparams;
+			//fout << m_yamlparams;
 
-			fout.close();
+			//fout.close();
 		}	
 		catch (YAML::ParserException e)
 		{
@@ -169,7 +157,7 @@ namespace wikky_algo
 		cv::putText(data.imgrst, st.c_str(), cv::Point(100, 200), 1, 5.0, cv::Scalar(0, 255, 255), 3);
 		data.error_message.push_back(st);
 
-		data.error_message.push_back(QString::number(_rand).toStdString());
+		//data.error_message.push_back(QString::number(_rand).toStdString());
 		//data.error_message.push_back(QString::number(rand() % 2 + 1).toStdString());
 		//data.error_message.push_back(QString::number(rand() % 2 + 1).toStdString());
 		//data.error_message.push_back(QString::number(rand() % 2 + 1).toStdString());

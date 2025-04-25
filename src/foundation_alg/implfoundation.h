@@ -1,5 +1,4 @@
 #include "ibasealgorithm.h"
-#include "algosettingdlg.h"
 #include "yaml-cpp/yaml.h"
 
 namespace wikky_algo
@@ -14,7 +13,6 @@ namespace wikky_algo
         cv::Mat lastimg;
         int _width, _height;
         int _depth, _channel;
-        std::shared_ptr<Qtalgosettingdlg> algosettingdlg = nullptr;
         std::string m_scamserial;
 
         double SMALL_AREA_THRESHOLD = 2.3e+06;

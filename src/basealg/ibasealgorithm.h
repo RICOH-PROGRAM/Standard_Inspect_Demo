@@ -10,7 +10,7 @@
 #include <future>
 #include <functional>
 #include <intsafe.h>
-#include "common.h"
+#include "../util/common/common.h"
 
 namespace wikky_algo
 {
