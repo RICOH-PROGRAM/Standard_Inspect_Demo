@@ -25,6 +25,8 @@ namespace wikky_algo
     /// <summary>
         std::vector<std::vector<cv::Point>>contours, con_temp, contours_Selected, condidat1, condidat2;
     /// </summary>
+        CheckParam Node2Param(YAML::Node);
+         YAML::Node Param2Node(CheckParam);
     public:
         Impl();
         ~Impl();

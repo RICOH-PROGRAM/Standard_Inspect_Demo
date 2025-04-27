@@ -269,8 +269,17 @@ void Qtalgo_demo::connectsignal()
 		});
 	QObject::connect(ui.pB_SetDlg, &QPushButton::released, [=]()
 		{
+			YAML::Node m_checkparam;
 			if (_CheckClass)
-				_CheckClass->popCameraDlg(nullptr);
+				_CheckClass->popCameraDlg(&m_checkparam);
+
+			if (nullptr == algosettingdlg)
+			{
+				algosettingdlg = new Qtalgosettingdlg(this);
+			}
+
+			algosettingdlg->SetLastParam(m_checkparam);
+			algosettingdlg->show();
 
 		});
 	QObject::connect(ui.pB_Start, &QPushButton::toggled, [=](bool b)

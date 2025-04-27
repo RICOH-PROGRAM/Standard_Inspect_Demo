@@ -5,11 +5,42 @@
 #include <functional>
 #include <future>
 #include <fstream>
+#include <format>
+#include  <direct.h>  
 namespace wikky_algo
 {
+	template <typename T>
+	T getValue(YAML::Node _param, std::string errortype, std::string errorparam, T defaultvalue)
+	{
+		T val;
+		try
+		{
+			val = _param[errortype][errorparam]["value"].as<T>();
+		}
+		catch (YAML::Exception e)
+		{
+			return defaultvalue;
+		}
+		return val;
+	}
 	void Alg_Foundation::Impl::updateparamfromdlg(CheckParam _param)
 	{
-		m_checkparam = _param;
+	}
+	CheckParam Alg_Foundation::Impl::Node2Param(YAML::Node node)
+	{
+		CheckParam _param;
+		_param._iThreadX = getValue<int>(node, "Param_AxisMask", "X", 5);
+		_param._iThreadY = getValue<int>(node, "Param_AxisMask", "Y", 10);
+		_param._iThreadZ = getValue<int>(node, "Param_AxisMask", "Z", 101);
+		return _param;
+	}
+	YAML::Node Alg_Foundation::Impl::Param2Node(CheckParam checkparam)
+	{
+        YAML::Node _param;
+		_param["Param_AxisMask"]["X"]["value"] = checkparam._iThreadX;
+		_param["Param_AxisMask"]["Y"]["value"] = checkparam._iThreadY;
+		_param["Param_AxisMask"]["Z"]["value"] = checkparam._iThreadZ;
+        return _param;
 	}
 	Alg_Foundation::Impl::Impl()
 	{
@@ -34,29 +65,29 @@ namespace wikky_algo
 
 	bool Alg_Foundation::Impl::popCameraDlg(void* parent)
 	{
-		LOGW("popCameraDlg successfully");
+		*(YAML::Node*)parent = m_yamlparams;
 		return false;
 	}
 
 	bool Alg_Foundation::Impl::readAlgoParam()
 	{
-		//QSettings algsetting(qApp->applicationDirPath() + "/defaultModel/" + m_scamserial.c_str() + ".ini", QSettings::IniFormat);
-		//m_checkparam._iThread = algsetting.value("Default1/_Thread", 100).toInt();
-
+		char   buffer[MAX_PATH];
+		getcwd(buffer, MAX_PATH);
+		std::string sts = buffer;
 		std::string _scamserial = m_scamserial;
 		std::replace(_scamserial.begin(), _scamserial.end(), '/', '_');
 		std::replace(_scamserial.begin(), _scamserial.end(), ':', '_');
 
-		//QString str = QString("%1/defaultModel/%2.yaml").arg(qApp->applicationDirPath()).arg(_scamserial.c_str());
-		//try
-		//{
-		//	m_yamlparams = YAML::LoadFile(str.toStdString());
-		//}
-		//catch(const std::exception& e)
-		//{
-		//	std::cerr << e.what() << '\n';
-		//}
-		//Node2Param(m_checkparam, m_yamlparams);
+		std::string _path = std::format("{}/defaultModel/{}.yaml", sts ,_scamserial);
+		try
+		{
+			m_yamlparams = YAML::LoadFile(_path);
+		}
+		catch(const std::exception& e)
+		{
+			std::cerr << e.what() << '\n';
+		}
+		m_checkparam = Node2Param(m_yamlparams);
 
 		LOGW("initAlgoparam successfully");
 		return true;
@@ -64,23 +95,22 @@ namespace wikky_algo
 
 	bool Alg_Foundation::Impl::saveAlgoParam()
 	{
-		//QSettings algsetting(qApp->applicationDirPath() + "/defaultModel/" + m_scamserial.c_str() + ".ini", QSettings::IniFormat);
-		//algsetting.setValue("Default1/_Thread", m_checkparam._iThread);
-
+		char   buffer[MAX_PATH];
+		getcwd(buffer, MAX_PATH);
+		std::string sts = buffer;
 		std::string _scamserial = m_scamserial;
 		std::replace(_scamserial.begin(), _scamserial.end(), '/', '_');
 		std::replace(_scamserial.begin(), _scamserial.end(), ':', '_');
 
-		//QString str = QString("%1/defaultModel/%2.yaml").arg(qApp->applicationDirPath()).arg(_scamserial.c_str());
-		//std::ofstream fout(str.toStdString().c_str());
+		std::string _path = std::format("{}/defaultModel/{}.yaml", sts, _scamserial);
+		std::ofstream fout(_path);
 
-		//Param2Node(m_checkparam, m_yamlparams);
+		m_yamlparams = Param2Node(m_checkparam);
 
 		try
 		{
-			//fout << m_yamlparams;
-
-			//fout.close();
+			fout << m_yamlparams;
+			fout.close();
 		}	
 		catch (YAML::ParserException e)
 		{

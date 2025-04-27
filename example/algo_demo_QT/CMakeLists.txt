@@ -27,6 +27,7 @@ PRIVATE
     logging
     common
     base_alg
+    algosettingdlg
 )
 
 target_include_directories(AlgoDemo_QT PUBLIC ./)

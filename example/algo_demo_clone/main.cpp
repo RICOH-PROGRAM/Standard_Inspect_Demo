@@ -4,6 +4,7 @@
 #include "logger.h"
 #include "../../src/basealg/ibasealgorithm.h"
 #include <io.h>
+#include  <direct.h>  
 
 void getFiles(string path, vector<string>& files, const char* sType)
 {
@@ -43,8 +44,12 @@ void getFiles(string path, vector<string>& files, const char* sType)
 int main(int argc, char *argv[])
 {
     HINSTANCE hdll;
-
-    hdll = LoadLibrary("../../bin/debug/demo_Algo.dll");
+	char   buffer[MAX_PATH];
+	getcwd(buffer, MAX_PATH);
+	std::string sts = buffer;
+	sts += "/demo_Algo.dll";
+	std::cout << sts << std::endl;
+	hdll = LoadLibrary(sts.c_str());
     wikky_algo::pExportALG createclass = (wikky_algo::pExportALG)GetProcAddress(hdll, "CreateExportAlgObj");
     wikky_algo::pDeleteALG deleteclass = (wikky_algo::pDeleteALG)GetProcAddress(hdll, "DeleteExportAlgObj");
     wikky_algo::IBaseAlg* _CheckClass = createclass();
