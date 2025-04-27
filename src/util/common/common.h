@@ -4,7 +4,7 @@
 #include <yaml-cpp/yaml.h>
 namespace wikky_algo
 {
-#define DLLINTERFACE "2.0"		//add sn_fromscanner
+#define DLLINTERFACE "3.1"		//add sn_fromscanner
 #define FORMATMONO	1000
 #define FORMATBGR	1001
 #define FORMATDEPTH	1002
