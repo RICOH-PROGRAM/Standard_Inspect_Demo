@@ -1,6 +1,7 @@
 #ifndef CORE_COMMON
 #define CORE_COMMON
 #include <opencv2/opencv.hpp>
+#include <yaml-cpp/yaml.h>
 namespace wikky_algo
 {
 #define DLLINTERFACE "2.0"		//add sn_fromscanner
@@ -41,7 +42,22 @@ namespace wikky_algo
 		int _iThreadZ = 2133;
 	};
 
-
+	template <typename T>
+	T getValue(YAML::Node _param, std::string errortype, std::string errorparam, T defaultvalue)
+	{
+		T val;
+		try
+		{
+			val = _param[errortype][errorparam]["value"].as<T>();
+		}
+		catch (YAML::Exception e)
+		{
+			return defaultvalue;
+		}
+		return val;
+	}
+	CheckParam _Node2Param(YAML::Node node);
+	YAML::Node _Param2Node(CheckParam checkparam);
 	using TestCallback = std::function<int(SingleMat&, CheckParam*)>;
 	using UpdateParam = std::function<void(CheckParam&)>;
 }

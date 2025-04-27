@@ -18,36 +18,6 @@
 using namespace std;
 using namespace std::placeholders;
 
-bool Node2Param(wikky_algo::CheckParam& checkparam, YAML::Node& _param)
-{
-//#ifdef _DEBUG
-//	try {
-//
-//
-//
-//#endif // DEBUG
-
-		checkparam._iThreadX = getValue<int>(_param, QString("Param_AxisMask"), QString("X"), 5);
-		checkparam._iThreadY = getValue<int>(_param, QString("Param_AxisMask"), QString("Y"), 10);
-		checkparam._iThreadZ = getValue<int>(_param, QString("Param_AxisMask"), QString("Z"), 101);
-		return true;
-#ifdef _DEBUG
-	//}
-	//catch {
-
-	//}
-
-#endif // DEBUG
-
-}
-
-bool Param2Node(wikky_algo::CheckParam& checkparam, YAML::Node& _param)
-{
-	_param[QString("Param_AxisMask").toStdString().c_str()][QString("X").toStdString().c_str()]["value"] = checkparam._iThreadX;
-	_param[QString("Param_AxisMask").toStdString().c_str()][QString("Y").toStdString().c_str()]["value"] = checkparam._iThreadY;
-	_param[QString("Param_AxisMask").toStdString().c_str()][QString("Z").toStdString().c_str()]["value"] = checkparam._iThreadZ;
-	return true;
-}
 
 Qtalgosettingdlg::Qtalgosettingdlg(QWidget* parent)
 	: QDialog(parent), ui(new Ui::algosettingdlg)
@@ -57,16 +27,27 @@ Qtalgosettingdlg::Qtalgosettingdlg(QWidget* parent)
 	ui->gV_ShowImg->installEventFilter(this);
 	connect(ui->treewidget, &QMyTreeWidget::TempSave, [=](QString objname, QString ves)
 		{
-			Node2Param(_tempparam, ui->treewidget->_mparam);
+			ui->treewidget->_mparam = _Param2Node(_tempparam);
 			wikky_algo::SingleMat singlemat;
-			singlemat.imgori = _lastimg.clone();
+			int _depth;
+			switch (_lastimg.depth())
+			{
+			case CV_8U:
+				_depth = sizeof(uchar);
+				break;
+			case CV_64F:
+				_depth = sizeof(double);
+				break;
+			default:
+				break;
+			}
+			memcpy(singlemat.imgori, (void*)_lastimg.data, _lastimg.cols * _lastimg.rows * _depth * _lastimg.channels());
 			_testcallback(singlemat, &_tempparam);
-			ui->gV_ShowImg->SetImage(singlemat.imgrst,false);
+			ui->gV_ShowImg->SetImage(singlemat.imgrst, false);
 			m_bChanged = true;
 			//ui.pB_Save->setEnabled(true);
 		});
 };
-
 Qtalgosettingdlg::~Qtalgosettingdlg()
 {
 }
@@ -123,7 +104,7 @@ bool Qtalgosettingdlg::eventFilter(QObject* watched, QEvent* e)
 				break;
 			}
 			memcpy(singlemat.imgori, (void*)_lastimg.data, _lastimg.cols * _lastimg.rows * _depth * _lastimg.channels());
-			Node2Param(_tempparam, ui->treewidget->_mparam);
+			ui->treewidget->_mparam = wikky_algo::_Param2Node(_tempparam);
 			_testcallback(singlemat, &_tempparam);
 			ui->gV_ShowImg->SetImage(singlemat.imgrst, false);
 		}

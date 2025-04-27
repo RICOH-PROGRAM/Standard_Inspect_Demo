@@ -9,37 +9,17 @@
 #include  <direct.h>  
 namespace wikky_algo
 {
-	template <typename T>
-	T getValue(YAML::Node _param, std::string errortype, std::string errorparam, T defaultvalue)
-	{
-		T val;
-		try
-		{
-			val = _param[errortype][errorparam]["value"].as<T>();
-		}
-		catch (YAML::Exception e)
-		{
-			return defaultvalue;
-		}
-		return val;
-	}
 	void Alg_Foundation::Impl::updateparamfromdlg(CheckParam _param)
 	{
 	}
 	CheckParam Alg_Foundation::Impl::Node2Param(YAML::Node node)
 	{
-		CheckParam _param;
-		_param._iThreadX = getValue<int>(node, "Param_AxisMask", "X", 5);
-		_param._iThreadY = getValue<int>(node, "Param_AxisMask", "Y", 10);
-		_param._iThreadZ = getValue<int>(node, "Param_AxisMask", "Z", 101);
+		CheckParam _param  = _Node2Param(node);
 		return _param;
 	}
 	YAML::Node Alg_Foundation::Impl::Param2Node(CheckParam checkparam)
 	{
-        YAML::Node _param;
-		_param["Param_AxisMask"]["X"]["value"] = checkparam._iThreadX;
-		_param["Param_AxisMask"]["Y"]["value"] = checkparam._iThreadY;
-		_param["Param_AxisMask"]["Z"]["value"] = checkparam._iThreadZ;
+        YAML::Node _param = _Param2Node(checkparam);
         return _param;
 	}
 	Alg_Foundation::Impl::Impl()

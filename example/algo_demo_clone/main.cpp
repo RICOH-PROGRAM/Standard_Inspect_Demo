@@ -1,4 +1,4 @@
-#include "stdio.h"
+ï»¿#include "stdio.h"
 #include <Windows.h>
 #include <iostream>
 #include "logger.h"
@@ -8,18 +8,18 @@
 
 void getFiles(string path, vector<string>& files, const char* sType)
 {
-	//ÎÄ¼ş¾ä±ú
+	//æ–‡ä»¶å¥æŸ„
 	//long hFile = 0;
 	intptr_t hFile = 0;
-	//ÎÄ¼şĞÅÏ¢
+	//æ–‡ä»¶ä¿¡æ¯
 	struct _finddata_t fileinfo;
 	string p;
 	if ((hFile = _findfirst(p.assign(path).append("\\*").c_str(), &fileinfo)) != -1)
 	{
 		do
 		{
-			//Èç¹ûÊÇÄ¿Â¼,µü´úÖ®
-			//Èç¹û²»ÊÇ,¼ÓÈëÁĞ±í
+			//å¦‚æœæ˜¯ç›®å½•,è¿­ä»£ä¹‹
+			//å¦‚æœä¸æ˜¯,åŠ å…¥åˆ—è¡¨
 			if ((fileinfo.attrib & _A_SUBDIR))
 			{
 				if (strcmp(fileinfo.name, ".") != 0 && strcmp(fileinfo.name, "..") != 0)
