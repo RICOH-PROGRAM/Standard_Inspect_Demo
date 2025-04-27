@@ -95,22 +95,34 @@ void Qtalgosettingdlg::SetLastImage(cv::Mat img)
 
 bool Qtalgosettingdlg::eventFilter(QObject* watched, QEvent* e)
 {
-	if (QEvent::Show == e->type()&& watched==this)
+	if (QEvent::Show == e->type() && watched == this)
 	{
-		ui->gV_ShowImg->SetImage(_lastimg,true);
+		ui->gV_ShowImg->SetImage(_lastimg, true);
 		return false;
 	}
-	if(QEvent::MouseButtonDblClick == e->type())
+	if (QEvent::MouseButtonDblClick == e->type())
 	{
 		ui->gV_ShowImg->SetImage(_lastimg);
 		return false;
 	}
-	if (QEvent::MouseButtonPress == e->type()&&Qt::RightButton == ((QMouseEvent*)e)->button())
+	if (QEvent::MouseButtonPress == e->type() && Qt::RightButton == ((QMouseEvent*)e)->button())
 	{
 		if (_testcallback)
 		{
 			wikky_algo::SingleMat singlemat;
-			singlemat.imgori = _lastimg.clone();
+			int _depth;
+			switch (_lastimg.depth())
+			{
+			case CV_8U:
+				_depth = sizeof(uchar);
+				break;
+			case CV_64F:
+				_depth = sizeof(double);
+				break;
+			default:
+				break;
+			}
+			memcpy(singlemat.imgori, (void*)_lastimg.data, _lastimg.cols * _lastimg.rows * _depth * _lastimg.channels());
 			Node2Param(_tempparam, ui->treewidget->_mparam);
 			_testcallback(singlemat, &_tempparam);
 			ui->gV_ShowImg->SetImage(singlemat.imgrst, false);
@@ -121,7 +133,7 @@ bool Qtalgosettingdlg::eventFilter(QObject* watched, QEvent* e)
 	{
 		if (m_bChanged && _testupdateparam)
 		{
-			if(QMessageBox::Yes == QMessageBox::warning(nullptr, "Param change warning", "Should save the param?", QMessageBox::Yes, QMessageBox::No))
+			if (QMessageBox::Yes == QMessageBox::warning(nullptr, "Param change warning", "Should save the param?", QMessageBox::Yes, QMessageBox::No))
 				_testupdateparam(_tempparam);
 		}
 		return false;
