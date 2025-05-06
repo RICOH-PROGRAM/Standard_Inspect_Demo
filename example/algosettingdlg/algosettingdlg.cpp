@@ -27,7 +27,7 @@ Qtalgosettingdlg::Qtalgosettingdlg(QWidget* parent)
 	ui->gV_ShowImg->installEventFilter(this);
 	connect(ui->treewidget, &QMyTreeWidget::TempSave, [=](QString objname, QString ves)
 		{
-			ui->treewidget->_mparam = _Param2Node(_tempparam);
+			//ui->treewidget->_mparam = _Param2Node(_tempparam);
 			wikky_algo::SingleMat singlemat;
 			int _depth;
 			switch (_lastimg.depth())
@@ -42,7 +42,6 @@ Qtalgosettingdlg::Qtalgosettingdlg(QWidget* parent)
 				break;
 			}
 			memcpy(singlemat.imgori, (void*)_lastimg.data, _lastimg.cols * _lastimg.rows * _depth * _lastimg.channels());
-			_testcallback(singlemat, &_tempparam);
 			ui->gV_ShowImg->SetImage(singlemat.imgrst, false);
 			m_bChanged = true;
 			//ui.pB_Save->setEnabled(true);
@@ -57,15 +56,12 @@ void Qtalgosettingdlg::SetLastParam(YAML::Node _param)
 	ui->treewidget->LoadYAMLFile(_param);
 }
 
-void Qtalgosettingdlg::SetTestCallback(wikky_algo::TestCallback func)
+bool Qtalgosettingdlg::GetChangeState(bool& b)
 {
-	_testcallback = func;
+	b = m_bChanged;
+	return false;
 }
 
-void Qtalgosettingdlg::UpdatetoalgoImpl(wikky_algo::UpdateParam func)
-{
-	_testupdateparam = func;
-}
 
 void Qtalgosettingdlg::SetLastImage(cv::Mat img)
 {
@@ -88,35 +84,35 @@ bool Qtalgosettingdlg::eventFilter(QObject* watched, QEvent* e)
 	}
 	if (QEvent::MouseButtonPress == e->type() && Qt::RightButton == ((QMouseEvent*)e)->button())
 	{
-		if (_testcallback)
-		{
-			wikky_algo::SingleMat singlemat;
-			int _depth;
-			switch (_lastimg.depth())
-			{
-			case CV_8U:
-				_depth = sizeof(uchar);
-				break;
-			case CV_64F:
-				_depth = sizeof(double);
-				break;
-			default:
-				break;
-			}
-			memcpy(singlemat.imgori, (void*)_lastimg.data, _lastimg.cols * _lastimg.rows * _depth * _lastimg.channels());
-			ui->treewidget->_mparam = wikky_algo::_Param2Node(_tempparam);
-			_testcallback(singlemat, &_tempparam);
-			ui->gV_ShowImg->SetImage(singlemat.imgrst, false);
-		}
+		//if (_testcallback)
+		//{
+		//	wikky_algo::SingleMat singlemat;
+		//	int _depth;
+		//	switch (_lastimg.depth())
+		//	{
+		//	case CV_8U:
+		//		_depth = sizeof(uchar);
+		//		break;
+		//	case CV_64F:
+		//		_depth = sizeof(double);
+		//		break;
+		//	default:
+		//		break;
+		//	}
+		//	memcpy(singlemat.imgori, (void*)_lastimg.data, _lastimg.cols * _lastimg.rows * _depth * _lastimg.channels());
+		//	ui->treewidget->_mparam = wikky_algo::_Param2Node(_tempparam);
+		//	_testcallback(singlemat, &_tempparam);
+		//	ui->gV_ShowImg->SetImage(singlemat.imgrst, false);
+		//}
 		return false;
 	}
 	if (QEvent::Close == e->type())
 	{
-		if (m_bChanged && _testupdateparam)
-		{
-			if (QMessageBox::Yes == QMessageBox::warning(nullptr, "Param change warning", "Should save the param?", QMessageBox::Yes, QMessageBox::No))
-				_testupdateparam(_tempparam);
-		}
+		//if (m_bChanged && _testupdateparam)
+		//{
+		//	if (QMessageBox::Yes == QMessageBox::warning(nullptr, "Param change warning", "Should save the param?", QMessageBox::Yes, QMessageBox::No))
+		//		_testupdateparam(_tempparam);
+		//}
 		return false;
 
 	}

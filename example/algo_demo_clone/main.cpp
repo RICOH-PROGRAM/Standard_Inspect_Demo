@@ -54,8 +54,7 @@ int main(int argc, char *argv[])
     wikky_algo::pDeleteALG deleteclass = (wikky_algo::pDeleteALG)GetProcAddress(hdll, "DeleteExportAlgObj");
     wikky_algo::IBaseAlg* _CheckClass = createclass();
 	_CheckClass->setLogLevel(1);
-	_CheckClass->popCameraDlg(nullptr);
-	std::string sn = "";
+	std::string sn = "local_camera";
 	_CheckClass->initAlgoparam(sn);
 
 	std::cout <<"input the test image file:" << std::endl;

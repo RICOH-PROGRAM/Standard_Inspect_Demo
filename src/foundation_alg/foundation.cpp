@@ -15,9 +15,19 @@ namespace wikky_algo
         return impl_->initAlgoparam(camserial);
     }
 
-    bool Alg_Foundation::popCameraDlg(void* parent)
+    bool Alg_Foundation::GetParam(void* parent)
     {
-        return impl_->popCameraDlg(parent);
+        return impl_->GetParam(parent);
+    }
+
+    bool Alg_Foundation::SetParam(void* parent)
+    {
+        return impl_->SetParam(parent);
+    }
+
+    bool Alg_Foundation::SaveParam()
+    {
+        return impl_->SaveParam();
     }
 
     bool Alg_Foundation::setLogLevel(int _i)

@@ -17,9 +17,9 @@ namespace wikky_algo
 		CheckParam _param  = _Node2Param(node);
 		return _param;
 	}
-	YAML::Node Alg_Foundation::Impl::Param2Node(CheckParam checkparam)
+	YAML::Node Alg_Foundation::Impl::Param2Node(CheckParam checkparam, YAML::Node _node)
 	{
-        YAML::Node _param = _Param2Node(checkparam);
+        YAML::Node _param = _Param2Node(checkparam, _node);
         return _param;
 	}
 	Alg_Foundation::Impl::Impl()
@@ -43,11 +43,34 @@ namespace wikky_algo
 		return true;
 	}
 
-	bool Alg_Foundation::Impl::popCameraDlg(void* parent)
+	bool Alg_Foundation::Impl::GetParam(void* parent)
 	{
 		*(YAML::Node*)parent = m_yamlparams;
-		return false;
+		return true;
 	}
+
+	bool Alg_Foundation::Impl::SetParam(void* parent)
+	{
+		m_yamlparams = *(YAML::Node*)parent;
+
+		std::cout<< "GetParam" << std::endl;
+		std::cout<<m_yamlparams<<std::endl;
+		std::cout<< "GetParam" << std::endl;
+		m_checkparam = Node2Param(m_yamlparams);
+
+		m_yamlparams = Param2Node(m_checkparam,m_yamlparams);
+		std::cout << "GetParam" << std::endl;
+		std::cout << m_yamlparams << std::endl;
+		std::cout << "GetParam" << std::endl;
+		return true;
+	}
+
+	bool Alg_Foundation::Impl::SaveParam()
+	{
+		saveAlgoParam();
+		return true;
+	}
+
 
 	bool Alg_Foundation::Impl::readAlgoParam()
 	{
@@ -85,7 +108,7 @@ namespace wikky_algo
 		std::string _path = std::format("{}/defaultModel/{}.yaml", sts, _scamserial);
 		std::ofstream fout(_path);
 
-		m_yamlparams = Param2Node(m_checkparam);
+		m_yamlparams = Param2Node(m_checkparam,m_yamlparams);
 
 		try
 		{
@@ -94,14 +117,17 @@ namespace wikky_algo
 		}	
 		catch (YAML::ParserException e)
 		{
+			return false;
 		}
 		catch (YAML::RepresentationException e)
 		{
+			return false;
 		}
 		catch (YAML::Exception e)
 		{
+			return false;
 		}
-		return false;
+		return true;
 	}
 	bool Alg_Foundation::Impl::setLogLevel(int _i)
 	{

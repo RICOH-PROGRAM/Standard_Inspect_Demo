@@ -10,7 +10,9 @@ class Alg_Foundation : public wikky_algo::IBaseAlg
 
        bool initAlgoparam(std::string&);
 
-       bool popCameraDlg(void* parent);
+       bool GetParam(void* parent);
+       bool SetParam(void* parent);
+       bool SaveParam();
 
        bool setLogLevel(int);
 

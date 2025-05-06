@@ -26,12 +26,14 @@ namespace wikky_algo
         std::vector<std::vector<cv::Point>>contours, con_temp, contours_Selected, condidat1, condidat2;
     /// </summary>
         CheckParam Node2Param(YAML::Node);
-         YAML::Node Param2Node(CheckParam);
+         YAML::Node Param2Node(CheckParam, YAML::Node);
     public:
         Impl();
         ~Impl();
         bool initAlgoparam(std::string& camserial);
-        bool popCameraDlg(void* parent);
+        bool GetParam(void* parent);
+        bool SetParam(void* parent);
+        bool SaveParam();
         bool readAlgoParam();
         bool saveAlgoParam();
         bool setLogLevel(int);

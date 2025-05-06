@@ -4,7 +4,7 @@
 #include <yaml-cpp/yaml.h>
 namespace wikky_algo
 {
-#define DLLINTERFACE "3.1"		//add sn_fromscanner
+#define DLLINTERFACE "4.0"		
 #define FORMATMONO	1000
 #define FORMATBGR	1001
 #define FORMATDEPTH	1002
@@ -57,7 +57,7 @@ namespace wikky_algo
 		return val;
 	}
 	CheckParam _Node2Param(YAML::Node node);
-	YAML::Node _Param2Node(CheckParam checkparam);
+	YAML::Node _Param2Node(CheckParam , YAML::Node);
 	using TestCallback = std::function<int(SingleMat&, CheckParam*)>;
 	using UpdateParam = std::function<void(CheckParam&)>;
 }

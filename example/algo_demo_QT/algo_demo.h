@@ -53,7 +53,6 @@ private:
 	bool containImages(QDir&);
 	bool isImage(QFileInfo& info);
 	ImageWidget* m_Image = nullptr;
-	Qtalgosettingdlg* algosettingdlg = nullptr;;
 public slots:
 	void onSelectImageList(QListWidgetItem* item, QListWidgetItem* it);
 	void onInitAlgo();
