@@ -11,6 +11,7 @@ namespace wikky_algo
 {
 	void Alg_Foundation::Impl::updateparamfromdlg(CheckParam _param)
 	{
+		m_checkparam = _param;
 	}
 	CheckParam Alg_Foundation::Impl::Node2Param(YAML::Node node)
 	{
