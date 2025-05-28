@@ -13,6 +13,7 @@
 #include "windows.h"
 #include "ibasealgorithm.h"
 #include "imagewatch.h"
+#include "algosettingdlg.h"
 
 class Qtalgo_demo : public QMainWindow
 {

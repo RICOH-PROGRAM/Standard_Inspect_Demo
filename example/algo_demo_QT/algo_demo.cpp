@@ -269,8 +269,28 @@ void Qtalgo_demo::connectsignal()
 		});
 	QObject::connect(ui.pB_SetDlg, &QPushButton::released, [=]()
 		{
+			//TODO: test
+			YAML::Node m_checkparam;
 			if (_CheckClass)
-				_CheckClass->popCameraDlg(nullptr);
+				_CheckClass->GetParam(&m_checkparam);
+			//std::cout<<m_checkparam << std::endl;
+			Qtalgosettingdlg* algosettingdlg = nullptr;
+			if (nullptr == algosettingdlg)
+			{
+				algosettingdlg = new Qtalgosettingdlg(this);
+			}
+			algosettingdlg->SetLastParam(m_checkparam);
+			//std::cout << m_checkparam << std::endl;
+			algosettingdlg->exec();
+			bool _bchange = false;
+			((Qtalgosettingdlg*)algosettingdlg)->GetChangeState(_bchange);
+			if (_CheckClass && _bchange)
+			{
+				_CheckClass->SetParam(&m_checkparam);
+				_CheckClass->SaveParam();
+			}
+			delete algosettingdlg;
+			algosettingdlg = nullptr;
 
 		});
 	QObject::connect(ui.pB_Start, &QPushButton::toggled, [=](bool b)
@@ -311,6 +331,7 @@ cv::Mat Qtalgo_demo::ReadImage(QString file)
 		img = cv::imread(file.toLocal8Bit().toStdString().c_str(), cv::IMREAD_COLOR);
 		break;
 	case 2:
+	case 3:
 		img = cv::imread(file.toLocal8Bit().toStdString().c_str(), cv::IMREAD_ANYDEPTH);
 		break;
 	}
@@ -345,11 +366,29 @@ void Qtalgo_demo::onSelectImageList(QListWidgetItem* item, QListWidgetItem* it)
 		wikky_algo::SingleMat singleMat;
 		singleMat.w = ImgRead.cols;
         singleMat.h = ImgRead.rows;
-		singleMat._depth = ImgRead.depth() == 0 ? sizeof(uchar) : sizeof(double);
-		singleMat._channel = ImgRead.channels();
+		singleMat.format = 1000+ui.cb_Fromat->currentIndex();
+		int _depth, _channel;
+		switch (singleMat.format)
+		{
+		case FORMATDEPTH:
+			_channel = 1;
+			_depth = sizeof(double);
+			break;
+		case FORMATBAYER:
+		case FORMATMONO:
+			_channel = 1;
+			_depth = sizeof(uchar);
+			break;
+		case FORMATBGR:
+			_channel = 3;
+			_depth = sizeof(uchar);
+			break;
+		default:
+			LOGE("ERROR FORMAT");
+		}
+		singleMat.imgori = new char[singleMat.w * singleMat.h * _depth * _channel];
+		memcpy(singleMat.imgori, (void*)ImgRead.data, singleMat.w * singleMat.h * _depth * _channel);
 
-		singleMat.imgori = new char[singleMat.w * singleMat.h * singleMat._depth * singleMat._channel];
-		memcpy(singleMat.imgori, (void*)ImgRead.data, singleMat.w * singleMat.h * singleMat._depth * singleMat._channel);
 		singleMat.index = m_iReadInded++;
 		LARGE_INTEGER t1, t2;
 		QueryPerformanceCounter(&t1);

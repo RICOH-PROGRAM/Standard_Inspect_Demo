@@ -1,5 +1,4 @@
 #include "ibasealgorithm.h"
-#include "algosettingdlg.h"
 #include "yaml-cpp/yaml.h"
 
 namespace wikky_algo
@@ -10,8 +9,10 @@ namespace wikky_algo
         std::thread::id tid;
         _Thrd_t t;
         char* buf = new char[10];
+        char* _lastimgdata =nullptr;
         cv::Mat lastimg;
-        std::shared_ptr<Qtalgosettingdlg> algosettingdlg = nullptr;
+        int _width, _height;
+        int _depth, _channel;
         std::string m_scamserial;
 
         double SMALL_AREA_THRESHOLD = 2.3e+06;
@@ -24,11 +25,15 @@ namespace wikky_algo
     /// <summary>
         std::vector<std::vector<cv::Point>>contours, con_temp, contours_Selected, condidat1, condidat2;
     /// </summary>
+        CheckParam Node2Param(YAML::Node);
+         YAML::Node Param2Node(CheckParam, YAML::Node);
     public:
         Impl();
         ~Impl();
         bool initAlgoparam(std::string& camserial);
-        bool popCameraDlg(void* parent);
+        bool GetParam(void* parent);
+        bool SetParam(void* parent);
+        bool SaveParam();
         bool readAlgoParam();
         bool saveAlgoParam();
         bool setLogLevel(int);

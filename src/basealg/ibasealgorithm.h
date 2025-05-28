@@ -10,7 +10,7 @@
 #include <future>
 #include <functional>
 #include <intsafe.h>
-#include "common.h"
+#include "../util/common/common.h"
 
 namespace wikky_algo
 {
@@ -19,7 +19,9 @@ class IBaseAlg
 public:
     virtual ~IBaseAlg() {}
     virtual bool initAlgoparam(std::string&) = 0;
-    virtual bool popCameraDlg(void* parent) = 0;
+    virtual bool GetParam(void* parent) = 0;
+    virtual bool SetParam(void* parent) = 0;
+    virtual bool SaveParam() = 0;
     virtual bool setLogLevel(int) = 0;
     virtual int doing(wikky_algo::SingleMat&, wikky_algo::CheckParam* m_checkparam = nullptr) = 0;
 };
