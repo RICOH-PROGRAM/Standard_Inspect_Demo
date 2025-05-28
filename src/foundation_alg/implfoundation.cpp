@@ -178,17 +178,20 @@ namespace wikky_algo
 			else
 				data.imgrst = lastimg.clone();
 		}
-		int _rand = rand() % 5;
+		int _rand = rand() % 10;
 		std::string st = "OK";
 		switch ( _rand)
 		{
 		case 0:
 			st = "NG0";
+			data._iresult = 2;
 			break;
 		case 1:
 			st = "NG1";
+			data._iresult = 2;
 			break;
 		default:
+			data._iresult = 1;
 			break;
 		}
 		cv::putText(data.imgrst, st.c_str(), cv::Point(100, 200), 1, 5.0, cv::Scalar(0, 255, 255), 3);

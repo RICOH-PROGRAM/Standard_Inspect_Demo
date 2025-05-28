@@ -15,5 +15,4 @@ PUBLIC
     logging
     common
     base_alg
-    yaml-cpp
 )
