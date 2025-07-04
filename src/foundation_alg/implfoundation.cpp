@@ -168,8 +168,8 @@ namespace wikky_algo
 		cv::Mat bgr;
 		if (data.format == FORMATBAYER)
 		{
-			cv::cvtColor(lastimg, bgr, cv::COLOR_BayerRG2RGB);
-			cv::cvtColor(lastimg, data.imgrst, cv::COLOR_BayerRG2RGB);
+			cv::cvtColor(lastimg, bgr, cv::COLOR_BayerRG2BGR);
+			cv::cvtColor(lastimg, data.imgrst, cv::COLOR_BayerRG2BGR);
 		}
 		else
 		{
@@ -183,11 +183,23 @@ namespace wikky_algo
 		switch ( _rand)
 		{
 		case 0:
-			st = "NG0";
+			st = "a1";
 			data._iresult = 2;
 			break;
 		case 1:
-			st = "NG1";
+			st = "a2";
+			data._iresult = 2;
+			break;
+		case 2:
+			st = "a3";
+			data._iresult = 2;
+			break;
+		case 3:
+			st = "a4";
+			data._iresult = 2;
+			break;
+		case 4:
+			st = "a5";
 			data._iresult = 2;
 			break;
 		default:
