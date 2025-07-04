@@ -4,7 +4,7 @@
 #include <yaml-cpp/yaml.h>
 namespace wikky_algo
 {
-#define DLLINTERFACE "4.0"		
+#define DLLINTERFACE "4.1"		
 #define FORMATMONO	1000
 #define FORMATBGR	1001
 #define FORMATDEPTH	1002
