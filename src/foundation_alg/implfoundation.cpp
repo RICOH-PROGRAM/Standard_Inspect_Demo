@@ -169,14 +169,20 @@ namespace wikky_algo
 		if (data.format == FORMATBAYER)
 		{
 			cv::cvtColor(lastimg, bgr, cv::COLOR_BayerRG2BGR);
-			cv::cvtColor(lastimg, data.imgrst, cv::COLOR_BayerRG2BGR);
+			cv::cvtColor(lastimg, data.imgrst, cv::COLOR_BayerRG2RGB);
 		}
 		else
 		{
 			if (lastimg.channels() == 1)
+			{
 				cv::cvtColor(lastimg, data.imgrst, cv::COLOR_GRAY2BGR);
+				cv::cvtColor(lastimg, bgr, cv::COLOR_GRAY2BGR);
+			}
 			else
+			{
 				data.imgrst = lastimg.clone();
+				bgr = lastimg.clone();
+			}
 		}
 		int _rand = rand() % 10;
 		std::string st = "OK";
