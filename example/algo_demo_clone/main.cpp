@@ -41,6 +41,27 @@ void getFiles(string path, vector<string>& files, const char* sType)
 		_findclose(hFile);
 	}
 }
+
+bool cmp_max(std::string x, std::string y) {
+	try {
+		std::string x1 = x.substr(x.find_last_of("\\") + 1, x.find_last_of("_") - x.find_last_of("\\") - 1);
+		int xx1 = std::stoi(x);
+		std::string y1 = y.substr(y.find_last_of("\\") + 1, y.find_last_of("_") - y.find_last_of("\\") - 1);
+		int yy1 = std::stoi(y);
+		if (xx1 == yy1) {
+			return x > y; // If the numbers are equal, compare the full strings
+		}
+	}
+	catch (const invalid_argument& e) {
+		cout << "无效输入，无法解析整数。" << endl;
+		return false;
+	}
+	catch (const out_of_range& e) {
+		cout << "输入数字超出范围。" << endl;
+		return false;
+	}
+	return std::stoi(x) > std::stoi(y);
+}
 int main(int argc, char *argv[])
 {
     HINSTANCE hdll;
@@ -70,7 +91,8 @@ int main(int argc, char *argv[])
 	{
 
 	}
-	getFiles(filename, files,".png");
+	getFiles(filename, files,".bmp");
+	std::sort(files.begin(), files.end(), cmp_max);
 	for (auto it : files)
 	{
 		cv::Mat img;
