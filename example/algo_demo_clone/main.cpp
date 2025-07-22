@@ -44,13 +44,9 @@ void getFiles(string path, vector<string>& files, const char* sType)
 
 bool cmp_max(std::string x, std::string y) {
 	try {
-		std::string x1 = x.substr(x.find_last_of("\\") + 1, x.find_last_of("_") - x.find_last_of("\\") - 1);
-		int xx1 = std::stoi(x);
-		std::string y1 = y.substr(y.find_last_of("\\") + 1, y.find_last_of("_") - y.find_last_of("\\") - 1);
-		int yy1 = std::stoi(y);
-		if (xx1 == yy1) {
-			return x > y; // If the numbers are equal, compare the full strings
-		}
+		int xx1 = std::stoi(x.substr(x.find_last_of("\\") + 1, x.find_first_of("_") - x.find_last_of("\\") - 1));
+		int yy1 = std::stoi(y.substr(y.find_last_of("\\") + 1, y.find_first_of("_") - y.find_last_of("\\") - 1));
+		return xx1 < yy1;
 	}
 	catch (const invalid_argument& e) {
 		cout << "无效输入，无法解析整数。" << endl;
