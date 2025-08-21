@@ -397,7 +397,9 @@ void Qtalgo_demo::onSelectImageList(QListWidgetItem* item, QListWidgetItem* it)
 		{
 			_CheckClass->doing(singleMat);
 			ui.lineEdit_2->setText(singleMat.error_message[0].c_str());
-			QString st = m_sImageListPath + "/result_" + sSelectItem;
+			//QString st = m_sImageListPath + "/result_" + sSelectItem;
+			QStringList imgName = sSelectItem.split("."); //0821，jh，result放在后边方便原图和结果图对比
+			QString st = m_sImageListPath + "/"+imgName[0] + "_result." + imgName[1];			
 			bool b;
 			if(ui.cB_Save->isChecked())
 				b = cv::imwrite(st.toStdString(), singleMat.imgrst);
